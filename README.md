@@ -60,9 +60,11 @@
 ### Сравнение архитектур
 - [Architecture Patterns in React](https://alexkondov.com/tao-of-react/)
 - [Bulletproof React](https://github.com/alan2207/bulletproof-react)
+- [мое сравнение](https://chat.deepseek.com/share/9oeqwiv6bmvy9be530)
 
 ## 🚀 Запуск
 
 ```bash
 npm install
 npm run dev
+
