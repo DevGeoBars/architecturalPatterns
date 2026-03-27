@@ -60,7 +60,7 @@
 ### Сравнение архитектур
 - [Architecture Patterns in React](https://alexkondov.com/tao-of-react/)
 - [Bulletproof React](https://github.com/alan2207/bulletproof-react)
-- [мое сравнение](https://chat.deepseek.com/share/m99vbrq5nos91snuhn)
+- [мое сравнение](https://chat.deepseek.com/share/9yi94uyd32stggvvma)
 
 ## 🚀 Запуск
 
