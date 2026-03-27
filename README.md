@@ -1,75 +1,68 @@
-# React + TypeScript + Vite
+Изучить, сравнить и задокументировать различные подходы к организации кода в React-приложениях на реальных примерах.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🏗️ Исследуемые архитектуры
 
-Currently, two official plugins are available:
+### 1. Layered Architecture (Слоистая архитектура)
+Разделение на слои: Presentation → Application → Domain → Infrastructure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 2. DDD (Domain-Driven Design)
+- Entities, Value Objects, Aggregates
+- Repositories, Services
+- Ubiquitous Language
 
-## React Compiler
+### 3. FSD (Feature-Sliced Design)
+- `app/` — инициализация приложения
+- `processes/` — бизнес-процессы
+- `pages/` — страницы
+- `widgets/` — крупные UI-блоки
+- `features/` — пользовательские сценарии
+- `entities/` — бизнес-сущности
+- `shared/` — переиспользуемый код
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### 4. Clean Architecture
+Адаптация дяди Боба для фронтенда с независимостью от фреймворка
 
-Note: This will impact Vite dev & build performances.
+## 📁 Структура эксперимента
 
-## Expanding the ESLint configuration
+## 🔧 Технологии
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React 19** — с React Compiler
+- **TypeScript** — строгая типизация
+- **Vite** — сборка и HMR
+- **ESLint** — с type-aware правилами
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🔧 Технологии
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **React 19** — с React Compiler
+- **TypeScript** — строгая типизация
+- **Vite** — сборка и HMR
+- **ESLint** — с type-aware правилами
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📚 Полезные материалы
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Layered Architecture
+- [Layered Architecture (Martin Fowler)](https://martinfowler.com/bliki/LayeredArchitecture.html)
+- [React Layers Architecture](https://www.patterns.dev/posts/layered-architecture)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Domain-Driven Design
+- [DDD in TypeScript](https://khalilstemmler.com/articles/domain-driven-design-intro/)
+- [Domain-Driven React](https://www.thisdot.co/blog/domain-driven-design-with-react)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Feature-Sliced Design
+- [Официальная документация FSD](https://feature-sliced.design/)
+- [Карта экосистемы фронтенда (FSD)](https://feature-sliced.design/ja/blog/frontend-ecosystem-map)
+- [Пример на React](https://feature-sliced.dev/docs/examples/react)
+
+### Clean Architecture
+- [The Clean Architecture (Uncle Bob)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [React Clean Architecture](https://dev.to/josemukorivo/clean-architecture-in-react-a-practical-guide-1m5n)
+
+### Сравнение архитектур
+- [Architecture Patterns in React](https://alexkondov.com/tao-of-react/)
+- [Bulletproof React](https://github.com/alan2207/bulletproof-react)
+
+## 🚀 Запуск
+
+```bash
+npm install
+npm run dev
