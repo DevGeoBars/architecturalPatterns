@@ -40,13 +40,18 @@
 
 ## 📚 Полезные материалы
 
-### Layered Architecture
+### Flat / Feature-based — Layered Architecture
 - [Layered Architecture (Martin Fowler)](https://martinfowler.com/bliki/LayeredArchitecture.html)
+- [React Project Structure Guide](https://github.com/shopot/react-project-structure)
 - [React Layers Architecture](https://www.patterns.dev/posts/layered-architecture)
+
+### Atomic Design
+- [Front-Commerce Guide](https://developers.front-commerce.com/docs/next/concepts/react-components-structure/)
 
 ### Domain-Driven Design
 - [DDD in TypeScript](https://khalilstemmler.com/articles/domain-driven-design-intro/)
 - [Domain-Driven React](https://www.thisdot.co/blog/domain-driven-design-with-react)
+- [DDD with React (Bit.dev)](https://medium.com/m/global-identity-2?redirectUrl=https%3A%2F%2Fblog.bitsrc.io%2Fdomain-driven-design-with-react-building-scalable-and-maintainable-applications-8aa854f18a69)
 
 ### Feature-Sliced Design
 - [Официальная документация FSD](https://feature-sliced.design/)
