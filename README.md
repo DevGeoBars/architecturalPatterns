@@ -48,6 +48,7 @@
 - [React Clean Architecture](https://dev.to/josemukorivo/clean-architecture-in-react-a-practical-guide-1m5n)
 
 ### Сравнение архитектур
+- [The Evolution of Frontend](https://feature-sliced.design/ru/blog/evolution-of-frontend-dev)
 - [Architecture Patterns in React](https://alexkondov.com/tao-of-react/)
 - [Bulletproof React](https://github.com/alan2207/bulletproof-react)
 - [мое сравнение](https://chat.deepseek.com/share/6vt5gth8ateqykyudd)
