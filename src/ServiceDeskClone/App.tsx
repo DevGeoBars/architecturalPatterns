@@ -1,20 +1,16 @@
-import { BrowserRouter } from 'react-router-dom'
+import { type FC } from 'react';
+import { BrowserRouter } from "react-router-dom";
+import './App.scss';
 
 
-import './App.scss'
+type AppProps = {};
 
-
-export type AppProps = {
-  routes: any[]
-  baseName: string
-}
-
-export const App = ({ routes, baseName }: AppProps) => {
-
-
+export const App: FC<AppProps> = () => {
   return (
     <BrowserRouter>
-      <>as</>
+      <div className="App-container">
+
+      </div>
     </BrowserRouter>
-  )
-}
+  );
+};
