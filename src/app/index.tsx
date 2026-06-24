@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
 
 
-import './App.scss'
+import './ styles/index.scss'
 
 export const App = () => {
 
