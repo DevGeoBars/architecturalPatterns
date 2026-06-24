@@ -1,1 +1,1 @@
-export * from './issue'
+export type { IIssue } from './issue'
