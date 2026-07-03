@@ -1,13 +1,24 @@
 import {type FC} from 'react';
 
 import './HomePage.scss';
+import { ClaimsPage } from "@/pages/claims";
+import { IssuesPage } from "@/pages/issues";
 
 type HomePageProps = {};
 
 export const HomePage: FC<HomePageProps> = () => {
-    return (
-        <div className="home-page-container">
+    const authStore = {
+        User: {
+            Role: 'Представитель партнера',
+            ClaimsActivity: 'Seller'
+        }
+    };
 
-        </div>
-    );
+
+    const isSellerPartner =
+      authStore.User?.Role === 'Представитель партнера' &&
+      authStore.User?.ClaimsActivity === 'Seller';
+
+    return isSellerPartner ? <ClaimsPage /> : <IssuesPage />; // !!!TODO наршуает правила импортов
+
 };

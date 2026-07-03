@@ -1,0 +1,116 @@
+.sidebar-layout {
+  display: flex;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  &__sidebar {
+    display: flex;
+    flex-shrink: 0;
+    height: 100%;
+
+    .sidebar__logo-wrapper {
+      background-color: var(--colors-palette-primary-gray-950);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+
+      .sidebar__logo {
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .sidebar__nav-items {
+      height: 100%;
+      overflow-y: auto;
+      padding: 20px 10px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      &--top {
+        flex-grow: 0;
+      }
+
+      &--bottom {
+        flex-grow: 0;
+        margin-top: auto;
+        padding: 0 10px 20px 0;
+        justify-content: flex-end;
+
+        .bar-item:first-child::before {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: -10px;
+          left: 10px;
+          height: 1px;
+          background-color: var(--colors-palette-primary-gray-300, #e0e0e0);
+        }
+      }
+    }
+  }
+
+  &__icons {
+    display: flex;
+    flex-direction: column;
+
+    flex-shrink: 0;
+
+    background: var(--colors-palette-primary-white);
+
+    border-right: 1px solid var(--colors-palette-primary-gray-300);
+  }
+
+  &__panel {
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: width 0.45s ease;
+    background: var(--colors-palette-primary-white);
+    box-shadow: 4px 0 8px -2px var(--colors-palette-primary-gray-300);
+  }
+
+  &__page {
+    flex: 1;
+    min-width: 0;
+    overflow: auto;
+  }
+
+  &__panel {
+    overflow: hidden;
+    position: relative;
+
+    &-content {
+      width: calc(100vw);
+      min-width: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.15s ease,
+      visibility 0s linear 0.15s;
+    }
+  }
+
+  &__panel--open .sidebar-layout__panel-content {
+    height: 100%;
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.15s ease 0.25s,
+    visibility 0s;
+  }
+}
+
+
+
+
+
+
+
