@@ -7,7 +7,7 @@ type AddIssuePageProps = {};
 export const AddIssuePage: FC<AddIssuePageProps> = () => {
     return (
         <div className="add-issue-page-container">
-
+add issue page
         </div>
     );
 };

@@ -7,7 +7,7 @@ type IssuesPageProps = {};
 export const IssuesPage: FC<IssuesPageProps> = () => {
     return (
         <div className="issues-page-container">
-
+            IssuesPage
         </div>
     );
 };

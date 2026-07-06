@@ -7,7 +7,7 @@ type ClaimsPageProps = {};
 export const ClaimsPage: FC<ClaimsPageProps> = () => {
     return (
         <div className="claims-page-container">
-
+            ClaimsPage
         </div>
     );
 };

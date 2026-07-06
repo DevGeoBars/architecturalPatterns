@@ -35,10 +35,9 @@ export const MainLayout = () => {
         maxSize: 400,
         logoSrc: LOGO,
       }}
-      title={title}
       items={sideBarTools}
-
     >
+      {title}
       <Outlet/>
     </SideBar>
   );

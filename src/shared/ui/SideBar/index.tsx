@@ -20,7 +20,6 @@ type SideBarProps = PropsWithChildren<{
     logoSrc?: string;
     isWide?: boolean;
   };
-  title?: string;
   items: Array<BarItemType>;
   defaultItemId?: string;
   barContent?: React.FC;
@@ -35,7 +34,6 @@ export type SideBarInstance = {
 export const SideBar = memo(forwardRef<SideBarInstance, SideBarProps>(
     ({
         options,
-        title,
         items,
         defaultItemId,
         barContent: SideBarContent,
@@ -75,7 +73,7 @@ export const SideBar = memo(forwardRef<SideBarInstance, SideBarProps>(
       return (
         <div className="sidebar-layout">
           <div className="sidebar-layout__sidebar">
-            {title}
+
             <div
               className="sidebar-layout__icons"
               style={{ width: minSize }}
