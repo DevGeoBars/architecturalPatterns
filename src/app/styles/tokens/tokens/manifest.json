@@ -1,0 +1,23 @@
+{
+  "exportedAt": "2026-06-04T12:23:12.864Z",
+  "source": "figma-mcp-use_figma",
+  "figmaFileKey": "NJjoxvfywesS0K3qshoqui",
+  "files": {
+    "variables": "figma-variables.json"
+  },
+  "stats": {
+    "collections": 9,
+    "variables": 749
+  },
+  "lastUpdateAt": "2026-06-19T12:04:13.248Z",
+  "variablesContentHash": "278a75c67c72d3ac031e35b956688da0199d6e82df708cbb9fce968da475dd6f",
+  "previousVariablesContentHash": "278a75c67c72d3ac031e35b956688da0199d6e82df708cbb9fce968da475dd6f",
+  "lastChanges": {
+    "added": 0,
+    "updated": 0,
+    "removed": 0,
+    "unchanged": 749
+  },
+  "changedCollections": [],
+  "figmaFileVersion": "2365661175900849961"
+}

@@ -20,13 +20,13 @@
 
   .bar-item__indicator {
     .indicator__icon {
-      content: url('../../../assets/sidebar/sidebar-indicator.svg'); /* todo решить проблему с иконками */
+      content: url('../../assets/icons/sidebar/sidebar-indicator.svg'); /* todo решить проблему с иконками */
     }
   }
   &--active {
     .bar-item__indicator {
       .indicator__icon {
-        content: url('../../../assets/sidebar/sidebar-indicator--active.svg');
+        content: url('../../assets/icons/sidebar/sidebar-indicator--active.svg');
       }
     }
   }
@@ -34,7 +34,7 @@
 
   &:hover {
     .indicator__icon {
-      content: url('../../../assets/sidebar/sidebar-indicator--hover.svg');
+      content: url('../../assets/icons/sidebar/sidebar-indicator--hover.svg');
     }
 
     .bar-item__info {

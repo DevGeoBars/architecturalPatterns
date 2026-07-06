@@ -1,0 +1,17 @@
+/* Design Tokens Entry Point */
+
+/* Auto-generated and manually maintained design tokens from Figma */
+
+
+@import "./colors-palette.css";
+@import "./colors-semantic.css";
+@import "./colors-component.css";
+@import "./colors-dark-mode.css";
+@import "./typography.css";
+@import "./spacing.css";
+@import "./sizing.css";
+@import "./border-radius.css";
+@import "./disabled.css";
+@import "./scrolls.css";
+@import "./box-shadow.css";
+@import "./z-indexes.css";
