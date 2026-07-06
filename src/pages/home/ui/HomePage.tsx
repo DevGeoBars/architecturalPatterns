@@ -1,24 +1,28 @@
-import {type FC} from 'react';
+import { type FC } from 'react';
+import { Navigate } from 'react-router-dom';
+
+import { APP_ROUTES } from "@/shared/routes";
 
 import './HomePage.scss';
-import { ClaimsPage } from "@/pages/claims";
-import { IssuesPage } from "@/pages/issues";
+
 
 type HomePageProps = {};
 
 export const HomePage: FC<HomePageProps> = () => {
-    const authStore = {
-        User: {
-            Role: 'Представитель партнера',
-            ClaimsActivity: 'Seller'
-        }
-    };
+  const authStore = {
+    User: {
+      Role: 'Представитель партнера',
+      ClaimsActivity: 'Seller'
+    }
+  };
 
+  const isSellerPartner =
+    authStore.User?.Role === 'Представитель партнера' &&
+    authStore.User?.ClaimsActivity === 'Seller';
 
-    const isSellerPartner =
-      authStore.User?.Role === 'Представитель партнера' &&
-      authStore.User?.ClaimsActivity === 'Seller';
-
-    return isSellerPartner ? <ClaimsPage /> : <IssuesPage />; // !!!TODO наршуает правила импортов
+  return <Navigate
+    to={isSellerPartner ? APP_ROUTES.CLAIMS : APP_ROUTES.ISSUES}
+    replace
+  />;
 
 };
