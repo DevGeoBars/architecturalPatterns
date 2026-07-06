@@ -1,11 +1,14 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 
 import { APP_ROUTES } from '@/shared/routes';
 import { SideBar } from "@/shared/ui/SideBar";
-import { sideBarTools } from "@/widgets/main-layout/ui/__mock__/navBarItems";
+
+import { adaptNavigationToSideBarItems } from "../lib/adaptNavigationToSideBarItems";
+import { useNavigationItems } from "../lib/useNavigationItems";
 
 import LOGO from "@/shared/assets/icons/major/Logotype.svg";
+
 
 export const MainLayout = () => {
   const authStore = {
@@ -14,8 +17,9 @@ export const MainLayout = () => {
       ClaimsActivity: 'Seller'
     }
   };
-
-  // const authStore = null
+  const navigationItems = useNavigationItems(authStore.User);
+  const sideBarItems = adaptNavigationToSideBarItems(navigationItems);
+  
 
   // Защита маршрутов: если нет пользователя — редирект на логин
   if (!authStore.User) {
@@ -35,7 +39,7 @@ export const MainLayout = () => {
         maxSize: 400,
         logoSrc: LOGO,
       }}
-      items={sideBarTools}
+      items={sideBarItems}
     >
       {title}
       <Outlet/>
