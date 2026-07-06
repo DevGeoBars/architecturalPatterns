@@ -19,7 +19,7 @@ export const MainLayout = () => {
   };
   const navigationItems = useNavigationItems(authStore.User);
   const sideBarItems = adaptNavigationToSideBarItems(navigationItems);
-  
+
 
   // Защита маршрутов: если нет пользователя — редирект на логин
   if (!authStore.User) {
