@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import { classNames } from '../../lib/classNames';
-import { BarItem, type BarItemType } from "../BarItem";
+import { BarItem, type BarItemType } from "./BarItem";
 
 
 import './index.scss';

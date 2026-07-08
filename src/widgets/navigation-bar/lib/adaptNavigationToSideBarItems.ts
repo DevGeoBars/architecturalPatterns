@@ -1,5 +1,5 @@
-import type { BarItemType } from "@/shared/ui/BarItem";
-import type { INavigationItem } from "@/widgets/main-layout/model/navigation";
+import type { BarItemType } from "@/shared/ui/SideBar/BarItem";
+import type { INavigationItem } from "@/widgets/navigation-bar/model/navigation";
 
 export const adaptNavigationToSideBarItems = (
   items: INavigationItem[],

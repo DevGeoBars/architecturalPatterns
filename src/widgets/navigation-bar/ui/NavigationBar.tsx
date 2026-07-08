@@ -10,7 +10,7 @@ import { useNavigationItems } from "../lib/useNavigationItems";
 import LOGO from "@/shared/assets/icons/major/Logotype.svg";
 
 
-export const MainLayout = () => {
+export const NavigationBar = () => {
   const authStore = {
     User: {
       Role: 'Представитель партнера',

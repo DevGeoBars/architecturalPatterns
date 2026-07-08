@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
-import { MainLayout } from "@/widgets/main-layout";
+import { NavigationBar } from "@/widgets/navigation-bar";
 import { APP_ROUTES } from '@/shared/routes';
 import { lazyPage } from "@/shared/lib/lazy-loading";
 
@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
     },
     // Защищённые маршруты с общим лейаутом
     {
-        element: <MainLayout />,
+        element: <NavigationBar />,
         children: [
             {
                 index: true,

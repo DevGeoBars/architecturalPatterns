@@ -1,6 +1,6 @@
 import { type Dispatch, type FC, type SetStateAction } from "react";
 
-import { classNames } from "../../lib/classNames";
+import { classNames } from "../../../lib/classNames";
 
 import './index.scss'
 
