@@ -9,7 +9,7 @@
     "collections": 9,
     "variables": 749
   },
-  "lastUpdateAt": "2026-06-19T12:04:13.248Z",
+  "lastUpdateAt": "2026-07-01T10:37:17.617Z",
   "variablesContentHash": "278a75c67c72d3ac031e35b956688da0199d6e82df708cbb9fce968da475dd6f",
   "previousVariablesContentHash": "278a75c67c72d3ac031e35b956688da0199d6e82df708cbb9fce968da475dd6f",
   "lastChanges": {
@@ -19,5 +19,5 @@
     "unchanged": 749
   },
   "changedCollections": [],
-  "figmaFileVersion": "2365661175900849961"
+  "figmaFileVersion": "2371194381747599405"
 }

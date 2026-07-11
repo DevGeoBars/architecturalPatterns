@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 import { APP_ROUTES } from '@/shared/routes';
@@ -11,14 +11,17 @@ import LOGO from "@/shared/assets/icons/major/Logotype.svg";
 
 
 export const NavigationBar = () => {
+  const navigate = useNavigate();
+
   const authStore = {
     User: {
       Role: 'Представитель партнера',
       ClaimsActivity: 'Seller'
     }
   };
+
   const navigationItems = useNavigationItems(authStore.User);
-  const sideBarItems = adaptNavigationToSideBarItems(navigationItems);
+  const sideBarItems = adaptNavigationToSideBarItems(navigationItems, navigate);
 
 
   // Защита маршрутов: если нет пользователя — редирект на логин
@@ -42,7 +45,6 @@ export const NavigationBar = () => {
       items={sideBarItems}
     >
       {title}
-      <Outlet/>
     </SideBar>
   );
 };
