@@ -1,9 +1,8 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-
-import { NavigationBar } from "@/widgets/navigation-bar";
+import { MainLayout } from '@/app/ui/MainLayout';
+import { ProtectedRoute } from '@/features/auth';
 import { APP_ROUTES } from '@/shared/routes';
-import { lazyPage } from "@/shared/lib/lazy-loading";
-
+import { lazyPage } from '@/shared/lib/lazy-loading';
 
 // Ленивая загрузка страниц
 const LoginPage = lazyPage(() => import('@/pages/auth'), 'LoginPage');
@@ -19,41 +18,47 @@ export const router = createBrowserRouter([
         path: APP_ROUTES.LOGIN,
         element: <LoginPage />,
     },
-    // Защищённые маршруты с общим лейаутом
+    // Защищённые маршруты
     {
-        element: <NavigationBar />,
+        element: <ProtectedRoute />,   // 1. Проверка авторизации
         children: [
             {
-                index: true,
-                element: <Navigate to={APP_ROUTES.HOME} replace />,
-            },
-            {
-                path: APP_ROUTES.HOME,
-                element: <HomePage />,
-            },
-            {
-                path: APP_ROUTES.ISSUES,
-                element: <IssuesPage />,
-            },
-            {
-                path: APP_ROUTES.CLAIMS,
-                element: <ClaimsPage />,
-            },
-            {
-                path: APP_ROUTES.ISSUE_EDIT,
-                element: <AddIssuePage />,
-            },
-            {
-                path: APP_ROUTES.ISSUE_DETAIL,
-                element: <IssuePage />,
-            },
-            {
-                path: APP_ROUTES.ISSUE_NEW,
-                element: <AddIssuePage />,
-            },
-            {
-                path: '*',
-                element: <Navigate to={APP_ROUTES.HOME} replace />,
+                element: <MainLayout />,   // 2. Тупой скелет (шапка, сайдбар, подвал)
+                children: [
+                    // 3. Страницы
+                    {
+                        index: true,
+                        element: <Navigate to={APP_ROUTES.HOME} replace />,
+                    },
+                    {
+                        path: APP_ROUTES.HOME,
+                        element: <HomePage />,
+                    },
+                    {
+                        path: APP_ROUTES.ISSUES,
+                        element: <IssuesPage />,
+                    },
+                    {
+                        path: APP_ROUTES.CLAIMS,
+                        element: <ClaimsPage />,
+                    },
+                    {
+                        path: APP_ROUTES.ISSUE_EDIT,
+                        element: <AddIssuePage />,
+                    },
+                    {
+                        path: APP_ROUTES.ISSUE_DETAIL,
+                        element: <IssuePage />,
+                    },
+                    {
+                        path: APP_ROUTES.ISSUE_NEW,
+                        element: <AddIssuePage />,
+                    },
+                    {
+                        path: '*',
+                        element: <Navigate to={APP_ROUTES.HOME} replace />,
+                    },
+                ],
             },
         ],
     },
