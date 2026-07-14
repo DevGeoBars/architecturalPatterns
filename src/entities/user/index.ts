@@ -1,3 +1,2 @@
-export * from "./ui";
-export * as userModel from "./model";
-export * as userLib from "./lib";
+export { fetchUsers } from './api/user';
+export type { User, TUserRole, TUserDtoRole, TUserActivity } from './api/user';

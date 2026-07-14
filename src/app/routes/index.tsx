@@ -13,19 +13,17 @@ const AddIssuePage = lazyPage(() => import('@/pages/add-issue'), 'AddIssuePage')
 const IssuePage = lazyPage(() => import('@/pages/issue'), 'IssuePage');
 
 export const router = createBrowserRouter([
-    // Публичный маршрут
     {
         path: APP_ROUTES.LOGIN,
         element: <LoginPage />,
     },
-    // Защищённые маршруты
     {
-        element: <ProtectedRoute />,   // 1. Проверка авторизации
+        element: <ProtectedRoute />,
         children: [
             {
-                element: <MainLayout />,   // 2. Тупой скелет (шапка, сайдбар, подвал)
+                element: <MainLayout />,
                 children: [
-                    // 3. Страницы
+
                     {
                         index: true,
                         element: <Navigate to={APP_ROUTES.HOME} replace />,
