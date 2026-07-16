@@ -1,2 +1,8 @@
-export { fetchUsers } from './api/user';
-export type { User, TUserRole, TUserDtoRole, TUserActivity } from './api/user';
+export { Company } from './model/company';
+export { TFLEXUser } from './model/tflexUser';
+export { User } from './model/user';
+
+export type {
+  TUserActivity,
+  TUserRole,
+} from './model/user';
