@@ -1,23 +1,22 @@
 export { Issue } from './model/issue';
 
-export { Comment } from './model/comment';
+export { Comment, type TCommentTheme } from './model/comment';
 
 export { Responsible } from './model/responsible';
 
 export { Suggestion } from './model/suggestion';
 
 export {
-  ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
-} from './model/issue.types';
+  type TIssueUserStatus,
+  type TIssueUserStatusCode,
+} from './model/issueUserStatus';
 
-export type {
-  TCommentTheme,
-  TIssueStatus,
-  TIssueStatusCode,
-  TIssueUserStatus,
-  TIssueUserStatusCode,
-} from './model/issue.types';
+export  {
+  ISSUE_STATUSES,
+  type TIssueStatus,
+  type TIssueStatusCode,
+} from './model/issueStatus';
 
 export type {
   AttachedFile,

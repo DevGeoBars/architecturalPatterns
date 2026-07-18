@@ -12,14 +12,7 @@ import {
   type Direction,
 } from './direction';
 
-import {
-  ISSUE_STATUSES,
-  ISSUE_USER_STATUSES,
-  type TIssueStatus,
-  type TIssueStatusCode,
-  type TIssueUserStatus,
-  type TIssueUserStatusCode,
-} from './issue.types';
+
 
 import {
   createIssueLabel,
@@ -28,6 +21,16 @@ import {
 
 import { Responsible } from './responsible';
 import { Suggestion } from './suggestion';
+import {
+  ISSUE_STATUSES,
+  type TIssueStatus,
+  type TIssueStatusCode
+} from "./issueStatus";
+import {
+  ISSUE_USER_STATUSES,
+  type TIssueUserStatus,
+  type TIssueUserStatusCode
+} from "./issueUserStatus";
 
 const getIssueStatus = (
   status: number,

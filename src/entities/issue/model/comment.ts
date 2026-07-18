@@ -1,19 +1,18 @@
 import type { CommentDto } from '@/shared/api/endpoints/issue';
-
-import {
-  ISSUE_STATUSES,
-  ISSUE_USER_STATUSES,
-  type TCommentTheme,
-  type TIssueStatus,
-  type TIssueStatusCode,
-  type TIssueUserStatus,
-  type TIssueUserStatusCode,
-} from './issue.types';
-
 import {
   createAttachedFile,
   type AttachedFile,
 } from './attachedFile';
+
+import { ISSUE_STATUSES,
+  type TIssueStatus,
+  type TIssueStatusCode
+} from "./issueStatus";
+import {
+  ISSUE_USER_STATUSES,
+  type TIssueUserStatus,
+  type TIssueUserStatusCode
+} from "./issueUserStatus";
 
 const getIssueStatus = (
   status: number,
@@ -46,6 +45,12 @@ const getIssueUserStatus = (
 
   return userStatus;
 };
+
+export type TCommentTheme =
+  | 'Новый комментарий'
+  | 'Изменение статуса'
+  | 'Закрытие обращения пользователем'
+  | '';
 
 export class Comment {
   id: number;
