@@ -17,7 +17,7 @@ export const ProtectedRoute = ({
   const user = useUserStore((state) => state.user);
 
   if (!user) {
-    return <Navigate to={redirectTo} replace />;
+    return <Navigate to={redirectTo ?? APP_ROUTES.LOGIN} replace />;
   }
 
   if (allowedRoles && !allowedRoles.includes(user.Role)) {
