@@ -3,8 +3,8 @@ import type {
 } from '@/shared/api/endpoints/user';
 
 import {
-  mapUserActivity,
-} from '../lib/mapUserActivity';
+  getUserActivity,
+} from '../lib/getUserActivity';
 import {
   mapUserRole,
 } from '../lib/mapUserRole';
@@ -49,7 +49,7 @@ export class User {
     this.usersLimit = dto.UsersLimit;
     this.administrator = dto.Administrator;
     this.claimsActivity =
-      mapUserActivity(dto.ClaimsActivity as TUserActivityCode);
+      getUserActivity(dto.ClaimsActivity as TUserActivityCode);
     this.isForApproveAction =
       dto.IsForApproveAction;
   }

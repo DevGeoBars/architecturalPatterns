@@ -7,7 +7,7 @@ const USER_ACTIVITY_MAP: Record<number, TUserActivity> = {
   1: 'Seller',
 };
 
-export const mapUserActivity = (
+export const getUserActivity = (
   claimsActivity: TUserActivityCode,
 ): TUserActivity => {
   return USER_ACTIVITY_MAP[claimsActivity];
