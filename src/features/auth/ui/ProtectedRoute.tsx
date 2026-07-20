@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-// import { useUserStore } from '@/entities/user';
+import { useUserStore } from '@/entities/user';
 import { APP_ROUTES } from '@/shared/routes';
 
 interface ProtectedRouteProps {
@@ -13,14 +13,14 @@ export const ProtectedRoute = ({
   redirectTo = APP_ROUTES.LOGIN,
   fallback = null,
 }: ProtectedRouteProps) => {
-  //@ts-ignore todo@bars - реализовать
-  const user = useUserStore((state) => state.user);
+
+  const user = useUserStore((state) => state.currentUser);
 
   if (!user) {
     return <Navigate to={redirectTo ?? APP_ROUTES.LOGIN} replace />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(user.Role)) {
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
     return fallback ? <>{fallback}</> : <Navigate to={APP_ROUTES.HOME} replace />;
   }
 

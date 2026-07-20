@@ -1,22 +1,23 @@
 import { useCallback } from 'react';
-// import { useUserStore } from '@/entities/user'; // todo@bars - реализовать
+
+import { useUserStore } from "@/entities/user"; // todo@bars - реализовать
 import { loginRequest, logoutRequest } from '../api/authApi';
 
+
 export const useAuth = () => {
-  //@ts-ignore todo@bars - реализовать
-  const { setUser, user } = useUserStore();
+
+  const { loadCurrentUser, clearCurrentUser, currentUser } = useUserStore();
 
   const login = useCallback(async (email: string, password: string) => {
     const { token } = await loginRequest({ email, password });
-    // сохранить токен, получить пользователя и т.д.
-    console.log("login request", token, token);
-    setUser({ Role: 'Admin', ClaimsActivity: '' }); // упрощённо
-  }, [setUser]);
+    console.log('token', token);
+    await loadCurrentUser(); // упрощённо
+  }, [loadCurrentUser]);
 
   const logout = useCallback(async () => {
     await logoutRequest();
-    setUser(null);
-  }, [setUser]);
+    clearCurrentUser();
+  }, [clearCurrentUser]);
 
-  return { user, login, logout };
+  return {currentUser, login, logout };
 };
