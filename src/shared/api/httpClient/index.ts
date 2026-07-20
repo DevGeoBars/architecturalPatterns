@@ -1,4 +1,4 @@
-export { BaseHttpApiClient } from './baseHttpApiClient';
+export { HttpApiClient } from './httpApiClient';
 
 export { HttpClientError } from './httpClientError';
 

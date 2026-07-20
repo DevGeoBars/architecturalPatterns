@@ -14,7 +14,7 @@ import { HttpClientError } from './httpClientError';
 
 
 @singleton()
-export class BaseHttpApiClient
+export class HttpApiClient
   implements IHttpApiClient
 {
   protected readonly appConfig: TAppConfig;
