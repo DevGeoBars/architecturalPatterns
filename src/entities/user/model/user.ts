@@ -1,37 +1,23 @@
-// entities/user/model/user.ts
-
 import type {
-  TUserDtoRole,
   UserDto,
 } from '@/shared/api/endpoints/user';
 
+import {
+  mapUserActivity,
+} from '../lib/mapUserActivity';
+import {
+  mapUserRole,
+} from '../lib/mapUserRole';
+
 import { Company } from './company';
 import { TFLEXUser } from './tflexUser';
-
-const USER_ROLES = {
-  User: 'Пользователь',
-  Customer: 'Представитель заказчика',
-  Partner: 'Представитель партнера',
-  Administrator: 'Администратор',
-  Reader: 'Только просмотр',
-} as const satisfies Record<TUserDtoRole, string>;
-
-export type TUserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
-
-export type TUserActivity =
-  | 'Seller'
-  | 'TechnicalSpecialist';
-
-const mapUserRole = (
-  role: TUserDtoRole,
-): TUserRole => USER_ROLES[role];
-
-const mapUserActivity = (
-  claimsActivity: number,
-): TUserActivity =>
-  claimsActivity === 0
-    ? 'TechnicalSpecialist'
-    : 'Seller';
+import type {
+  TUserActivity, TUserActivityCode,
+} from './userActivity';
+import {
+  USER_ROLES,
+  type TUserRole,
+} from './userRole';
 
 export class User {
   id: number;
@@ -54,14 +40,18 @@ export class User {
     this.email = dto.Email;
     this.isExternal = dto.IsExternal;
     this.company = new Company(dto.Company);
+
     this.tflexUser = dto.TFLEXUser
       ? new TFLEXUser(dto.TFLEXUser)
       : undefined;
+
     this.role = mapUserRole(dto.Role);
     this.usersLimit = dto.UsersLimit;
     this.administrator = dto.Administrator;
-    this.claimsActivity = mapUserActivity(dto.ClaimsActivity);
-    this.isForApproveAction = dto.IsForApproveAction;
+    this.claimsActivity =
+      mapUserActivity(dto.ClaimsActivity as TUserActivityCode);
+    this.isForApproveAction =
+      dto.IsForApproveAction;
   }
 
   isAdmin(): boolean {
