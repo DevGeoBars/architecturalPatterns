@@ -1,12 +1,6 @@
 import type { CompanyDto } from '../company';
 import type { TFLEXUserDto } from './tflexUserDto';
-
-export type TUserDtoRole =
-  | 'User'
-  | 'Customer'
-  | 'Partner'
-  | 'Administrator'
-  | 'Reader';
+import type { TUserDtoRole } from "./userRoleDto";
 
 export interface UserDto {
   Id: string;
