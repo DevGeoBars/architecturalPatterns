@@ -1,5 +1,3 @@
-import { singleton } from 'tsyringe';
-
 import type { TAppConfig } from '../../config';
 import { urlJoin } from '../../lib/urlJoin';
 
@@ -13,7 +11,7 @@ import type {
 import { HttpClientError } from './httpClientError';
 
 
-@singleton()
+
 export class HttpApiClient
   implements IHttpApiClient
 {
