@@ -1,4 +1,4 @@
-export type TUserDtoRole =
+export type UserRoleDto =
   | 'User'
   | 'Customer'
   | 'Partner'

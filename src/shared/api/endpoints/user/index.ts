@@ -1,5 +1,5 @@
 export type { TFLEXUserDto } from './tflexUserDto';
-export type { TUserDtoRole } from './userRoleDto';
+export type { UserRoleDto } from './userRoleDto';
 
 export type {
   UserDto,

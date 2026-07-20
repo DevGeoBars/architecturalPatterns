@@ -1,5 +1,5 @@
 import type {
-  TUserDtoRole,
+  UserRoleDto,
 } from '@/shared/api/endpoints/user';
 
 import {
@@ -8,7 +8,7 @@ import {
 } from '../model/userRole';
 
 export const mapUserRole = (
-  role: TUserDtoRole,
+  role: UserRoleDto,
 ): TUserRole => {
   const userRole = USER_ROLES[role];
 

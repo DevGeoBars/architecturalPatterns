@@ -1,4 +1,4 @@
-import type { TUserDtoRole } from "@/shared/api/endpoints/user";
+import type { UserRoleDto } from "@/shared/api/endpoints/user";
 
 export const USER_ROLES = {
   User: 'Пользователь',
@@ -6,6 +6,6 @@ export const USER_ROLES = {
   Partner: 'Представитель партнера',
   Administrator: 'Администратор',
   Reader: 'Только просмотр',
-} as const satisfies Record<TUserDtoRole, string>;
+} as const satisfies Record<UserRoleDto, string>;
 
 export type TUserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];

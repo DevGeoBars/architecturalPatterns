@@ -1,6 +1,6 @@
 import type { CompanyDto } from '../company';
 import type { TFLEXUserDto } from './tflexUserDto';
-import type { TUserDtoRole } from "./userRoleDto";
+import type { UserRoleDto } from "./userRoleDto";
 
 export interface UserDto {
   Id: string;
@@ -10,7 +10,7 @@ export interface UserDto {
   IsExternal: boolean;
   Company: CompanyDto;
   TFLEXUser?: TFLEXUserDto;
-  Role: TUserDtoRole;
+  Role: UserRoleDto;
   UsersLimit: number;
   Administrator: string;
   ClaimsActivity: number;
