@@ -1,0 +1,9 @@
+/* Generated from Figma — collection: Colors/Semantic */
+
+:root {
+  --colors-semantic-active: var(--colors-palette-primary-blue-250);
+  --colors-semantic-danger: var(--colors-palette-secondary-red-150);
+  --colors-semantic-info: var(--colors-palette-secondary-blue-250);
+  --colors-semantic-sucsess: var(--colors-palette-secondary-green-200);
+  --colors-semantic-warning: var(--colors-palette-secondary-yellow-100);
+}

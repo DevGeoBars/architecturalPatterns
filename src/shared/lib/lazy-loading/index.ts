@@ -1,0 +1,1 @@
+export { lazyPage } from './lazyPage'

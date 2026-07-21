@@ -1,0 +1,1 @@
+export { ClaimsPage } from './ui/ClaimsPage'
