@@ -1,6 +1,7 @@
-import type { CompanyDto } from '../company';
-import type { TFLEXUserDto } from './tflexUserDto';
+import type { CompanyDto } from "./companyDto";
 import type { UserRoleDto } from "./userRoleDto";
+import type { TFLEXUserDto } from "./tflexUserDto";
+import type { ClaimsActivityDto } from "./claimsActivity";
 
 export interface UserDto {
   Id: string;
@@ -13,7 +14,7 @@ export interface UserDto {
   Role: UserRoleDto;
   UsersLimit: number;
   Administrator: string;
-  ClaimsActivity: number;
+  ClaimsActivity: ClaimsActivityDto;
   IsForApproveAction: boolean;
 }
 

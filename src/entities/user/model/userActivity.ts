@@ -1,4 +1,4 @@
-export type TUserActivityCode = 0 | 1;
+
 export type TUserActivity =
   | 'Seller'
   | 'TechnicalSpecialist';

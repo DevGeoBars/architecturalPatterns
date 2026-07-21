@@ -1,23 +1,12 @@
 import type {
   UserDto,
-} from '@/shared/api/endpoints/user';
+} from '../api/dto/userDto';
+import { type Company, mapCompany } from "../api/mapCompany";
 
-import {
-  getUserActivity,
-} from '../lib/getUserActivity';
-import {
-  mapUserRole,
-} from '../lib/mapUserRole';
+import { mapUserRole, type TUserRole, USER_ROLES } from "@/entities/user/api/mapUserRole";
+import { mapClaimsActivity, type TUserActivity } from "@/entities/user/api/mapClaimsActivity";
+import { mapTFlexUser, type TFLEXUser } from "@/entities/user/api/mapTFlexUser";
 
-import { Company } from './company';
-import { TFLEXUser } from './tflexUser';
-import type {
-  TUserActivity, TUserActivityCode,
-} from './userActivity';
-import {
-  USER_ROLES,
-  type TUserRole,
-} from './userRole';
 
 export class User {
   id: number;
@@ -39,17 +28,16 @@ export class User {
     this.name = dto.Name;
     this.email = dto.Email;
     this.isExternal = dto.IsExternal;
-    this.company = new Company(dto.Company);
+    this.company = mapCompany(dto.Company);
 
     this.tflexUser = dto.TFLEXUser
-      ? new TFLEXUser(dto.TFLEXUser)
+      ? mapTFlexUser(dto.TFLEXUser)
       : undefined;
 
     this.role = mapUserRole(dto.Role);
     this.usersLimit = dto.UsersLimit;
     this.administrator = dto.Administrator;
-    this.claimsActivity =
-      getUserActivity(dto.ClaimsActivity as TUserActivityCode);
+    this.claimsActivity = mapClaimsActivity(dto.ClaimsActivity);
     this.isForApproveAction =
       dto.IsForApproveAction;
   }

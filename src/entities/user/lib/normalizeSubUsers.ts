@@ -1,7 +1,9 @@
-import type { UserDto } from '@/shared/api/endpoints/user';
+
 import { isNotNullish } from '@/shared/lib/typeGuards';
 
+import type { UserDto } from "@/entities/user/api/dto";
 import { User } from '../model/user';
+
 
 export interface NormalizeSubUsersResult {
   users: User[];

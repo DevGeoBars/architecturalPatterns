@@ -1,12 +1,12 @@
-import type { TFLEXUserDto } from '@/shared/api/endpoints/user';
+import type { TFLEXUserDto } from "@/entities/user/api/dto";
 
 export class TFLEXUser {
-  id: number;
+  id: string;
   guid: string;
   name: string;
 
   constructor(dto: TFLEXUserDto) {
-    this.id = Number(dto.Id);
+    this.id = dto.Id;
     this.guid = dto.Guid;
     this.name = dto.Name;
   }
