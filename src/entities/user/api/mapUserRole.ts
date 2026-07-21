@@ -1,14 +1,6 @@
-import type { UserRoleDto } from "@/entities/user/api/dto/userRoleDto";
+import type { UserRoleDto } from "./dto/userRoleDto";
+import { type TUserRole, USER_ROLES } from "../model/userRole";
 
-export const USER_ROLES = {
-  User: 'Пользователь',
-  Customer: 'Представитель заказчика',
-  Partner: 'Представитель партнера',
-  Administrator: 'Администратор',
-  Reader: 'Только просмотр',
-} as const satisfies Record<UserRoleDto, string>;
-
-export type TUserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
 
 export const mapUserRole = (
   role: UserRoleDto,

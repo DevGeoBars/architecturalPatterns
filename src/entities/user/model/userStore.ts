@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { UserDto } from '@/shared/api/endpoints/user';
+import type { UserDto } from '../api/dto';
 
 import {
   getCurrentUser,

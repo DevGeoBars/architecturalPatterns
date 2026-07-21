@@ -1,10 +1,7 @@
 import type { TFLEXUserDto } from "./dto";
+import type { TFLEXUser } from "../model/tflexUser";
 
-export interface TFLEXUser {
-  id: string;
-  guid: string;
-  name: string;
-}
+
 
 export const mapTFlexUser = (dto: TFLEXUserDto): TFLEXUser => {
   return {

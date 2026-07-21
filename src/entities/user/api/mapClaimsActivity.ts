@@ -1,8 +1,5 @@
 import type { ClaimsActivityDto } from "./dto/claimsActivity";
-
-export type TUserActivity =
-  | 'Seller'
-  | 'TechnicalSpecialist';
+import type { TUserActivity } from "../model/userActivity";
 
 const USER_ACTIVITY_MAP: Record<number, TUserActivity> = {
   0: 'TechnicalSpecialist',

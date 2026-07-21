@@ -1,15 +1,20 @@
 import type {
   UserDto,
 } from '../api/dto/userDto';
-import { type Company, mapCompany } from "../api/mapCompany";
 
-import { mapUserRole, type TUserRole, USER_ROLES } from "@/entities/user/api/mapUserRole";
-import { mapClaimsActivity, type TUserActivity } from "@/entities/user/api/mapClaimsActivity";
-import { mapTFlexUser, type TFLEXUser } from "@/entities/user/api/mapTFlexUser";
+import { mapCompany } from "../api/mapCompany";
+import { mapUserRole } from "../api/mapUserRole";
+import { mapClaimsActivity } from "../api/mapClaimsActivity";
+import { mapTFlexUser } from "../api/mapTFlexUser"
+
+import type { Company } from "./company";
+import type { TFLEXUser } from "./tflexUser";
+import { type TUserRole, USER_ROLES } from "./userRole";
+import type { TUserActivity } from "./userActivity";
 
 
 export class User {
-  id: number;
+  id: string;
   guid: string;
   name: string;
   email: string;
@@ -23,7 +28,7 @@ export class User {
   isForApproveAction: boolean;
 
   constructor(dto: UserDto) {
-    this.id = Number(dto.Id);
+    this.id = dto.Id;
     this.guid = dto.Guid;
     this.name = dto.Name;
     this.email = dto.Email;

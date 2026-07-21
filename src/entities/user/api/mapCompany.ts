@@ -1,10 +1,7 @@
 import type { CompanyDto } from "./dto";
+import type { Company } from "../model/company";
 
-export interface Company {
-  id: number;
-  guid: string;
-  name: string;
-}
+
 
 export const mapCompany = (dto: CompanyDto): Company => {
   return {
