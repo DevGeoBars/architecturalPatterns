@@ -1,5 +1,3 @@
-import type { IssueLabelDto } from '@/shared/api/endpoints/issue';
-
 export interface IssueLabel {
   id: number;
   name: string;
@@ -9,13 +7,3 @@ export interface IssueLabel {
   statusCode: number;
 }
 
-export const createIssueLabel = (
-  dto: IssueLabelDto,
-): IssueLabel => ({
-  id: dto.Id,
-  name: dto.Name,
-  color: dto.Color,
-  message: dto.Message,
-  ownerId: dto.OwnerId,
-  statusCode: dto.StatusCode,
-});

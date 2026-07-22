@@ -17,19 +17,3 @@ export type TIssueStatusCode =
 export type TIssueStatus =
   (typeof ISSUE_STATUSES)[TIssueStatusCode];
 
-export const getIssueStatus = (
-  statusCode: number,
-): TIssueStatus => {
-  const status =
-    ISSUE_STATUSES[
-      statusCode as TIssueStatusCode
-      ];
-
-  if (!status) {
-    throw new Error(
-      `Неизвестный статус обращения: ${statusCode}`,
-    );
-  }
-
-  return status;
-};

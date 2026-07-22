@@ -9,20 +9,3 @@ export type TIssueUserStatusCode =
 
 export type TIssueUserStatus =
   (typeof ISSUE_USER_STATUSES)[TIssueUserStatusCode];
-
-export const getIssueUserStatus = (
-  statusCode: number,
-): TIssueUserStatus => {
-  const status =
-    ISSUE_USER_STATUSES[
-      statusCode as TIssueUserStatusCode
-      ];
-
-  if (!status) {
-    throw new Error(
-      `Неизвестный пользовательский статус: ${statusCode}`,
-    );
-  }
-
-  return status;
-};

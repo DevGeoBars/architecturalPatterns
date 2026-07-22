@@ -1,28 +1,21 @@
 import type { AttachedFileDto } from './attachedFileDto';
 
-export type TCommentThemeDto =
+export type CommentThemeDto =
   | 'Новый комментарий'
   | 'Изменение статуса'
   | 'Закрытие обращения пользователем'
   | '';
 
 export interface CommentDto {
-  Id: string;
+  Id: number | string;
   CreatedAt: string;
   Content: string;
-
   ExternalAuthorId?: string;
-
   AuthorId: string;
   AuthorName: string;
-
   IsForUser: boolean;
-
   Files: AttachedFileDto[];
-
-  Theme?: TCommentThemeDto;
-
-  Status?: number;
-
-  UserStatus?: number;
+  Theme?: CommentThemeDto;
+  Status?: number | null;
+  UserStatus?: number | null;
 }

@@ -1,31 +1,19 @@
-import type { ResponsibleDto } from '@/shared/api/endpoints/issue';
-
-export class Responsible {
+export interface Responsible {
   id: number;
-
   firstName: string;
-
   lastName: string;
-
   fatherName: string;
-
   email: string;
-
-  constructor(dto: ResponsibleDto) {
-    this.id = dto.Id;
-    this.firstName = dto.FirstName;
-    this.lastName = dto.LastName;
-    this.fatherName = dto.FatherName;
-    this.email = dto.Email;
-  }
-
-  get fullName(): string {
-    return [
-      this.lastName,
-      this.firstName,
-      this.fatherName,
-    ]
-      .filter(Boolean)
-      .join(' ');
-  }
 }
+
+export const getResponsibleFullName = (
+  responsible: Responsible,
+): string => {
+  return [
+    responsible.lastName,
+    responsible.firstName,
+    responsible.fatherName,
+  ]
+    .filter(Boolean)
+    .join(' ');
+};

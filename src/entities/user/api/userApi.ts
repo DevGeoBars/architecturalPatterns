@@ -1,7 +1,7 @@
 import type {
   UserDto,
   UsersListDto,
-} from '@/shared/api/endpoints/user';
+} from './dto';
 
 export const getCurrentUser = async (): Promise<UserDto> => {
   const response = await fetch('/api/users/current', {

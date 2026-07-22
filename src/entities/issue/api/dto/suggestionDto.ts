@@ -1,5 +1,5 @@
 export interface SuggestionDto {
-  Id: string;
-  Number: string;
+  Id: number | string;
+  Number: number | string;
   Subject: string;
 }
