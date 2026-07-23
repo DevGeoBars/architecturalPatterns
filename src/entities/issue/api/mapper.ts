@@ -1,35 +1,35 @@
 import type {
   AttachedFile,
-} from '../model/attachedFile';
+} from '../model/interface/attachedFile';
 import type {
   Comment,
   TCommentTheme,
-} from '../model/comment';
+} from '../model/interface/comment';
 import type {
   Direction,
-} from '../model/direction';
+} from '../model/interface/direction';
 import type {
   Issue,
-} from '../model/issue';
+} from '../model/interface/issue';
 import type {
   IssueLabel,
-} from '../model/issueLabel';
+} from '../model/interface/issueLabel';
 import {
   ISSUE_STATUSES,
   type TIssueStatus,
   type TIssueStatusCode,
-} from '../model/issueStatus';
+} from '../model/interface/issueStatus';
 import {
   ISSUE_USER_STATUSES,
   type TIssueUserStatus,
   type TIssueUserStatusCode,
-} from '../model/issueUserStatus';
+} from '../model/interface/issueUserStatus';
 import type {
   Responsible,
-} from '../model/responsible';
+} from '../model/interface/responsible';
 import type {
   Suggestion,
-} from '../model/suggestion';
+} from '../model/interface/suggestion';
 
 import type {
   AttachedFileDto,

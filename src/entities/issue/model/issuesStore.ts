@@ -5,8 +5,8 @@ import {
 
 import type {
   IIssueApi,
-  Issue,
-} from '@/entities/issue';
+} from '../api';
+import type { Issue } from "./interface/issue";
 
 export type TIssuesListRequestStatus =
   | 'idle'

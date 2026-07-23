@@ -8,7 +8,7 @@ import type {
 } from './dto';
 import { adaptIssueDto } from './mapper';
 
-import type { Issue } from '../model/issue';
+import type { Issue } from '../model/interface/issue';
 
 
 

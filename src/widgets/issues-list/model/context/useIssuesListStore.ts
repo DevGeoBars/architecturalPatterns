@@ -3,7 +3,8 @@ import { useStore } from 'zustand';
 
 import type {
   IIssuesListState,
-} from './createIssuesListStore';
+} from '@/entities/issue';
+
 import {
   IssuesListStoreContext,
 } from './issuesListStoreContext';

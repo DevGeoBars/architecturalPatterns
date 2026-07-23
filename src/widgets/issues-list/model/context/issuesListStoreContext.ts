@@ -2,7 +2,7 @@ import { createContext } from 'react';
 
 import type {
   TIssuesListStore,
-} from './createIssuesListStore';
+} from '@/entities/issue';
 
 export const IssuesListStoreContext =
   createContext<TIssuesListStore | null>(

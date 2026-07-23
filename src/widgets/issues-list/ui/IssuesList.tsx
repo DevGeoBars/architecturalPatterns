@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import {
   useIssuesListStore,
-} from '../model/useIssuesListStore';
+} from '../model/context/useIssuesListStore';
 
 export const IssuesList = () => {
   const issues = useIssuesListStore(

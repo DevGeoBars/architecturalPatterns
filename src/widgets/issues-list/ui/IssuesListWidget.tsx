@@ -2,7 +2,7 @@ import { type FC } from 'react';
 
 import type { IIssueApi } from "@/entities/issue";
 
-import { IssuesListStoreProvider } from "../model/IssuesListStoreProvider";
+import { IssuesListStoreProvider } from "../model/context/IssuesListStoreProvider";
 import { IssuesList } from "./IssuesList";
 
 

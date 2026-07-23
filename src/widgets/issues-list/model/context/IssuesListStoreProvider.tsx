@@ -3,11 +3,8 @@ import {
   useState,
 } from 'react';
 
-import type { IIssueApi } from '@/entities/issue';
+import { type IIssueApi, createIssuesListStore } from '@/entities/issue';
 
-import {
-  createIssuesListStore,
-} from './createIssuesListStore';
 import {
   IssuesListStoreContext,
 } from './issuesListStoreContext';

@@ -14,3 +14,9 @@ export {
   type TIssueStatus,
   type TIssueUserStatus,
 } from './model';
+
+export {
+  type IIssuesListState,
+  type TIssuesListStore,
+  createIssuesListStore
+} from './model'
