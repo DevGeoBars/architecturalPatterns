@@ -1,7 +1,6 @@
 import type { IIssueApi } from '@/entities/issue';
 import {
-  IssuesList,
-  IssuesListStoreProvider,
+  IssuesListWidget,
 } from '@/features/view-issues-list';
 
 export interface IIssuesPageProps {
@@ -12,8 +11,6 @@ export const IssuesPage = ({
   issueApi,
 }: IIssuesPageProps) => {
   return (
-    <IssuesListStoreProvider issueApi={issueApi}>
-      <IssuesList />
-    </IssuesListStoreProvider>
+    <IssuesListWidget issueApi={issueApi}/>
   );
 };

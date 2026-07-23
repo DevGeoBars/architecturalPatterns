@@ -13,5 +13,5 @@ export type {
 } from './model/createIssuesListStore';
 
 export {
-  IssuesList,
-} from './ui/IssuesList';
+  IssuesListWidget,
+} from './ui/IssuesListWidget';
