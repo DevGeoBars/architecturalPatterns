@@ -1,9 +1,11 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { MainLayout } from '@/app/ui/MainLayout';
+
 import { ProtectedRoute } from '@/features/auth';
 import { APP_ROUTES } from '@/shared/routes';
 import { lazyPage } from '@/shared/lib/lazy-loading';
-import { IssuesRoute } from "@/app/router/routes/IssuesRoute";
+
+import { MainLayout } from '../ui/MainLayout';
+import { IssuesRoute } from "./routes/IssuesRoute";
 
 // Ленивая загрузка страниц
 const LoginPage = lazyPage(() => import('@/pages/auth'), 'LoginPage');

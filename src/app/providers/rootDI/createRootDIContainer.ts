@@ -3,16 +3,18 @@ import {
   type DependencyContainer,
 } from 'tsyringe';
 
+import type { TAppConfig } from '@/shared/config';
+
 import {
   HttpApiClient,
   type IHttpApiClient,
 } from '@/shared/api/httpClient';
-import type { TAppConfig } from '@/shared/config';
+
+
+import { IssueApi, type IIssueApi  } from "@/entities/issue";
 
 import { ROOT_DI_TOKENS } from './rootDITokens';
 
-import { IssueApi } from "@/entities/issue";
-import type { IIssueApi } from "@/entities/issue/api/issueApi";
 
 export const createRootDIContainer = (
   appConfig: TAppConfig,

@@ -1,7 +1,7 @@
 import type { IIssueApi } from '@/entities/issue';
 import {
   IssuesListWidget,
-} from '@/features/view-issues-list';
+} from '@/widgets/issues-list';
 
 export interface IIssuesPageProps {
   issueApi: IIssueApi;

@@ -1,5 +1,5 @@
 export interface Suggestion {
-  Id: number | string;
-  Number: number | string;
-  Subject: string;
+  id: number;
+  number: number;
+  subject: string;
 }
