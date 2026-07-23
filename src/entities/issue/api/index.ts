@@ -1,3 +1,1 @@
-export const IssueApi = {
-    getAllIssues: () => []
-}
+export { IssueApi, type IIssueApi } from './issueApi'
