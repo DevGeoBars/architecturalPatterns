@@ -1,6 +1,6 @@
 import { RouterProvider } from 'react-router-dom';
 
-import { router } from '@/app/routes';
+import { router } from '@/app/router';
 
 export const AppRouter = () => {
   // Здесь можно разместить логику аналитики, обработки ошибок и т.п.

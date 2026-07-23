@@ -26,8 +26,7 @@ export const IssuesListStoreProvider = ({
   issueApi,
   children,
 }: IIssuesListStoreProviderProps) => {
-  const storeRef =
-    useRef<TIssuesListStore | null>(null);
+  const storeRef = useRef<TIssuesListStore | null>(null);
 
   if (storeRef.current === null) {
     storeRef.current =
@@ -35,9 +34,7 @@ export const IssuesListStoreProvider = ({
   }
 
   return (
-    <IssuesListStoreContext.Provider
-      value={storeRef.current}
-    >
+    <IssuesListStoreContext.Provider value={storeRef.current}>
       {children}
     </IssuesListStoreContext.Provider>
   );

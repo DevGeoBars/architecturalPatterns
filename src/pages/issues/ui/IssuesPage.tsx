@@ -1,13 +1,19 @@
-import {type FC} from 'react';
+import type { IIssueApi } from '@/entities/issue';
+import {
+  IssuesList,
+  IssuesListStoreProvider,
+} from '@/features/view-issues-list';
 
-import './IssuesPage.scss';
+export interface IIssuesPageProps {
+  issueApi: IIssueApi;
+}
 
-type IssuesPageProps = {};
-
-export const IssuesPage: FC<IssuesPageProps> = () => {
-    return (
-        <div className="issues-page-container">
-            IssuesPage
-        </div>
-    );
+export const IssuesPage = ({
+  issueApi,
+}: IIssuesPageProps) => {
+  return (
+    <IssuesListStoreProvider issueApi={issueApi}>
+      <IssuesList />
+    </IssuesListStoreProvider>
+  );
 };

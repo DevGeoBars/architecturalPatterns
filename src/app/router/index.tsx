@@ -3,11 +3,11 @@ import { MainLayout } from '@/app/ui/MainLayout';
 import { ProtectedRoute } from '@/features/auth';
 import { APP_ROUTES } from '@/shared/routes';
 import { lazyPage } from '@/shared/lib/lazy-loading';
+import { IssuesRoute } from "@/app/router/routes/IssuesRoute";
 
 // Ленивая загрузка страниц
 const LoginPage = lazyPage(() => import('@/pages/auth'), 'LoginPage');
 const HomePage = lazyPage(() => import('@/pages/home'), 'HomePage');
-const IssuesPage = lazyPage(() => import('@/pages/issues'), 'IssuesPage');
 const ClaimsPage = lazyPage(() => import('@/pages/claims'), 'ClaimsPage');
 const AddIssuePage = lazyPage(() => import('@/pages/add-issue'), 'AddIssuePage');
 const IssuePage = lazyPage(() => import('@/pages/issue'), 'IssuePage');
@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: APP_ROUTES.ISSUES,
-                        element: <IssuesPage />,
+                        element: <IssuesRoute />,
                     },
                     {
                         path: APP_ROUTES.CLAIMS,
