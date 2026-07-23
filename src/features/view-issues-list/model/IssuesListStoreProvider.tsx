@@ -1,17 +1,12 @@
-// features/view-issues-list/model/IssuesListStoreProvider.tsx
-
 import {
   type PropsWithChildren,
-  useRef,
+  useState,
 } from 'react';
 
-import type {
-  IIssueApi,
-} from '@/entities/issue';
+import type { IIssueApi } from '@/entities/issue';
 
 import {
   createIssuesListStore,
-  type TIssuesListStore,
 } from './createIssuesListStore';
 import {
   IssuesListStoreContext,
@@ -26,15 +21,12 @@ export const IssuesListStoreProvider = ({
   issueApi,
   children,
 }: IIssuesListStoreProviderProps) => {
-  const storeRef = useRef<TIssuesListStore | null>(null);
-
-  if (storeRef.current === null) {
-    storeRef.current =
-      createIssuesListStore(issueApi);
-  }
+  const [store] = useState(() =>
+    createIssuesListStore(issueApi),
+  );
 
   return (
-    <IssuesListStoreContext.Provider value={storeRef.current}>
+    <IssuesListStoreContext.Provider value={store}>
       {children}
     </IssuesListStoreContext.Provider>
   );
