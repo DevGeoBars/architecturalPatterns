@@ -14,7 +14,7 @@ const HomePage = lazyPage(() => import('@/pages/home'), 'HomePage');
 const ClaimsPage = lazyPage(() => import('@/pages/claims'), 'ClaimsPage');
 const AddIssuePage = lazyPage(() => import('@/pages/add-issue'), 'AddIssuePage');
 const IssuePage = lazyPage(() => import('@/pages/issue'), 'IssuePage');
-const IssuesPage = lazyPage(() => import('@/pages/issue'), 'IssuesPage');
+const IssuesPage = lazyPage(() => import('@/pages/issues'), 'IssuesPage');
 
 export const router = createBrowserRouter([
     {
