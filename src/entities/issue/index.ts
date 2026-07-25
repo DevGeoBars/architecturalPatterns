@@ -17,7 +17,7 @@ export {
 } from './model';
 
 export {
-  type IIssuesListState,
-  type TIssuesListStore,
-  createIssuesListStore
+  type IIssuesState,
+  type TIssuesStore,
+  createIssuesStore
 } from './model'

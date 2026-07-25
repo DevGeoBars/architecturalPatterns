@@ -1,29 +1,29 @@
 import { useEffect } from 'react';
 
 import {
-  useIssuesListStore,
-} from '../model/context/useIssuesListStore';
+  useIssuesStore,
+} from '../model/context/useIssuesStore';
 
 export const IssuesList = () => {
-  const issues = useIssuesListStore(
+  const issues = useIssuesStore(
     (state) => state.issues,
   );
 
   const requestStatus =
-    useIssuesListStore(
+    useIssuesStore(
       (state) => state.requestStatus,
     );
 
-  const error = useIssuesListStore(
+  const error = useIssuesStore(
     (state) => state.error,
   );
 
-  const loadIssues = useIssuesListStore(
+  const loadIssues = useIssuesStore(
     (state) => state.loadIssues,
   );
 
   const reloadIssues =
-    useIssuesListStore(
+    useIssuesStore(
       (state) => state.reloadIssues,
     );
 

@@ -1,19 +1,15 @@
-import { type FC } from 'react';
+import {
+  IssuesStoreProvider,
+} from '../model/context/IssuesStoreProvider';
 
-import type { IIssueApi } from "@/entities/issue";
+import {
+  IssuesList,
+} from './IssuesList';
 
-import { IssuesListStoreProvider } from "../model/context/IssuesListStoreProvider";
-import { IssuesList } from "./IssuesList";
-
-
-type IssuesListWidgetProps = {
-  issueApi: IIssueApi;
-};
-
-export const IssuesListWidget: FC<IssuesListWidgetProps> = ({ issueApi }) => {
+export const IssuesListWidget = () => {
   return (
-    <IssuesListStoreProvider issueApi={issueApi}>
+    <IssuesStoreProvider>
       <IssuesList />
-    </IssuesListStoreProvider>
+    </IssuesStoreProvider>
   );
 };

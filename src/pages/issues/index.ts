@@ -1,1 +1,1 @@
-export { IssuesPage, type IIssuesPageProps } from './ui/IssuesPage'
+export { IssuesPage } from './ui/IssuesPage'

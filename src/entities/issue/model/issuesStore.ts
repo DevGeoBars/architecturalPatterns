@@ -6,6 +6,7 @@ import {
 import type {
   IIssueApi,
 } from '../api';
+
 import type { Issue } from "./interface/issue";
 
 export type TIssuesListRequestStatus =
@@ -14,7 +15,7 @@ export type TIssuesListRequestStatus =
   | 'success'
   | 'error';
 
-export interface IIssuesListState {
+export interface IIssuesState {
   issues: Issue[];
   requestStatus: TIssuesListRequestStatus;
   error: string | null;
@@ -23,8 +24,8 @@ export interface IIssuesListState {
   reloadIssues: () => Promise<void>;
 }
 
-export type TIssuesListStore =
-  StoreApi<IIssuesListState>;
+export type TIssuesStore =
+  StoreApi<IIssuesState>;
 
 const getErrorMessage = (
   error: unknown,
@@ -36,10 +37,10 @@ const getErrorMessage = (
   return 'Не удалось загрузить заявки';
 };
 
-export const createIssuesListStore = (
+export const createIssuesStore = (
   issueApi: IIssueApi,
-): TIssuesListStore => {
-  return createStore<IIssuesListState>(
+): TIssuesStore => {
+  return createStore<IIssuesState>(
     (set, get) => {
       const fetchIssues = async (): Promise<void> => {
         set({

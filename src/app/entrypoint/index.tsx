@@ -16,7 +16,7 @@ import {
 
 import {
   createRootDIContainer,
-} from '../providers/rootDI/createRootDIContainer';
+} from '../di/createRootDIContainer';
 
 import '../styles/index.scss';
 
