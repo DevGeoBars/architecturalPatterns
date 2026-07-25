@@ -1,29 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import "reflect-metadata";
+import 'reflect-metadata';
 
-import { appConfig } from '@/shared/config';
-import { createRootDIContainer, RootDIProvider } from "../providers/rootDI";
-import { AppRouter } from "../providers/appRouter";
+import {
+  appConfig,
+} from '@/shared/config';
+
+import {
+  DIProvider,
+} from '@/shared/lib/di';
+
+import {
+  AppRouter,
+} from '../providers/appRouter';
+
+import {
+  createRootDIContainer,
+} from '../providers/rootDI/createRootDIContainer';
 
 import '../styles/index.scss';
 
-
 export const renderApp = () => {
-  const rootElement = document.getElementById('root');
+  const rootElement =
+    document.getElementById('root');
 
   if (!rootElement) {
-    throw new Error('#root элемент не найден в DOM');
+    throw new Error(
+      '#root элемент не найден в DOM',
+    );
   }
 
   const rootContainer =
     createRootDIContainer(appConfig);
 
-  ReactDOM.createRoot(rootElement).render(
+  ReactDOM.createRoot(
+    rootElement,
+  ).render(
     <React.StrictMode>
-      <RootDIProvider container={rootContainer}>
+      <DIProvider
+        container={rootContainer}
+      >
         <AppRouter />
-      </RootDIProvider>
+      </DIProvider>
     </React.StrictMode>,
   );
 };

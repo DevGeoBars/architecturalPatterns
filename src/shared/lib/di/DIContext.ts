@@ -1,7 +1,5 @@
 import { createContext } from 'react';
 import type { DependencyContainer } from 'tsyringe';
 
-export const RootDIContext =
-  createContext<DependencyContainer | null>(
-    null,
-  );
+export const DIContext =
+  createContext<DependencyContainer | null>(null);

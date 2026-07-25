@@ -8,3 +8,5 @@ export {
   type THttpMethod,
   type TMethodConfig,
 } from './httpApiClient.contract';
+
+export { HTTP_API_CLIENT_TOKEN } from './httpApiClientToken'

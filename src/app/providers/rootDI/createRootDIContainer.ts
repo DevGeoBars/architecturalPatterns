@@ -1,48 +1,49 @@
 import {
-  container as globalContainer,
+  container,
   type DependencyContainer,
 } from 'tsyringe';
 
-import type { TAppConfig } from '@/shared/config';
+import {
+  IssueApi,
+  ISSUE_API_TOKEN,
+  type IIssueApi,
+} from '@/entities/issue';
 
 import {
+  HTTP_API_CLIENT_TOKEN,
   HttpApiClient,
   type IHttpApiClient,
 } from '@/shared/api/httpClient';
 
-
-import { IssueApi, type IIssueApi  } from "@/entities/issue";
-
-import { ROOT_DI_TOKENS } from './rootDITokens';
-
+import type {
+  TAppConfig,
+} from '@/shared/config';
 
 export const createRootDIContainer = (
   appConfig: TAppConfig,
 ): DependencyContainer => {
   const rootContainer =
-    globalContainer.createChildContainer();
-
-  const httpApiClient =
-    new HttpApiClient(appConfig);
-
-
-
-  const issueApi =
-    new IssueApi(httpApiClient);
-
-  rootContainer.registerInstance<TAppConfig>(
-    ROOT_DI_TOKENS.APP_CONFIG,
-    appConfig,
-  );
+    container.createChildContainer();
 
   rootContainer.registerInstance<IHttpApiClient>(
-    ROOT_DI_TOKENS.HTTP_API_CLIENT,
-    httpApiClient,
+    HTTP_API_CLIENT_TOKEN,
+    new HttpApiClient(appConfig),
   );
 
-  rootContainer.registerInstance<IIssueApi>(
-    ROOT_DI_TOKENS.ISSUE_API,
-    issueApi,
+  rootContainer.register<IIssueApi>(
+    ISSUE_API_TOKEN,
+    {
+      useFactory: (dependencyContainer) => {
+        const httpApiClient =
+          dependencyContainer.resolve<IHttpApiClient>(
+            HTTP_API_CLIENT_TOKEN,
+          );
+
+        return new IssueApi(
+          httpApiClient,
+        );
+      },
+    },
   );
 
   return rootContainer;

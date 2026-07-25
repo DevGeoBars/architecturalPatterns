@@ -1,6 +1,7 @@
 export {
   IssueApi,
   type IIssueApi,
+  ISSUE_API_TOKEN,
 } from './api';
 
 export {
