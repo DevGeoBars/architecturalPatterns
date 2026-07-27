@@ -1,27 +1,61 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useUserStore } from '@/entities/user';
-import { APP_ROUTES } from '@/shared/routes';
+import type {
+  ReactNode,
+} from 'react';
 
-interface ProtectedRouteProps {
-  allowedRoles?: string[];
+import {
+  Navigate,
+  Outlet,
+} from 'react-router-dom';
+
+import {
+  useUserStore,
+  type TUserRole,
+} from '@/entities/user';
+
+import {
+  APP_ROUTES,
+} from '@/shared/routes';
+
+interface IProtectedRouteProps {
+  allowedRoles?: TUserRole[];
   redirectTo?: string;
-  fallback?: React.ReactNode;
+  fallback?: ReactNode;
 }
 
 export const ProtectedRoute = ({
   allowedRoles,
-  redirectTo = APP_ROUTES.LOGIN,
+  redirectTo =
+  APP_ROUTES.LOGIN,
   fallback = null,
-}: ProtectedRouteProps) => {
+}: IProtectedRouteProps) => {
+  const currentUser =
+    useUserStore(
+      (state) =>
+        state.currentUser,
+    );
 
-  const user = useUserStore((state) => state.currentUser);
-
-  if (!user) {
-    return <Navigate to={redirectTo ?? APP_ROUTES.LOGIN} replace />;
+  if (!currentUser) {
+    return (
+      <Navigate
+        to={redirectTo}
+        replace
+      />
+    );
   }
 
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return fallback ? <>{fallback}</> : <Navigate to={APP_ROUTES.HOME} replace />;
+  const isAllowed =
+    allowedRoles === undefined ||
+    allowedRoles.includes(
+      currentUser.role,
+    );
+
+  if (!isAllowed) {
+    return fallback ?? (
+      <Navigate
+        to={APP_ROUTES.HOME}
+        replace
+      />
+    );
   }
 
   return <Outlet />;

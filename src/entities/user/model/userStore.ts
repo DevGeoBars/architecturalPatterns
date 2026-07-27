@@ -12,6 +12,7 @@ import { User } from './user';
 
 interface UserState {
   currentUser: User | null;
+  setCurrentUser: (user: User) => void;
   subUsers: User[];
 
   usersWithoutCompany: UserDto[];
@@ -24,7 +25,7 @@ interface UserState {
   subUsersError: string | null;
 
   loadCurrentUser: () => Promise<void>;
-  loadSubUsers: (userId: number) => Promise<void>;
+  loadSubUsers: (userId: string) => Promise<void>;
 
   clearCurrentUser: () => void;
   clearSubUsers: () => void;
@@ -125,6 +126,13 @@ export const useUserStore = create<UserState>((set) => ({
       usersWithoutCompany: [],
       usersWithoutEmail: [],
       subUsersError: null,
+    });
+  },
+  setCurrentUser: (user) => {
+    set({
+      currentUser: user,
+      currentUserError: null,
+      isCurrentUserLoading: false,
     });
   },
 }));
