@@ -1,4 +1,3 @@
-
 export const users = [
     {
         Id: '1',
@@ -45,57 +44,28 @@ export const users = [
         ClaimsActivity: 1,
         IsForApproveAction: false,
     },
+];
 
+export const credentials = [
     {
-        Id: '3',
-        Guid: 'e1b76f79-c52c-4b6c-83c2-c05bf3f9c003',
-        Name: 'Сергей Волков',
-        Email: 'sergey.volkov@example.com',
-        IsExternal: true,
-
-        Company: {
-            Id: 3,
-            Guid: 'f4cf2a25-d229-4c07-a9a9-b53a7e1a0003',
-            Name: 'Компания партнёра',
-        },
-
-        Role: 'Partner',
-        UsersLimit: 20,
-        Administrator: 'Иван Иванов',
-        ClaimsActivity: 1,
-        IsForApproveAction: true,
+        userId: '1',
+        login: 'admin',
+        password: 'admin',
     },
-
     {
-        Id: '4',
-        Guid: 'e1b76f79-c52c-4b6c-83c2-c05bf3f9c004',
-        Name: 'Мария Кузнецова',
-        Email: 'maria.kuznetsova@example.com',
-        IsExternal: false,
-
-        Company: {
-            Id: 1,
-            Guid: 'f4cf2a25-d229-4c07-a9a9-b53a7e1a0001',
-            Name: 'Топ Системы',
-        },
-
-        Role: 'User',
-        UsersLimit: 5,
-        Administrator: 'Иван Иванов',
-        ClaimsActivity: 0,
-        IsForApproveAction: false,
+        userId: '2',
+        login: 'customer',
+        password: 'customer',
     },
 ];
 
 export const currentUserId = '1';
 
 export const subUserIdsByUserId = {
-    1: ['2', '3', '4'],
+    1: ['2'],
 };
 
 export const userLabels = [
     'Администратор',
-    'Сотрудник',
     'Заказчик',
-    'Партнёр',
 ];

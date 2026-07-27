@@ -1,6 +1,7 @@
 import { type FC, useEffect } from 'react';
 
 import './LoginPage.scss';
+import { Button } from "@primereact/ui/button";
 
 type LoginPageProps = {};
 
@@ -15,6 +16,7 @@ export const LoginPage: FC<LoginPageProps> = () => {
     return (
         <div className="login-page-container">
             LoginPage page
+          <Button>Verify</Button>
         </div>
     );
 };
