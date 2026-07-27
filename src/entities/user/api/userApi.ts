@@ -16,7 +16,7 @@ export const getCurrentUser = async (): Promise<UserDto> => {
 };
 
 export const getSubUsers = async (
-  userId: number,
+  userId: string,
 ): Promise<UsersListDto> => {
   const response = await fetch(
     `/api/users/${userId}/sub-users`,
