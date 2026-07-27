@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'reflect-metadata';
+import { PrimeReactProvider } from '@primereact/core';
+import Aura from '@primeuix/themes/aura';
 
 import {
   appConfig,
@@ -20,6 +22,13 @@ import {
 
 import '../styles/index.scss';
 
+const primereact = {
+  theme: {
+    preset: Aura
+  },
+  license: 'PrimeUI-Commercial-Key...'
+};
+
 export const renderApp = () => {
   const rootElement =
     document.getElementById('root');
@@ -38,11 +47,13 @@ export const renderApp = () => {
     rootElement,
   ).render(
     <React.StrictMode>
+      <PrimeReactProvider {...primereact}>
       <DIProvider
         container={rootContainer}
       >
         <AppRouter />
       </DIProvider>
+      </PrimeReactProvider>
     </React.StrictMode>,
   );
 };
