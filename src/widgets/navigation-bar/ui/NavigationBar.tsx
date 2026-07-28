@@ -1,7 +1,7 @@
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
+import { useUserStore } from '@/entities/user';
 
-import { APP_ROUTES } from '@/shared/routes';
 import { SideBar } from "@/shared/ui/SideBar";
 
 import { adaptNavigationToSideBarItems } from "../lib/adaptNavigationToSideBarItems";
@@ -13,25 +13,24 @@ import LOGO from "@/shared/assets/icons/major/Logotype.svg";
 export const NavigationBar = () => {
   const navigate = useNavigate();
 
-  const authStore = {
-    User: {
-      Role: 'Представитель партнера',
-      ClaimsActivity: 'Seller'
-    }
-  };
+  const currentUser = useUserStore(
+    (state) => state.currentUser,
+  );
 
-  const navigationItems = useNavigationItems(authStore.User);
-  const sideBarItems = adaptNavigationToSideBarItems(navigationItems, navigate);
+  const navigationItems = useNavigationItems(currentUser);
 
+  const sideBarItems = adaptNavigationToSideBarItems(
+    navigationItems,
+    navigate,
+  );
 
-  // Защита маршрутов: если нет пользователя — редирект на логин
-  if (!authStore.User) {
-    return <Navigate to={APP_ROUTES.LOGIN} replace/>;
+  if (!currentUser) {
+    return null;
   }
 
   const title =
-    authStore.User?.Role === 'Представитель партнера' &&
-    authStore.User?.ClaimsActivity === 'Seller'
+    currentUser.role === 'Представитель партнера' &&
+    currentUser.claimsActivity === 'Seller'
       ? 'title for sellers'
       : 'default title';
 

@@ -1,21 +1,9 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-import { APP_ROUTES } from '@/shared/routes';
 import { NavigationBar } from '@/widgets/navigation-bar';
 
 
 export const MainLayout = () => {
-
-  const authStore = {
-    User: {
-      Role: 'Представитель партнера',
-      ClaimsActivity: 'Seller'
-    }
-  };
-
-  if (!authStore.User) {
-    return <Navigate to={APP_ROUTES.LOGIN} replace />;
-  }
 
   return (
     <div className="app-layout">

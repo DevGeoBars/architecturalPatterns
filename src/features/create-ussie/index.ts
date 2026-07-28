@@ -1,3 +1,1 @@
-import {getIssueStatus} from "@/entities/issue";
-
-getIssueStatus({completed: 'CLOSED'})
+// todo@bars  будет в будущем ыф

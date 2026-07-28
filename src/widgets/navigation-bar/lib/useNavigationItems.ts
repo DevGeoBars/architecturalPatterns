@@ -2,14 +2,15 @@ import { useMemo } from 'react';
 
 import { NAVIGATION_CONFIG } from '../config/navigationConfig';
 import type { INavigationItem } from '../model/navigation';
+import { User } from "@/entities/user";
 
-export const useNavigationItems = (user: any): INavigationItem[] => {
+export const useNavigationItems = (user: User | null): INavigationItem[] => {
 
   return useMemo(() => {
     if (!user) return [];
-    const isSeller = user.Role === 'Представитель партнера' && user.ClaimsActivity === 'Seller';
+    const isSeller = user.role === 'Представитель партнера' && user.claimsActivity === 'Seller';
     if (isSeller) return NAVIGATION_CONFIG.seller;
-    const isAdmin = user.Role === 'Admin' || user.Role === 'Модератор';
+    const isAdmin = user.role === 'Администратор';
     if (isAdmin) return NAVIGATION_CONFIG.admin;
     return [];
   }, [user]);
