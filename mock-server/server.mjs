@@ -8,6 +8,9 @@ import {
     users,
 } from './data/users.mjs';
 
+
+import { issues } from './data/issues.mjs';
+
 const HOST = 'localhost';
 const PORT = 3001;
 
@@ -210,6 +213,17 @@ const requestHandler = async (
                 'Некорректное тело запроса',
             );
         }
+
+        return;
+    }
+    if (
+        request.method === 'GET' &&
+        url.pathname === '/api/issues'
+    ) {
+        sendJson(response, 200, {
+            Data: issues,
+            TotalCount: issues.length,
+        });
 
         return;
     }
