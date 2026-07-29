@@ -7,10 +7,11 @@
 
 .app-header {
   height: 40px;
-  background-color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px;
   border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow);
-
 }
 
 .app-body {

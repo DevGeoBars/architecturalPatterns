@@ -24,7 +24,9 @@ export const LogoutButton = () => {
         onClick={() => {
           void logoutUser();
         }}
-      />
+      >
+        <i className={"pi pi-sign-out"}/>
+      </Button>
 
       {logoutError !== null && (
         <p role="alert">
