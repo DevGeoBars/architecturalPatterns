@@ -33,10 +33,6 @@ const primereact = {
 
 export const renderApp = () => {
 
-  fetch('/api/issues')
-    .then((response) => response.json())
-    .then(console.log);
-
   const rootElement =
     document.getElementById('root');
 
