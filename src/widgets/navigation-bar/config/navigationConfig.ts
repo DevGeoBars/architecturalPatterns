@@ -10,7 +10,7 @@ export const NAVIGATION_CONFIG = {
   ] as INavigationItem[],
   seller: [
     { text: 'Заявки', path: APP_ROUTES.CLAIMS, icon: 'pi pi-check' },
-    { text: 'Маркетинговые материалы', path: '/marketingMaterials', icon: 'marketingIcon' },
-    { text: 'Документы и обучающие материалы', path: '/marketingDocuments', icon: 'marketingFolder' },
+    { text: 'Маркетинговые материалы', path: '/marketingMaterials', icon: 'pi pi-check' },
+    { text: 'Документы и обучающие материалы', path: '/marketingDocuments', icon: 'pi pi-check' },
   ] as INavigationItem[],
 };

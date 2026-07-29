@@ -15,6 +15,7 @@ const ClaimsPage = lazyPage(() => import('@/pages/claims'), 'ClaimsPage');
 const AddIssuePage = lazyPage(() => import('@/pages/add-issue'), 'AddIssuePage');
 const IssuePage = lazyPage(() => import('@/pages/issue'), 'IssuePage');
 const IssuesPage = lazyPage(() => import('@/pages/issues'), 'IssuesPage');
+const ActionsPage = lazyPage(() => import('@/pages/actions'), 'ActionsPage');
 
 export const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
                     {
                         path: APP_ROUTES.ISSUES,
                         element: <IssuesPage />,
+                    },
+                    {
+                        path: APP_ROUTES.ACTIONS,
+                        element: <ActionsPage />,
                     },
                     {
                         path: APP_ROUTES.CLAIMS,
