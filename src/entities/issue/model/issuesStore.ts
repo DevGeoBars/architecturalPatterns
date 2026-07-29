@@ -31,7 +31,6 @@ const getErrorMessage = (
   error: unknown,
 ): string => {
   if (error instanceof Error) {
-    debugger
     return error.message;
   }
 
