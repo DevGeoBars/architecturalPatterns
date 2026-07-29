@@ -21,7 +21,7 @@ import {
 
 import {
   login,
-} from '../api/login';
+} from '../../api/login';
 
 import './LoginForm.scss';
 

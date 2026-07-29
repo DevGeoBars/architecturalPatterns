@@ -216,6 +216,23 @@ const requestHandler = async (
 
         return;
     }
+
+    if (
+        request.method === 'POST' &&
+        url.pathname ===
+        '/api/auth/logout'
+    ) {
+        sendJson(
+            response,
+            200,
+            {
+                success: true,
+            },
+        );
+
+        return;
+    }
+
     if (
         request.method === 'GET' &&
         url.pathname === '/api/issues'

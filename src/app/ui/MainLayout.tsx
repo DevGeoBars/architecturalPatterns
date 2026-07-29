@@ -1,4 +1,7 @@
 import { Outlet } from 'react-router-dom';
+import {
+  LogoutButton,
+} from '@/features/auth';
 
 import { NavigationBar } from '@/widgets/navigation-bar';
 
@@ -10,8 +13,7 @@ export const MainLayout = () => {
   return (
     <div className="app-layout">
       <header className="app-header">
-
-        {/* скорее всего тоже в виджет */}
+        <LogoutButton />
       </header>
 
       <div className="app-body">
