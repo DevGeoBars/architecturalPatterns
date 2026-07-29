@@ -10,7 +10,7 @@
     left: 0;
     right: -10px;
     height: 2px;
-    background-color: var(--colors-palette-primary-gray-300, #e0e0e0);
+
   }
   &:last-child {
     &--separator::after {
@@ -38,7 +38,7 @@
     }
 
     .bar-item__info {
-      background-color: var(--colors-palette-primary-gray-300);
+
       border-radius: 10px;
     }
   }

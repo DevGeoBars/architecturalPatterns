@@ -5,7 +5,7 @@ import {
 export const IssuesPage = () => {
   return (
     <div>
-      <h1>Заявки</h1>
+      <h1>Обращения</h1>
       <IssuesListWidget />
     </div>
   );

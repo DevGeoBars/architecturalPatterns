@@ -49,13 +49,7 @@ export const BarItem: FC<NavBarItemProps> = ({
             className="bar-item__info"
             title={item.title}
         >
-            <img
-                className="info__icon"
-                src={item.icon}
-                height={20}
-                width={20}
-                alt={item.title}
-            />
+            <i className={`${item.icon} info__icon`} style={{fontSize: '1rem'}}></i>
         </div>
     </div>
 }

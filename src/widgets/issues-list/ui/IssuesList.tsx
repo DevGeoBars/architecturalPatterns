@@ -43,19 +43,19 @@ export const IssuesList = () => {
       <div>
         <p>
           {error ??
-      'Не удалось загрузить заявки'}
-    </p>
+            'Не удалось загрузить заявки'}
+        </p>
 
-    <button
-    type="button"
-    onClick={() => {
-      void reloadIssues();
-    }}
-  >
-    Повторить
-    </button>
-    </div>
-  );
+        <button
+          type="button"
+          onClick={() => {
+            void reloadIssues();
+          }}
+        >
+          Повторить
+        </button>
+      </div>
+    );
   }
 
   if (issues.length === 0) {
@@ -63,64 +63,64 @@ export const IssuesList = () => {
       <div>
         <p>Заявки отсутствуют</p>
 
-    <button
-    type="button"
-    onClick={() => {
-      void reloadIssues();
-    }}
-  >
-    Обновить
-    </button>
-    </div>
-  );
+        <button
+          type="button"
+          onClick={() => {
+            void reloadIssues();
+          }}
+        >
+          Обновить
+        </button>
+      </div>
+    );
   }
 
   return (
     <div>
       <button
         type="button"
-  onClick={() => {
-    void reloadIssues();
-  }}
->
-  Обновить
-  </button>
+        onClick={() => {
+          void reloadIssues();
+        }}
+      >
+        Обновить
+      </button>
 
-  <table>
-  <thead>
-    <tr>
-      <th>Номер</th>
-  <th>Тема</th>
-  <th>Статус</th>
-  <th>Автор</th>
-  <th>Создана</th>
-  </tr>
-  </thead>
-
-  <tbody>
-  {issues.map((issue) => (
-      <tr key={issue.id}>
-        <td>{issue.number}</td>
-
-        <td>
-        {issue.subject ?? 'Без темы'}
-        </td>
-
-        <td>{issue.status}</td>
-
-        <td>
-        {issue.author ?? '—'}
-        </td>
-
-        <td>
-        {issue.createdAt
-            ? issue.createdAt.toLocaleDateString()
-            : '—'}
-        </td>
+      <table>
+        <thead>
+        <tr>
+          <th>Номер</th>
+          <th>Тема</th>
+          <th>Статус</th>
+          <th>Автор</th>
+          <th>Создана</th>
         </tr>
-    ))}
-  </tbody>
-  </table>
-  </div>
-);
+        </thead>
+
+        <tbody>
+        {issues.map((issue) => (
+          <tr key={issue.id}>
+            <td>{issue.number}</td>
+
+            <td>
+              {issue.subject ?? 'Без темы'}
+            </td>
+
+            <td>{issue.status}</td>
+
+            <td>
+              {issue.author ?? '—'}
+            </td>
+
+            <td>
+              {issue.createdAt
+                ? issue.createdAt.toLocaleDateString()
+                : '—'}
+            </td>
+          </tr>
+        ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };

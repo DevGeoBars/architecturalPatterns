@@ -36,14 +36,10 @@ export const NavigationBar = () => {
 
   return (
     <SideBar
-      options={{
-        minSize: 60,
-        maxSize: 400,
-        logoSrc: LOGO,
-      }}
+      minWidth={40}
       items={sideBarItems}
-    >
-      {title}
-    </SideBar>
+      title={title}
+      logoSrc={LOGO}
+    />
   );
 };

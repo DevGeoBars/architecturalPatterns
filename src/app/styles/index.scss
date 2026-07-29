@@ -1,13 +1,16 @@
+@import "vars.css";
+
 :root {
   font-size: 10px;
   width: 100vw;
   height: 100vh;
+  font-family: var(--font-sergio), serif;
 }
-body, #root {
+#root, body {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
+  color: var(--text);
+  background-color: var(--bg);
 }
-
-@import "./tokens/tokens0.0.60/index.css";
