@@ -5,11 +5,11 @@ import type { INavigationItem } from '../model/navigation';
 
 export const NAVIGATION_CONFIG = {
   admin: [
-    { text: 'Обращения', path: APP_ROUTES.ISSUES, icon: 'comment' },
-    { text: 'Действия', path: '/actions', icon: 'fas fa-thumbs-up' },
+    { text: 'Обращения', path: APP_ROUTES.ISSUES, icon: 'pi pi-inbox'},
+    { text: 'Действия', path: '/actions', icon: 'pi pi-book' },
   ] as INavigationItem[],
   seller: [
-    { text: 'Заявки', path: APP_ROUTES.CLAIMS, icon: 'fas fa-headphones' },
+    { text: 'Заявки', path: APP_ROUTES.CLAIMS, icon: 'pi pi-check' },
     { text: 'Маркетинговые материалы', path: '/marketingMaterials', icon: 'marketingIcon' },
     { text: 'Документы и обучающие материалы', path: '/marketingDocuments', icon: 'marketingFolder' },
   ] as INavigationItem[],

@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'reflect-metadata';
+
 import { PrimeReactProvider } from '@primereact/core';
 import Aura from '@primeuix/themes/aura';
+import 'primeicons/primeicons.css';
 
 import {
   appConfig,

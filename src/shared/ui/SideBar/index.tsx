@@ -1,148 +1,81 @@
-import React, {
-  forwardRef,
-  memo,
-  type PropsWithChildren,
-  useImperativeHandle,
-  useState,
-} from 'react';
-
-import { classNames } from '../../lib/classNames';
-import { BarItem, type BarItemType } from "./BarItem";
-
-
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import './index.scss';
 
 
-type SideBarProps = PropsWithChildren<{
-  options: {
-    minSize?: number;
-    maxSize?: number;
-    logoSrc?: string;
-    isWide?: boolean;
-  };
-  items: Array<BarItemType>;
-  defaultItemId?: string;
-  barContent?: React.FC;
-}>;
 
-export type SideBarInstance = {
-  setIsWide: React.Dispatch<
-    React.SetStateAction<boolean>
-  >;
-};
+export interface SidebarItem {
+  id: string;
+  title: string;
+  icon?: string;
+  onClick?: () => void;
+  position?: 'top' | 'bottom';
+  separator?: boolean;
+}
 
-export const SideBar = memo(forwardRef<SideBarInstance, SideBarProps>(
-    ({
-        options,
-        items,
-        defaultItemId,
-        barContent: SideBarContent,
-        children,
-      },
-      ref,
-    ) => {
-      const {
-        minSize = 60,
-        maxSize = 340,
-        logoSrc,
-        isWide = false,
-      } = options;
+interface SidebarSimpleProps {
+  items: SidebarItem[];
+  defaultExpanded?: boolean;
+  minWidth?: number;
+  maxWidth?: number;
+  logoSrc?: string;
+  title?: string;
+}
 
-      const [_isWide, setIsWide] =
-        useState<boolean>(isWide);
+export interface SidebarSimpleInstance {
+  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-      const [activeToolId, setActiveToolId] =
-        useState(
-          defaultItemId ?? items[0]?.id,
-        );
+export const SideBar = forwardRef<SidebarSimpleInstance, SidebarSimpleProps>(
+  ({ items, defaultExpanded = false, title, minWidth = 60, maxWidth = 240, logoSrc }, ref) => {
+    const [expanded, setExpanded] = useState(defaultExpanded);
+    const [activeId, setActiveId] = useState<string | null>(null);
 
-      useImperativeHandle(ref, () => ({
-        setIsWide,
-      }));
+    useImperativeHandle(ref, () => ({
+      setExpanded,
+    }));
 
-      const topItems = items.filter(
-        item =>
-          !item.position ||
-          item.position === 'top',
-      );
+    const toggle = () => setExpanded(prev => !prev);
 
-      const bottomItems = items.filter(
-        item => item.position === 'bottom',
-      );
+    const handleItemClick = (item: SidebarItem) => {
+      setActiveId(item.id);
+      item.onClick?.();
+    };
 
-      return (
-        <div className="sidebar-layout">
-          <div className="sidebar-layout__sidebar">
-
-            <div
-              className="sidebar-layout__icons"
-              style={{ width: minSize }}
-            >
-              {logoSrc && (
-                <div className="sidebar__logo-wrapper">
-                  <img
-                    className="sidebar__logo"
-                    src={logoSrc}
-                    alt=""
-                    onClick={() =>
-                      setIsWide(prev => !prev)
-                    }
-                  />
-                </div>
-              )}
-
-              <div className="sidebar__nav-items sidebar__nav-items--top">
-                {topItems.map(item => (
-                  <BarItem
-                    key={item.id}
-                    item={item}
-                    activeToolId={
-                      activeToolId
-                    }
-                    setActiveToolId={
-                      setActiveToolId
-                    }
-                  />
-                ))}
-              </div>
-
-              <div className="sidebar__nav-items sidebar__nav-items--bottom">
-                {bottomItems.map(item => (
-                  <BarItem
-                    key={item.id}
-                    item={item}
-                    activeToolId={
-                      activeToolId
-                    }
-                    setActiveToolId={
-                      setActiveToolId
-                    }
-                  />
-                ))}
-              </div>
+    return (
+      <nav
+        className="sidebar"
+        style={{
+          width: expanded ? maxWidth : minWidth,
+        }}
+      >
+        <div className="sidebar__toggle" onClick={toggle}>
+          {!expanded ? (
+            <img src={logoSrc} alt="toggle" className="sidebar__logo" />
+          ) : (
+            <span className="sidebar__burger">☰</span>
+          )}
+          {title && expanded && (
+            <div className="sidebar__title">
+              {title}
             </div>
-            <div
-              className={classNames(
-                'sidebar-layout__panel',
-                {
-                  'sidebar-layout__panel--open': _isWide,
-                },
-              )}
-              style={{
-                width: _isWide ? maxSize - minSize : 0,
-              }}
-            >
-              <div className="sidebar-layout__panel-content">
-                {SideBarContent && <SideBarContent/>}
-              </div>
-            </div>
-          </div>
-
-          <div className="sidebar-layout__page">
-            {children}
-          </div>
+          )}
         </div>
-      );
-    },
-  ),
+
+        <ul className="sidebar__list">
+          {items.map(item => (
+            <li key={item.id}>
+              <button
+                className={`sidebar__item ${activeId === item.id ? 'sidebar__item--active' : ''}`}
+                onClick={() => handleItemClick(item)}
+                title={!expanded ? item.title : undefined}
+              >
+                <i className={item.icon}/>
+                {expanded && <span className="sidebar__label">{item.title}</span>}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    );
+  }
 );

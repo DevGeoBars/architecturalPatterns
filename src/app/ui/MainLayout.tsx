@@ -2,6 +2,8 @@ import { Outlet } from 'react-router-dom';
 
 import { NavigationBar } from '@/widgets/navigation-bar';
 
+import './MainLayout.scss'
+
 
 export const MainLayout = () => {
 
