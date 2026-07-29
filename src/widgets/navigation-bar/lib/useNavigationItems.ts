@@ -10,8 +10,7 @@ export const useNavigationItems = (user: User | null): INavigationItem[] => {
     if (!user) return [];
     const isSeller = user.role === 'Представитель партнера' && user.claimsActivity === 'Seller';
     if (isSeller) return NAVIGATION_CONFIG.seller;
-    const isAdmin = user.role === 'Администратор';
-    if (isAdmin) return NAVIGATION_CONFIG.admin;
+    if (user.isAdmin()) return NAVIGATION_CONFIG.admin;
     return [];
   }, [user]);
 };
