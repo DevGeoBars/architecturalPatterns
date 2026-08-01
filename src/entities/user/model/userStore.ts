@@ -1,138 +1,105 @@
-import { create } from 'zustand';
-
-import type { UserDto } from '../api/dto';
+import {
+  create,
+} from 'zustand';
 
 import {
-  getCurrentUser,
   getSubUsers,
 } from '../api/userApi';
 
-import { normalizeSubUsers } from '../lib/normalizeSubUsers';
-import { User } from './user';
+import {
+  normalizeSubUsers,
+} from '../lib/normalizeSubUsers';
 
-interface UserState {
-  currentUser: User | null;
-  setCurrentUser: (user: User) => void;
-  subUsers: User[];
-
-  usersWithoutCompany: UserDto[];
-  usersWithoutEmail: UserDto[];
-
-  isCurrentUserLoading: boolean;
-  isSubUsersLoading: boolean;
-
-  currentUserError: string | null;
-  subUsersError: string | null;
-
-  loadCurrentUser: () => Promise<void>;
-  loadSubUsers: (userId: string) => Promise<void>;
-
-  clearCurrentUser: () => void;
-  clearSubUsers: () => void;
-}
+import type {
+  IUserState,
+} from './userState';
 
 const getErrorMessage = (
   error: unknown,
   fallback: string,
-): string =>
-  error instanceof Error
+): string => {
+  return error instanceof Error
     ? error.message
     : fallback;
+};
 
-export const useUserStore = create<UserState>((set) => ({
-  currentUser: null,
-  subUsers: [],
+export const useUserStore =
+  create<IUserState>((set) => ({
+    currentUser: null,
+    subUsers: [],
 
-  usersWithoutCompany: [],
-  usersWithoutEmail: [],
+    usersWithoutCompany: [],
+    usersWithoutEmail: [],
 
-  isCurrentUserLoading: false,
-  isSubUsersLoading: false,
+    isSubUsersLoading: false,
+    subUsersError: null,
 
-  currentUserError: null,
-  subUsersError: null,
-
-  loadCurrentUser: async () => {
-    set({
-      isCurrentUserLoading: true,
-      currentUserError: null,
-    });
-
-    try {
-      const dto = await getCurrentUser();
-
+    setCurrentUser: (user) => {
       set({
-        currentUser: new User(dto),
-        isCurrentUserLoading: false,
+        currentUser: user,
       });
-    } catch (error) {
+    },
+
+    clearCurrentUser: () => {
       set({
         currentUser: null,
-        isCurrentUserLoading: false,
-        currentUserError: getErrorMessage(
-          error,
-          'Не удалось загрузить пользователя',
-        ),
       });
+    },
 
-      throw error;
-    }
-  },
-
-  loadSubUsers: async (userId) => {
-    set({
-      isSubUsersLoading: true,
-      subUsersError: null,
-    });
-
-    try {
-      const response = await getSubUsers(userId);
-      const result = normalizeSubUsers(response.Users);
-
+    loadSubUsers: async (
+      userId,
+    ) => {
       set({
-        subUsers: result.users,
-        usersWithoutCompany:
-        result.usersWithoutCompany,
-        usersWithoutEmail:
-        result.usersWithoutEmail,
-        isSubUsersLoading: false,
+        isSubUsersLoading: true,
+        subUsersError: null,
       });
-    } catch (error) {
+
+      try {
+        const response =
+          await getSubUsers(userId);
+
+        const result =
+          normalizeSubUsers(
+            response.Users,
+          );
+
+        set({
+          subUsers:
+          result.users,
+
+          usersWithoutCompany:
+          result.usersWithoutCompany,
+
+          usersWithoutEmail:
+          result.usersWithoutEmail,
+
+          isSubUsersLoading: false,
+        });
+      } catch (error) {
+        set({
+          subUsers: [],
+          usersWithoutCompany: [],
+          usersWithoutEmail: [],
+          isSubUsersLoading: false,
+
+          subUsersError:
+            getErrorMessage(
+              error,
+              'Не удалось загрузить пользователей',
+            ),
+        });
+
+        throw error;
+      }
+    },
+
+    clearSubUsers: () => {
       set({
         subUsers: [],
         usersWithoutCompany: [],
         usersWithoutEmail: [],
+        subUsersError: null,
         isSubUsersLoading: false,
-        subUsersError: getErrorMessage(
-          error,
-          'Не удалось загрузить пользователей',
-        ),
       });
-
-      throw error;
-    }
-  },
-
-  clearCurrentUser: () => {
-    set({
-      currentUser: null,
-      currentUserError: null,
-    });
-  },
-
-  clearSubUsers: () => {
-    set({
-      subUsers: [],
-      usersWithoutCompany: [],
-      usersWithoutEmail: [],
-      subUsersError: null,
-    });
-  },
-  setCurrentUser: (user) => {
-    set({
-      currentUser: user,
-      currentUserError: null,
-      isCurrentUserLoading: false,
-    });
-  },
-}));
+    },
+  }));

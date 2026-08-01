@@ -12,10 +12,6 @@ import {
 } from '@primereact/ui/button';
 
 import {
-  useUserStore,
-} from '@/entities/user';
-
-import {
   APP_ROUTES,
 } from '@/shared/routes';
 
@@ -23,15 +19,19 @@ import {
   login,
 } from '../../api/login';
 
+import {
+  useAuthStore,
+} from '../../model/authStore';
+
 import './LoginForm.scss';
 
 export const LoginForm = () => {
   const navigate = useNavigate();
 
-  const setCurrentUser =
-    useUserStore(
+  const setAuthenticated =
+    useAuthStore(
       (state) =>
-        state.setCurrentUser,
+        state.setAuthenticated,
     );
 
   const [
@@ -71,7 +71,7 @@ export const LoginForm = () => {
         password,
       });
 
-      setCurrentUser(user);
+      setAuthenticated(user);
 
       navigate(
         APP_ROUTES.HOME,

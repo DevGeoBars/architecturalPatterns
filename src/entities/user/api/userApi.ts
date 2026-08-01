@@ -3,17 +3,27 @@ import type {
   UsersListDto,
 } from './dto';
 
-export const getCurrentUser = async (): Promise<UserDto> => {
-  const response = await fetch('/api/users/current', {
-    credentials: 'include',
-  });
+export const getCurrentUser =
+  async (): Promise<UserDto | null> => {
+    const response = await fetch(
+      '/api/users/current',
+      {
+        credentials: 'include',
+      },
+    );
 
-  if (!response.ok) {
-    throw new Error('Не удалось загрузить текущего пользователя');
-  }
+    if (response.status === 401) {
+      return null;
+    }
 
-  return response.json() as Promise<UserDto>;
-};
+    if (!response.ok) {
+      throw new Error(
+        'Не удалось проверить авторизацию',
+      );
+    }
+
+    return response.json() as Promise<UserDto>;
+  };
 
 export const getSubUsers = async (
   userId: string,

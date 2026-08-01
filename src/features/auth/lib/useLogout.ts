@@ -7,16 +7,16 @@ import {
 } from 'react-router-dom';
 
 import {
-  useUserStore,
-} from '@/entities/user';
-
-import {
   APP_ROUTES,
 } from '@/shared/routes';
 
 import {
   logout,
 } from '../api/logout';
+
+import {
+  useAuthStore,
+} from '../model/authStore';
 
 interface IUseLogoutResult {
   logoutUser: () => Promise<void>;
@@ -28,10 +28,10 @@ export const useLogout =
   (): IUseLogoutResult => {
     const navigate = useNavigate();
 
-    const clearCurrentUser =
-      useUserStore(
+    const setUnauthenticated =
+      useAuthStore(
         (state) =>
-          state.clearCurrentUser,
+          state.setUnauthenticated,
       );
 
     const [
@@ -58,7 +58,7 @@ export const useLogout =
         try {
           await logout();
 
-          clearCurrentUser();
+          setUnauthenticated();
 
           navigate(
             APP_ROUTES.LOGIN,
@@ -66,7 +66,7 @@ export const useLogout =
               replace: true,
             },
           );
-        } catch (error: unknown) {
+        } catch (error) {
           setLogoutError(
             error instanceof Error
               ? error.message

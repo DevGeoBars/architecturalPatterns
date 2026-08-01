@@ -1,5 +1,6 @@
-import type {
-  ReactNode,
+import {
+  useEffect,
+  type ReactNode,
 } from 'react';
 
 import {
@@ -16,10 +17,16 @@ import {
   APP_ROUTES,
 } from '@/shared/routes';
 
+import {
+  useAuthStore,
+} from '../model/authStore';
+
 interface IProtectedRouteProps {
-  allowedRoles?: TUserRole[];
+  allowedRoles?: readonly TUserRole[];
+
   redirectTo?: string;
   fallback?: ReactNode;
+  loadingFallback?: ReactNode;
 }
 
 export const ProtectedRoute = ({
@@ -27,6 +34,7 @@ export const ProtectedRoute = ({
   redirectTo =
   APP_ROUTES.LOGIN,
   fallback = null,
+  loadingFallback = null,
 }: IProtectedRouteProps) => {
   const currentUser =
     useUserStore(
@@ -34,7 +42,67 @@ export const ProtectedRoute = ({
         state.currentUser,
     );
 
-  if (!currentUser) {
+  const status =
+    useAuthStore(
+      (state) => state.status,
+    );
+
+  const authError =
+    useAuthStore(
+      (state) => state.error,
+    );
+
+  const checkAuth =
+    useAuthStore(
+      (state) =>
+        state.checkAuth,
+    );
+
+  useEffect(() => {
+    if (status === 'unknown') {
+      void checkAuth();
+    }
+  }, [
+    status,
+    checkAuth,
+  ]);
+
+  if (
+    status === 'unknown' ||
+    status === 'checking'
+  ) {
+    return loadingFallback ?? (
+      <div>
+        Проверяем авторизацию...
+      </div>
+    );
+  }
+
+  if (status === 'error') {
+    return (
+      <div role="alert">
+        <p>
+          {authError ??
+            'Не удалось проверить авторизацию'}
+        </p>
+
+        <button
+          type="button"
+          onClick={() => {
+            void checkAuth();
+          }}
+        >
+          Повторить
+        </button>
+      </div>
+    );
+  }
+
+  if (
+    status ===
+    'unauthenticated' ||
+    currentUser === null
+  ) {
     return (
       <Navigate
         to={redirectTo}

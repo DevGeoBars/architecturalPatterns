@@ -1,10 +1,7 @@
 import {
   User,
+  type UserDto,
 } from '@/entities/user';
-
-import type {
-  UserDto,
-} from '@/entities/user/api/dto';
 
 import type {
   ILoginCredentials,

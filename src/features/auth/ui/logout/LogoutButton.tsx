@@ -1,6 +1,6 @@
 import {
   Button,
-} from 'primereact/button';
+} from '@primereact/ui/button';
 
 import {
   useLogout,
@@ -17,15 +17,14 @@ export const LogoutButton = () => {
     <div>
       <Button
         type="button"
-        label="Выйти"
-        icon="pi pi-sign-out"
-        loading={isLogoutPending}
         disabled={isLogoutPending}
         onClick={() => {
           void logoutUser();
         }}
       >
-        <i className={"pi pi-sign-out"}/>
+        {isLogoutPending
+          ? 'Выход...'
+          : 'Выйти'}
       </Button>
 
       {logoutError !== null && (
