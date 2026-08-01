@@ -59,7 +59,6 @@ export const credentials = [
     },
 ];
 
-export const currentUserId = '1';
 
 export const subUserIdsByUserId = {
     1: ['2'],

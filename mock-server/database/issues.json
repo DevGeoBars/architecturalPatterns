@@ -1,0 +1,32 @@
+[
+  {
+    "Id": "1",
+    "Status": 0,
+    "Number": "1001",
+    "Category": "Запрос информации",
+    "CreatedAt": "2026-07-28T10:00:00.000Z",
+    "Subject": "Не запускается приложение",
+    "Content": "После обновления приложение не запускается",
+    "UserStatus": 0,
+    "Comments": [],
+    "RelatedIssues": [],
+    "RelatedSuggestions": [],
+    "Labels": [],
+    "CustomerOrganizationName": "ООО Ромашка"
+  },
+  {
+    "Id": "2",
+    "Status": 1,
+    "Number": "1002",
+    "Category": "Ошибка",
+    "CreatedAt": "2026-07-28T11:00:00.000Z",
+    "Subject": "Не сохраняется документ",
+    "Content": "При сохранении появляется ошибка",
+    "UserStatus": 0,
+    "Comments": [],
+    "RelatedIssues": [],
+    "RelatedSuggestions": [],
+    "Labels": [],
+    "CustomerOrganizationName": "ООО Ромашка"
+  }
+]
