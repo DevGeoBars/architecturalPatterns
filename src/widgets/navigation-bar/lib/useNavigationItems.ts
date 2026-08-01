@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { NAVIGATION_CONFIG } from '../config/navigationConfig';
 import type { INavigationItem } from '../model/navigation';
-import { User } from "@/entities/user";
+import type { User } from "@/entities/user";
 
 export const useNavigationItems = (user: User | null): INavigationItem[] => {
 
