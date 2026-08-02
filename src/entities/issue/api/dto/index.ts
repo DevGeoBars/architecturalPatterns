@@ -27,3 +27,5 @@ export type {
   IssueDto,
   IssueListDto,
 } from './issueDto';
+
+export type { CreateIssueDto } from './createIssueDto'
