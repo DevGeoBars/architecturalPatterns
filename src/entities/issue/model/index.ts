@@ -7,5 +7,6 @@ export type { AttachedFile } from './interface/attachedFile'
 export type { Direction } from './interface/direction'
 export type { Responsible } from './interface/responsible'
 export type { Suggestion } from './interface/suggestion'
+export type { CreateIssueData } from './interface/createIssueData'
 
 export { type IIssuesState, type TIssuesStore, createIssuesStore } from './issuesStore'

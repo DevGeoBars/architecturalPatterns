@@ -6,10 +6,19 @@ import {
   IssuesList,
 } from './IssuesList';
 
-export const IssuesListWidget = () => {
-  return (
-    <IssuesStoreProvider>
-      <IssuesList />
-    </IssuesStoreProvider>
-  );
-};
+import {
+  IssuesListToolbar,
+} from './IssuesListToolbar';
+
+export const IssuesListWidget =
+  () => {
+    return (
+      <IssuesStoreProvider>
+        <div>
+          <IssuesListToolbar />
+
+          <IssuesList />
+        </div>
+      </IssuesStoreProvider>
+    );
+  };

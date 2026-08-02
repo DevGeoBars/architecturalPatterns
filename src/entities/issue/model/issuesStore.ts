@@ -22,6 +22,7 @@ export interface IIssuesState {
 
   loadIssues: () => Promise<void>;
   reloadIssues: () => Promise<void>;
+  addIssue: (issue: Issue) => void;
 }
 
 export type TIssuesStore =
@@ -42,42 +43,49 @@ export const createIssuesStore = (
 ): TIssuesStore => {
   return createStore<IIssuesState>(
     (set, get) => {
-      const fetchIssues = async (): Promise<void> => {
-        set({
-          requestStatus: 'loading',
-          error: null,
-        });
-
-        try {
-          const issues =
-            await issueApi.getIssues();
-
+      const fetchIssues =
+        async (): Promise<void> => {
           set({
-            issues,
-            requestStatus: 'success',
+            requestStatus: 'loading',
+            error: null,
           });
-        } catch (error: unknown) {
-          set({
-            requestStatus: 'error',
-            error: getErrorMessage(error),
-          });
-        }
-      };
+
+          try {
+            const issues =
+              await issueApi.getIssues();
+
+            set({
+              issues,
+              requestStatus: 'success',
+              error: null,
+            });
+          } catch (error: unknown) {
+            set({
+              requestStatus: 'error',
+
+              error:
+                getErrorMessage(
+                  error,
+                ),
+            });
+          }
+        };
 
       return {
         issues: [],
+
         requestStatus: 'idle',
+
         error: null,
 
         loadIssues: async () => {
-          const { requestStatus } = get();
+          const {
+            requestStatus,
+          } = get();
 
-          /*
-           * Не отправляем повторный запрос:
-           * - при повторном effect в StrictMode;
-           * - если список уже загружен.
-           */
-          if (requestStatus !== 'idle') {
+          if (
+            requestStatus !== 'idle'
+          ) {
             return;
           }
 
@@ -85,6 +93,30 @@ export const createIssuesStore = (
         },
 
         reloadIssues: fetchIssues,
+
+        addIssue: (issue) => {
+          const issueExists =
+            get().issues.some(
+              (currentIssue) =>
+                currentIssue.id ===
+                issue.id,
+            );
+
+          if (issueExists) {
+            return;
+          }
+
+          set((state) => ({
+            issues: [
+              ...state.issues,
+              issue,
+            ],
+
+            requestStatus: 'success',
+
+            error: null,
+          }));
+        },
       };
     },
   );

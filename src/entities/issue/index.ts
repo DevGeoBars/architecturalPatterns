@@ -14,6 +14,7 @@ export {
   type Suggestion,
   type TIssueStatus,
   type TIssueUserStatus,
+  type CreateIssueData,
 } from './model';
 
 export {
