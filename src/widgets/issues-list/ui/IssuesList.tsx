@@ -1,30 +1,40 @@
-import { useEffect } from 'react';
+import {
+  useEffect,
+} from 'react';
 
 import {
   useIssuesStore,
 } from '../model/context/useIssuesStore';
 
 export const IssuesList = () => {
-  const issues = useIssuesStore(
-    (state) => state.issues,
-  );
+  const issues =
+    useIssuesStore(
+      (state) =>
+        state.issues,
+    );
 
   const requestStatus =
     useIssuesStore(
-      (state) => state.requestStatus,
+      (state) =>
+        state.requestStatus,
     );
 
-  const error = useIssuesStore(
-    (state) => state.error,
-  );
+  const error =
+    useIssuesStore(
+      (state) =>
+        state.error,
+    );
 
-  const loadIssues = useIssuesStore(
-    (state) => state.loadIssues,
-  );
+  const loadIssues =
+    useIssuesStore(
+      (state) =>
+        state.loadIssues,
+    );
 
   const reloadIssues =
     useIssuesStore(
-      (state) => state.reloadIssues,
+      (state) =>
+        state.reloadIssues,
     );
 
   useEffect(() => {
@@ -35,15 +45,21 @@ export const IssuesList = () => {
     requestStatus === 'idle' ||
     requestStatus === 'loading'
   ) {
-    return <div>Загрузка заявок...</div>;
-  }
-
-  if (requestStatus === 'error') {
     return (
       <div>
-        <p>
+        Загрузка обращений...
+      </div>
+    );
+  }
+
+  if (
+    requestStatus === 'error'
+  ) {
+    return (
+      <div>
+        <p role="alert">
           {error ??
-            'Не удалось загрузить заявки'}
+            'Не удалось загрузить обращения'}
         </p>
 
         <button
@@ -61,7 +77,9 @@ export const IssuesList = () => {
   if (issues.length === 0) {
     return (
       <div>
-        <p>Заявки отсутствуют</p>
+        <p>
+          Обращения отсутствуют
+        </p>
 
         <button
           type="button"
@@ -98,27 +116,35 @@ export const IssuesList = () => {
         </thead>
 
         <tbody>
-        {issues.map((issue) => (
-          <tr key={issue.id}>
-            <td>{issue.number}</td>
+        {issues.map(
+          (issue) => (
+            <tr key={issue.id}>
+              <td>
+                {issue.number}
+              </td>
 
-            <td>
-              {issue.subject ?? 'Без темы'}
-            </td>
+              <td>
+                {issue.subject ??
+                  'Без темы'}
+              </td>
 
-            <td>{issue.status}</td>
+              <td>
+                {issue.status}
+              </td>
 
-            <td>
-              {issue.author ?? '—'}
-            </td>
+              <td>
+                {issue.author ??
+                  '—'}
+              </td>
 
-            <td>
-              {issue.createdAt
-                ? issue.createdAt.toLocaleDateString()
-                : '—'}
-            </td>
-          </tr>
-        ))}
+              <td>
+                {issue.createdAt
+                  ? issue.createdAt.toLocaleDateString()
+                  : '—'}
+              </td>
+            </tr>
+          ),
+        )}
         </tbody>
       </table>
     </div>
