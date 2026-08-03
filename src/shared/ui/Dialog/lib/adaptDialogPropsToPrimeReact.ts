@@ -1,4 +1,8 @@
 import type {
+  DialogRootProps,
+} from '@primereact/ui/dialog';
+
+import type {
   IDialogProps,
 } from '../model/dialog';
 
@@ -6,43 +10,82 @@ import type {
   TDialogPosition,
 } from '../model/dialogPosition';
 
-interface IPrimeReactDialogProps {
-  open: boolean;
+type TPrimeReactDialogPosition =
+  NonNullable<
+    DialogRootProps['position']
+  >;
 
-  modal: boolean;
+const PRIME_REACT_POSITION_BY_DIALOG_POSITION: Record<
+  TDialogPosition,
+  TPrimeReactDialogPosition
+> = {
+  center: 'center',
 
-  draggable: boolean;
+  top: 'top',
 
-  closeOnEscape: boolean;
+  'top-left': 'topleft',
 
-  position: TDialogPosition;
-}
+  'top-right': 'topright',
 
-type TAdaptedDialogProps = Pick<
+  bottom: 'bottom',
+
+  'bottom-left':
+    'bottomleft',
+
+  'bottom-right':
+    'bottomright',
+
+  left: 'left',
+
+  right: 'right',
+};
+
+type TDialogAdapterSource = Pick<
   IDialogProps,
   | 'isOpen'
   | 'isModal'
+  | 'isDismissable'
   | 'isDraggable'
-  | 'closeOnEscape'
   | 'position'
+>;
+
+type TAdaptedDialogRootProps = Pick<
+  DialogRootProps,
+  | 'open'
+  | 'modal'
+  | 'dismissable'
+  | 'draggable'
+  | 'position'
+  | 'scrollBehavior'
 >;
 
 export const adaptDialogPropsToPrimeReact = ({
   isOpen,
+
   isModal = true,
+
+  isDismissable = false,
+
   isDraggable = false,
-  closeOnEscape = true,
+
   position = 'center',
-}: TAdaptedDialogProps): IPrimeReactDialogProps => {
+}: TDialogAdapterSource): TAdaptedDialogRootProps => {
   return {
     open: isOpen,
 
     modal: isModal,
 
-    draggable: isDraggable,
+    dismissable:
+    isDismissable,
 
-    closeOnEscape,
+    draggable:
+    isDraggable,
 
-    position,
+    position:
+      PRIME_REACT_POSITION_BY_DIALOG_POSITION[
+        position
+        ],
+
+    scrollBehavior: 'inside',
   };
 };

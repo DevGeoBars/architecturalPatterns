@@ -1,22 +1,61 @@
 import {
-  CreateIssueForm,
-} from '@/features/create-issue';
+  useState,
+} from 'react';
 
 import {
-  useIssuesStore,
-} from '../model/context/useIssuesStore';
+  Button,
+} from '@primereact/ui/button';
 
-export const IssuesListToolbar =
-  () => {
-    const addIssue =
-      useIssuesStore(
-        (state) =>
-          state.addIssue,
+import {
+  CreateIssueDialog,
+} from './CreateIssueDialog';
+
+import './IssuesListToolbar.scss';
+
+export const IssuesListToolbar = () => {
+  const [
+    isCreateDialogOpen,
+    setIsCreateDialogOpen,
+  ] = useState(false);
+
+  const handleOpenDialog =
+    (): void => {
+      setIsCreateDialogOpen(
+        true,
       );
+    };
 
-    return (
-      <CreateIssueForm
-        onCreated={addIssue}
-      />
+  const handleDialogOpenChange = (
+    isOpen: boolean,
+  ): void => {
+    setIsCreateDialogOpen(
+      isOpen,
     );
   };
+
+  return (
+    <div
+      className={
+        'issues-list-toolbar'
+      }
+    >
+      <Button
+        type="button"
+        onClick={
+          handleOpenDialog
+        }
+      >
+        Создать обращение
+      </Button>
+
+      <CreateIssueDialog
+        isOpen={
+          isCreateDialogOpen
+        }
+        onOpenChange={
+          handleDialogOpenChange
+        }
+      />
+    </div>
+  );
+};

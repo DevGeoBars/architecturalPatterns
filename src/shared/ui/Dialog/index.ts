@@ -4,6 +4,7 @@ export {
 
 export type {
   IDialogProps,
+  TDialogScrollBehavior,
 } from './model/dialog';
 
 export type {

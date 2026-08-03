@@ -8,6 +8,10 @@ import {
 } from 'zustand';
 
 import {
+  Button,
+} from '@primereact/ui/button';
+
+import {
   ISSUE_API_TOKEN,
   ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
@@ -90,7 +94,8 @@ export const CreateIssueForm = ({
 
   const submit = useStore(
     store,
-    (state) => state.submit,
+    (state) =>
+      state.submit,
   );
 
   const isLoading =
@@ -129,14 +134,6 @@ export const CreateIssueForm = ({
         void handleSubmit(event);
       }}
     >
-      <h2
-        className={
-          'create-issue-form__title'
-        }
-      >
-        Создание обращения
-      </h2>
-
       <div
         className={
           'create-issue-form__grid'
@@ -323,7 +320,8 @@ export const CreateIssueForm = ({
           <input
             type="text"
             value={
-              formData.product ?? ''
+              formData.product ??
+              ''
             }
             disabled={isLoading}
             onChange={(event) => {
@@ -348,7 +346,8 @@ export const CreateIssueForm = ({
           <input
             type="text"
             value={
-              formData.version ?? ''
+              formData.version ??
+              ''
             }
             disabled={isLoading}
             onChange={(event) => {
@@ -374,7 +373,9 @@ export const CreateIssueForm = ({
 
           <input
             type="text"
-            value={formData.os ?? ''}
+            value={
+              formData.os ?? ''
+            }
             disabled={isLoading}
             onChange={(event) => {
               updateField(
@@ -562,32 +563,20 @@ export const CreateIssueForm = ({
         </p>
       )}
 
-      {requestStatus ===
-        'success' && (
-          <p
-            className={
-              'create-issue-form__success'
-            }
-            role="status"
-          >
-            Обращение успешно создано
-          </p>
-        )}
-
       <div
         className={
           'create-issue-form__actions'
         }
       >
-        <button
+        <Button
           type="button"
           disabled={isLoading}
           onClick={resetForm}
         >
           Очистить
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="submit"
           disabled={
             isSubmitDisabled
@@ -596,7 +585,7 @@ export const CreateIssueForm = ({
           {isLoading
             ? 'Создание...'
             : 'Создать обращение'}
-        </button>
+        </Button>
       </div>
     </form>
   );

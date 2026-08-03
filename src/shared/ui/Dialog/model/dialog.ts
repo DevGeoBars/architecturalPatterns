@@ -6,10 +6,12 @@ import type {
   TDialogPosition,
 } from './dialogPosition';
 
+
+
 export interface IDialogProps {
   isOpen: boolean;
 
-  title: string;
+  title: ReactNode;
 
   children: ReactNode;
 
@@ -23,13 +25,15 @@ export interface IDialogProps {
 
   position?: TDialogPosition;
 
+
+
   isModal?: boolean;
+
+  isDismissable?: boolean;
 
   isDraggable?: boolean;
 
   isClosable?: boolean;
 
   isMaximizable?: boolean;
-
-  closeOnEscape?: boolean;
 }

@@ -1,10 +1,11 @@
 import {
   Dialog as PrimeReactDialog,
+  type DialogRootChangeEvent,
 } from '@primereact/ui/dialog';
 
-import type {
-  DialogChangeEvent,
-} from '@primereact/types/shared/dialog';
+import {
+  Button,
+} from '@primereact/ui/button';
 
 import {
   adaptDialogPropsToPrimeReact,
@@ -28,25 +29,23 @@ export const Dialog = ({
 
   isModal = true,
 
+  isDismissable = false,
+
   isDraggable = false,
 
   isClosable = true,
-
-  isMaximizable = false,
-
-  closeOnEscape = true,
 }: IDialogProps) => {
-  const primeReactProps =
+  const rootProps =
     adaptDialogPropsToPrimeReact({
       isOpen,
       isModal,
+      isDismissable,
       isDraggable,
-      closeOnEscape,
       position,
     });
 
   const handleOpenChange = (
-    event: DialogChangeEvent,
+    event: DialogRootChangeEvent,
   ): void => {
     onOpenChange(
       event.value === true,
@@ -54,53 +53,63 @@ export const Dialog = ({
   };
 
   return (
-    <PrimeReactDialog
-      {...primeReactProps}
+    <PrimeReactDialog.Root
+      {...rootProps}
       onOpenChange={
         handleOpenChange
       }
     >
-      <PrimeReactDialog.Portal
-        style={{
-          width,
-
-          maxWidth:
-            'calc(100vw - 32px)',
-        }}
-      >
-        <PrimeReactDialog.Header>
-          <PrimeReactDialog.Title>
-            {title}
-          </PrimeReactDialog.Title>
-
-          <PrimeReactDialog.HeaderActions>
-            {isMaximizable && (
-              <PrimeReactDialog.Maximizable />
-            )}
-
-            {isClosable && (
-              <PrimeReactDialog.Close />
-            )}
-          </PrimeReactDialog.HeaderActions>
-        </PrimeReactDialog.Header>
-
-        <PrimeReactDialog.Content
-          style={{
-            maxHeight:
-              'calc(100vh - 160px)',
-
-            overflowY: 'auto',
-          }}
-        >
-          {children}
-        </PrimeReactDialog.Content>
-
-        {footer !== undefined && (
-          <PrimeReactDialog.Footer>
-            {footer}
-          </PrimeReactDialog.Footer>
+      <PrimeReactDialog.Portal>
+        {isModal && (
+          <PrimeReactDialog.Backdrop />
         )}
+
+        <PrimeReactDialog.Positioner>
+          <PrimeReactDialog.Popup
+            style={{
+              width,
+
+              maxWidth:
+                'calc(100vw - 32px)',
+            }}
+          >
+            <PrimeReactDialog.Header>
+              <PrimeReactDialog.Title>
+                {title}
+              </PrimeReactDialog.Title>
+
+              {isClosable && (
+                <PrimeReactDialog.HeaderActions>
+                  <PrimeReactDialog.Close
+                    as={Button}
+                    type="button"
+                    iconOnly
+                    rounded
+                    variant="text"
+                    severity="secondary"
+                    aria-label="Закрыть"
+                  >
+                    <i
+                      className="pi pi-times"
+                      aria-hidden="true"
+                    />
+                  </PrimeReactDialog.Close>
+                </PrimeReactDialog.HeaderActions>
+              )}
+            </PrimeReactDialog.Header>
+
+            <PrimeReactDialog.Content>
+              {children}
+            </PrimeReactDialog.Content>
+
+            {footer !== undefined && (
+              <PrimeReactDialog.Footer>
+                {footer}
+              </PrimeReactDialog.Footer>
+            )}
+          </PrimeReactDialog.Popup>
+        </PrimeReactDialog.Positioner>
       </PrimeReactDialog.Portal>
-    </PrimeReactDialog>
+    </PrimeReactDialog.Root>
   );
 };

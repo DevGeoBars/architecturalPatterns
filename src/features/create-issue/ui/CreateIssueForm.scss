@@ -5,23 +5,6 @@
 
   width: 100%;
 
-  padding: 16px;
-
-  border: 1px solid
-  var(--surface-border);
-
-  border-radius: 8px;
-
-  background:
-          var(--surface-card);
-
-  &__title {
-    margin: 0;
-
-    font-size: 20px;
-    font-weight: 600;
-  }
-
   &__grid {
     display: grid;
 
@@ -85,6 +68,7 @@
 
   &__checkbox {
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap: 8px;
 
@@ -105,13 +89,6 @@
 
     color:
             var(--red-500);
-  }
-
-  &__success {
-    margin: 0;
-
-    color:
-            var(--green-500);
   }
 }
 
