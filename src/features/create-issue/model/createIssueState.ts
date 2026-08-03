@@ -8,10 +8,23 @@ import type {
 } from './createIssueRequestStatus';
 
 export interface ICreateIssueState {
-  requestStatus: TCreateIssueRequestStatus;
+  formData: CreateIssueData;
+
+  requestStatus:
+    TCreateIssueRequestStatus;
+
   error: string | null;
 
-  createIssue: (
-    data: CreateIssueData,
-  ) => Promise<Issue | null>;
+  updateField: <
+    TField extends keyof CreateIssueData,
+  >(
+    field: TField,
+    value: CreateIssueData[TField],
+  ) => void;
+
+  resetForm: () => void;
+
+  submit: () => Promise<
+    Issue | null
+  >;
 }

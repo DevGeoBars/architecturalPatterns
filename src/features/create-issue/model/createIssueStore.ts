@@ -7,6 +7,18 @@ import type {
   IIssueApi,
 } from '@/entities/issue';
 
+import {
+  createIssueInitialData,
+} from '../config/createIssueInitialData';
+
+import {
+  prepareCreateIssueData,
+} from '../lib/prepareCreateIssueData';
+
+import {
+  validateCreateIssueData,
+} from '../lib/validateCreateIssueData';
+
 import type {
   ICreateIssueState,
 } from './createIssueState';
@@ -27,32 +39,104 @@ export const createCreateIssueStore = (
 ): TCreateIssueStore => {
   return createStore<ICreateIssueState>(
     (set, get) => ({
+      formData:
+        createIssueInitialData(),
+
       requestStatus: 'idle',
 
       error: null,
 
-      createIssue: async (data) => {
-        const { requestStatus } = get();
+      updateField: (
+        field,
+        value,
+      ) => {
+        if (
+          get().requestStatus ===
+          'loading'
+        ) {
+          return;
+        }
+
+        set((state) => ({
+          formData: {
+            ...state.formData,
+            [field]: value,
+          },
+
+          requestStatus: 'idle',
+
+          error: null,
+        }));
+      },
+
+      resetForm: () => {
+        if (
+          get().requestStatus ===
+          'loading'
+        ) {
+          return;
+        }
+
+        set({
+          formData:
+            createIssueInitialData(),
+
+          requestStatus: 'idle',
+
+          error: null,
+        });
+      },
+
+      submit: async () => {
+        if (
+          get().requestStatus ===
+          'loading'
+        ) {
+          return null;
+        }
+
+        const preparedData =
+          prepareCreateIssueData(
+            get().formData,
+          );
+
+        const validationError =
+          validateCreateIssueData(
+            preparedData,
+          );
 
         if (
-          requestStatus === 'loading'
+          validationError !== null
         ) {
+          set({
+            requestStatus: 'error',
+
+            error:
+            validationError,
+          });
+
           return null;
         }
 
         set({
           requestStatus: 'loading',
+
           error: null,
         });
 
         try {
           const createdIssue =
             await issueApi.createIssue(
-              data,
+              preparedData,
             );
 
           set({
-            requestStatus: 'success',
+            formData:
+              createIssueInitialData(),
+
+            requestStatus:
+              'success',
+
             error: null,
           });
 
@@ -61,9 +145,10 @@ export const createCreateIssueStore = (
           set({
             requestStatus: 'error',
 
-            error: getErrorMessage(
-              error,
-            ),
+            error:
+              getErrorMessage(
+                error,
+              ),
           });
 
           return null;

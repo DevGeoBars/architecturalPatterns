@@ -1,3 +1,3 @@
 export {
-  CreateIssueButton,
-} from './ui/CreateIssueButton';
+  CreateIssueForm,
+} from './ui/CreateIssueForm';
