@@ -1,0 +1,45 @@
+.user-profile-widget {
+  display: flex;
+  align-items: center;
+
+  &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    border: 1px solid var(--pr);
+    border-radius: 50%;
+
+    background-color: var(--pr);
+    color: var(--text-on-primary);
+
+    cursor: pointer;
+
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+            background-color 0.15s ease,
+            border-color 0.15s ease,
+            box-shadow 0.15s ease;
+
+    &:hover {
+      border-color: var(--pr-dark);
+      background-color:
+              var(--pr-dark);
+    }
+
+    &:focus-visible {
+      outline: none;
+
+      box-shadow:
+              0 0 0 3px
+              var(--bg-active);
+    }
+  }
+}
