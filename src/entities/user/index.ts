@@ -30,3 +30,7 @@ export type {
 export {
   useUserStore,
 } from './model/userStore';
+
+export {
+  UserCard,
+} from './ui';
