@@ -1,19 +1,29 @@
-import { Outlet } from 'react-router-dom';
+import {
+  Outlet,
+} from 'react-router-dom';
+
 import {
   LogoutButton,
 } from '@/features/auth';
 
-import { NavigationBar } from '@/widgets/navigation-bar';
+import {
+  NavigationBar,
+} from '@/widgets/navigation-bar';
 
-import './MainLayout.scss'
+import {
+  UserProfileWidget,
+} from '@/widgets/user-profile';
 
+import './MainLayout.scss';
 
 export const MainLayout = () => {
-
   return (
     <div className="app-layout">
       <header className="app-header">
-        <LogoutButton />
+        <div className="app-header__actions">
+          <UserProfileWidget />
+          <LogoutButton />
+        </div>
       </header>
 
       <div className="app-body">

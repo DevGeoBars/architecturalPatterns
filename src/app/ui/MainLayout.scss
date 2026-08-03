@@ -12,6 +12,12 @@
   justify-content: flex-end;
   padding: 0 16px;
   border-bottom: 1px solid var(--border);
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 }
 
 .app-body {
@@ -24,7 +30,6 @@
   flex-shrink: 0;
   background-color: var(--bg);
   border-right: 1px solid var(--border);
-
 }
 
 .app-content {
@@ -44,7 +49,6 @@
   font-size: 0.875rem;
   color: #666;
 }
-
 
 @media (max-width: 768px) {
   .sidebar {
