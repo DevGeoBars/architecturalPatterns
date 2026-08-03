@@ -1,6 +1,5 @@
 import {
   Dialog as PrimeReactDialog,
-  type DialogRootChangeEvent,
 } from '@primereact/ui/dialog';
 
 import {
@@ -19,58 +18,40 @@ export const Dialog = ({
   isOpen,
   title,
   children,
-  footer,
-
-  onOpenChange,
-
-  width = '48rem',
-
-  position = 'center',
-
-  isModal = true,
-
-  isDismissable = false,
-
-  isDraggable = false,
-
-  isClosable = true,
+  onClose,
 }: IDialogProps) => {
-  const rootProps =
+  const primeReactRootProps =
     adaptDialogPropsToPrimeReact({
       isOpen,
-      isModal,
-      isDismissable,
-      isDraggable,
-      position,
     });
 
-  const handleOpenChange = (
-    event: DialogRootChangeEvent,
-  ): void => {
-    onOpenChange(
-      event.value === true,
-    );
-  };
+
 
   return (
     <PrimeReactDialog.Root
-      {...rootProps}
-      onOpenChange={
-        handleOpenChange
-      }
+      {...primeReactRootProps}
+      modal
+      dismissable={false}
+      draggable={false}
+      position="center"
+      scrollBehavior="inside"
+      onOpenChange={(event: any) => {
+        if (!event.value) {
+          onClose();
+        }
+      }}
     >
       <PrimeReactDialog.Portal>
-        {isModal && (
-          <PrimeReactDialog.Backdrop />
-        )}
+        <PrimeReactDialog.Backdrop />
 
         <PrimeReactDialog.Positioner>
           <PrimeReactDialog.Popup
             style={{
-              width,
+              width:
+                'min(64rem, calc(100vw - 32px))',
 
-              maxWidth:
-                'calc(100vw - 32px)',
+              maxHeight:
+                'calc(100vh - 32px)',
             }}
           >
             <PrimeReactDialog.Header>
@@ -78,35 +59,28 @@ export const Dialog = ({
                 {title}
               </PrimeReactDialog.Title>
 
-              {isClosable && (
-                <PrimeReactDialog.HeaderActions>
-                  <PrimeReactDialog.Close
-                    as={Button}
-                    type="button"
-                    iconOnly
-                    rounded
-                    variant="text"
-                    severity="secondary"
-                    aria-label="Закрыть"
+              <PrimeReactDialog.HeaderActions>
+                <PrimeReactDialog.Close
+                  as={Button}
+                  type="button"
+                  iconOnly
+                  rounded
+                  variant="text"
+                  severity="secondary"
+                  aria-label="Закрыть"
+                >
+                  <span
+                    aria-hidden="true"
                   >
-                    <i
-                      className="pi pi-times"
-                      aria-hidden="true"
-                    />
-                  </PrimeReactDialog.Close>
-                </PrimeReactDialog.HeaderActions>
-              )}
+                    ×
+                  </span>
+                </PrimeReactDialog.Close>
+              </PrimeReactDialog.HeaderActions>
             </PrimeReactDialog.Header>
 
             <PrimeReactDialog.Content>
               {children}
             </PrimeReactDialog.Content>
-
-            {footer !== undefined && (
-              <PrimeReactDialog.Footer>
-                {footer}
-              </PrimeReactDialog.Footer>
-            )}
           </PrimeReactDialog.Popup>
         </PrimeReactDialog.Positioner>
       </PrimeReactDialog.Portal>
