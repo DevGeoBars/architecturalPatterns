@@ -1,10 +1,29 @@
 import {
   useEffect,
+  useMemo,
 } from 'react';
+
+import {
+  Button,
+} from '@primereact/ui/button';
+
+import {
+  DataTable,
+} from '@/shared/ui/DataTable';
+
+import {
+  ISSUES_TABLE_COLUMNS,
+} from '../config/issuesTableColumns';
+
+import {
+  adaptIssuesToTableRows,
+} from '../lib/adaptIssueToTableRow';
 
 import {
   useIssuesStore,
 } from '../model/context/useIssuesStore';
+
+import './IssuesList.scss';
 
 export const IssuesList = () => {
   const issues =
@@ -37,6 +56,14 @@ export const IssuesList = () => {
         state.reloadIssues,
     );
 
+  const tableRows = useMemo(
+    () =>
+      adaptIssuesToTableRows(
+        issues,
+      ),
+    [issues],
+  );
+
   useEffect(() => {
     void loadIssues();
   }, [loadIssues]);
@@ -46,7 +73,7 @@ export const IssuesList = () => {
     requestStatus === 'loading'
   ) {
     return (
-      <div>
+      <div className="issues-list__state">
         Загрузка обращений...
       </div>
     );
@@ -56,97 +83,68 @@ export const IssuesList = () => {
     requestStatus === 'error'
   ) {
     return (
-      <div>
-        <p role="alert">
+      <div
+        className="issues-list__state"
+        role="alert"
+      >
+        <p>
           {error ??
             'Не удалось загрузить обращения'}
         </p>
 
-        <button
+        <Button
           type="button"
           onClick={() => {
             void reloadIssues();
           }}
         >
           Повторить
-        </button>
+        </Button>
       </div>
     );
   }
 
   if (issues.length === 0) {
     return (
-      <div>
+      <div className="issues-list__state">
         <p>
           Обращения отсутствуют
         </p>
 
-        <button
+        <Button
           type="button"
           onClick={() => {
             void reloadIssues();
           }}
         >
           Обновить
-        </button>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div>
-      <button
-        type="button"
-        onClick={() => {
-          void reloadIssues();
-        }}
-      >
-        Обновить
-      </button>
+    <div className="issues-list">
+      <div className="issues-list__actions">
+        <Button
+          type="button"
+          onClick={() => {
+            void reloadIssues();
+          }}
+        >
+          Обновить
+        </Button>
+      </div>
 
-      <table>
-        <thead>
-        <tr>
-          <th>Номер</th>
-          <th>Тема</th>
-          <th>Статус</th>
-          <th>Автор</th>
-          <th>Создана</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {issues.map(
-          (issue) => (
-            <tr key={issue.id}>
-              <td>
-                {issue.number}
-              </td>
-
-              <td>
-                {issue.subject ??
-                  'Без темы'}
-              </td>
-
-              <td>
-                {issue.status}
-              </td>
-
-              <td>
-                {issue.author ??
-                  '—'}
-              </td>
-
-              <td>
-                {issue.createdAt
-                  ? issue.createdAt.toLocaleDateString()
-                  : '—'}
-              </td>
-            </tr>
-          ),
-        )}
-        </tbody>
-      </table>
+      <DataTable
+        rows={tableRows}
+        columns={
+          ISSUES_TABLE_COLUMNS
+        }
+        minWidth="98rem"
+        withGridlines
+        withStripedRows
+      />
     </div>
   );
 };
