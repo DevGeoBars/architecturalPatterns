@@ -17,14 +17,12 @@ import {
 interface ICreateIssueDialogProps {
   isOpen: boolean;
 
-  onOpenChange: (
-    isOpen: boolean,
-  ) => void;
+  onClose: () => void;
 }
 
 export const CreateIssueDialog = ({
   isOpen,
-  onOpenChange,
+  onClose,
 }: ICreateIssueDialogProps) => {
   const addIssue =
     useIssuesStore(
@@ -37,23 +35,14 @@ export const CreateIssueDialog = ({
   ): void => {
     addIssue(issue);
 
-    onOpenChange(false);
+    onClose();
   };
 
   return (
     <Dialog
       isOpen={isOpen}
       title="Создание обращения"
-      width="64rem"
-      position="center"
-      scrollBehavior="inside"
-      isModal
-      isDismissable={false}
-      isDraggable={false}
-      isClosable
-      onOpenChange={
-        onOpenChange
-      }
+      onClose={onClose}
     >
       {isOpen && (
         <CreateIssueForm

@@ -18,31 +18,26 @@ export const IssuesListToolbar = () => {
     setIsCreateDialogOpen,
   ] = useState(false);
 
-  const handleOpenDialog =
+  const openCreateDialog =
     (): void => {
       setIsCreateDialogOpen(
         true,
       );
     };
 
-  const handleDialogOpenChange = (
-    isOpen: boolean,
-  ): void => {
-    setIsCreateDialogOpen(
-      isOpen,
-    );
-  };
+  const closeCreateDialog =
+    (): void => {
+      setIsCreateDialogOpen(
+        false,
+      );
+    };
 
   return (
-    <div
-      className={
-        'issues-list-toolbar'
-      }
-    >
+    <div className="issues-list-toolbar">
       <Button
         type="button"
         onClick={
-          handleOpenDialog
+          openCreateDialog
         }
       >
         Создать обращение
@@ -52,8 +47,8 @@ export const IssuesListToolbar = () => {
         isOpen={
           isCreateDialogOpen
         }
-        onOpenChange={
-          handleDialogOpenChange
+        onClose={
+          closeCreateDialog
         }
       />
     </div>
