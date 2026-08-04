@@ -3,10 +3,6 @@ import {
 } from 'react-router-dom';
 
 import {
-  LogoutButton,
-} from '@/features/auth';
-
-import {
   NavigationBar,
 } from '@/widgets/navigation-bar';
 
@@ -20,10 +16,7 @@ export const MainLayout = () => {
   return (
     <div className="app-layout">
       <header className="app-header">
-        <div className="app-header__actions">
-          <UserProfileWidget />
-          <LogoutButton />
-        </div>
+        <UserProfileWidget />
       </header>
 
       <div className="app-body">

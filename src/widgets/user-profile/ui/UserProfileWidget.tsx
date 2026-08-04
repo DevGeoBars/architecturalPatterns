@@ -8,6 +8,10 @@ import {
 } from '@/entities/user';
 
 import {
+  LogoutButton,
+} from '@/features/auth';
+
+import {
   Dialog,
 } from '@/shared/ui/Dialog';
 
@@ -84,9 +88,23 @@ export const UserProfileWidget = () => {
         }
       >
         {isProfileDialogOpen && (
-          <UserCard
-            user={currentUser}
-          />
+          <div
+            className={
+              'user-profile-widget__dialog-content'
+            }
+          >
+            <UserCard
+              user={currentUser}
+            />
+
+            <div
+              className={
+                'user-profile-widget__actions'
+              }
+            >
+              <LogoutButton />
+            </div>
+          </div>
         )}
       </Dialog>
     </div>
