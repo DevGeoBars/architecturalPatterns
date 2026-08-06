@@ -1,13 +1,12 @@
-import {type FC} from 'react';
+import {
+  ClaimsListWidget,
+} from '@/widgets/claims-list';
 
-import './ClaimsPage.scss';
-
-type ClaimsPageProps = {};
-
-export const ClaimsPage: FC<ClaimsPageProps> = () => {
-    return (
-        <div className="claims-page-container">
-            ClaimsPage
-        </div>
-    );
+export const ClaimsPage = () => {
+  return (
+    <div>
+      <h1>Заявки</h1>
+      <ClaimsListWidget />
+    </div>
+  );
 };
