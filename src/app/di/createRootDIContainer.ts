@@ -19,6 +19,12 @@ import type {
   TAppConfig,
 } from '@/shared/config';
 
+import {
+  CLAIM_API_TOKEN,
+  ClaimApi,
+  type IClaimApi
+} from "@/entities/claim";
+
 export const createRootDIContainer = (
   appConfig: TAppConfig,
 ): DependencyContainer => {
@@ -40,6 +46,24 @@ export const createRootDIContainer = (
           );
 
         return new IssueApi(
+          httpApiClient,
+        );
+      },
+    },
+  );
+
+  rootContainer.register<IClaimApi>(
+    CLAIM_API_TOKEN,
+    {
+      useFactory: (
+        dependencyContainer,
+      ) => {
+        const httpApiClient =
+          dependencyContainer.resolve<IHttpApiClient>(
+            HTTP_API_CLIENT_TOKEN,
+          );
+
+        return new ClaimApi(
           httpApiClient,
         );
       },
