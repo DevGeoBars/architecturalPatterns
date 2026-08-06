@@ -24,5 +24,6 @@ dist-ssr
 *.sw?
 /mock-server/repository/issueRepository.mjs
 /mock-server/database/issues.json
+/mock-server/database/claims.json
 /mock-server/model/session.mjs
 /mock-server/README.md

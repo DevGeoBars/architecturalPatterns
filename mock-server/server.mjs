@@ -24,24 +24,38 @@ import {
     replaceIssue,
 } from './repository/issueRepository.mjs';
 
+import {
+    getClaims,
+} from './repository/claimRepository.mjs';
+
 const HOST = 'localhost';
 const PORT = 3001;
-const MAX_BODY_SIZE_BYTES = 1024 * 1024;
+const MAX_BODY_SIZE_BYTES =
+    1024 * 1024;
 
-const getCorsHeaders = (request) => {
-    const origin = request.headers.origin;
+const getCorsHeaders = (
+    request,
+) => {
+    const origin =
+        request.headers.origin;
 
     if (!origin) {
         return {};
     }
 
     return {
-        'Access-Control-Allow-Origin': origin,
-        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Origin':
+        origin,
+
+        'Access-Control-Allow-Credentials':
+            'true',
+
         'Access-Control-Allow-Methods':
             'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+
         'Access-Control-Allow-Headers':
             'Content-Type, Authorization',
+
         Vary: 'Origin',
     };
 };
@@ -53,23 +67,37 @@ const sendJson = (
     data,
     additionalHeaders = {},
 ) => {
-    response.writeHead(statusCode, {
-        'Content-Type':
-            'application/json; charset=utf-8',
-        ...getCorsHeaders(request),
-        ...additionalHeaders,
-    });
+    response.writeHead(
+        statusCode,
+        {
+            'Content-Type':
+                'application/json; charset=utf-8',
 
-    response.end(JSON.stringify(data));
+            ...getCorsHeaders(
+                request,
+            ),
+
+            ...additionalHeaders,
+        },
+    );
+
+    response.end(
+        JSON.stringify(data),
+    );
 };
 
 const sendNoContent = (
     request,
     response,
 ) => {
-    response.writeHead(204, {
-        ...getCorsHeaders(request),
-    });
+    response.writeHead(
+        204,
+        {
+            ...getCorsHeaders(
+                request,
+            ),
+        },
+    );
 
     response.end();
 };
@@ -90,16 +118,22 @@ const sendError = (
     );
 };
 
-const readJsonBody = (request) => {
+const readJsonBody = (
+    request,
+) => {
     return new Promise(
-        (resolve, reject) => {
+        (
+            resolve,
+            reject,
+        ) => {
             let body = '';
             let bodySize = 0;
 
             request.on(
                 'data',
                 (chunk) => {
-                    bodySize += chunk.length;
+                    bodySize +=
+                        chunk.length;
 
                     if (
                         bodySize >
@@ -112,31 +146,39 @@ const readJsonBody = (request) => {
                         );
 
                         request.destroy();
+
                         return;
                     }
 
-                    body += chunk.toString();
+                    body +=
+                        chunk.toString();
                 },
             );
 
-            request.on('end', () => {
-                if (!body) {
-                    resolve({});
-                    return;
-                }
+            request.on(
+                'end',
+                () => {
+                    if (!body) {
+                        resolve({});
 
-                try {
-                    resolve(
-                        JSON.parse(body),
-                    );
-                } catch {
-                    reject(
-                        new Error(
-                            'Некорректный JSON',
-                        ),
-                    );
-                }
-            });
+                        return;
+                    }
+
+                    try {
+                        resolve(
+                            JSON.parse(
+                                body,
+                            ),
+                        );
+                    } catch {
+                        reject(
+                            new Error(
+                                'Некорректный JSON',
+                            ),
+                        );
+                    }
+                },
+            );
 
             request.on(
                 'error',
@@ -146,22 +188,31 @@ const readJsonBody = (request) => {
     );
 };
 
-const isObject = (value) => {
+const isObject = (
+    value,
+) => {
     return (
-        typeof value === 'object' &&
+        typeof value ===
+        'object' &&
         value !== null &&
         !Array.isArray(value)
     );
 };
 
-const getUserById = (userId) => {
+const getUserById = (
+    userId,
+) => {
     return users.find(
-        (user) => user.Id === userId,
+        (user) =>
+            user.Id === userId,
     );
 };
 
-const getCurrentUser = (request) => {
-    const session = getSession(request);
+const getCurrentUser = (
+    request,
+) => {
+    const session =
+        getSession(request);
 
     if (!session) {
         return null;
@@ -179,7 +230,9 @@ const requireCurrentUser = (
     response,
 ) => {
     const currentUser =
-        getCurrentUser(request);
+        getCurrentUser(
+            request,
+        );
 
     if (!currentUser) {
         sendError(
@@ -195,26 +248,36 @@ const requireCurrentUser = (
     return currentUser;
 };
 
-const getSubUsers = (userId) => {
+const getSubUsers = (
+    userId,
+) => {
     const subUserIds =
-        subUserIdsByUserId[userId] ?? [];
+        subUserIdsByUserId[
+            userId
+            ] ?? [];
 
-    return users.filter((user) =>
-        subUserIds.includes(user.Id),
+    return users.filter(
+        (user) =>
+            subUserIds.includes(
+                user.Id,
+            ),
     );
 };
 
 const normalizeRequiredString = (
     value,
 ) => {
-    return typeof value === 'string'
+    return typeof value ===
+    'string'
         ? value.trim()
         : '';
 };
 
 const validateIssuePayload = (
     payload,
-    { partial = false } = {},
+    {
+        partial = false,
+    } = {},
 ) => {
     if (!isObject(payload)) {
         return 'Тело запроса должно быть объектом';
@@ -257,7 +320,8 @@ const validateIssuePayload = (
             payload,
             'Status',
         ) &&
-        typeof payload.Status !== 'number'
+        typeof payload.Status !==
+        'number'
     ) {
         return 'Поле Status должно быть числом';
     }
@@ -268,7 +332,7 @@ const validateIssuePayload = (
             'UserStatus',
         ) &&
         typeof payload.UserStatus !==
-            'number'
+        'number'
     ) {
         return 'Поле UserStatus должно быть числом';
     }
@@ -281,12 +345,23 @@ const sanitizeIssuePayload = (
 ) => {
     const {
         Id: _id,
+
         Number: _number,
-        CreatedAt: _createdAt,
-        UpdatedAt: _updatedAt,
-        UpdatedBy: _updatedBy,
+
+        CreatedAt:
+            _createdAt,
+
+        UpdatedAt:
+            _updatedAt,
+
+        UpdatedBy:
+            _updatedBy,
+
         Author: _author,
-        AuthorEmail: _authorEmail,
+
+        AuthorEmail:
+            _authorEmail,
+
         ...mutableFields
     } = payload;
 
@@ -298,50 +373,60 @@ const createIssueModel = (
     currentUser,
 ) => {
     const now =
-        new Date().toISOString();
+        new Date()
+            .toISOString();
 
     const mutableFields =
-        sanitizeIssuePayload(payload);
+        sanitizeIssuePayload(
+            payload,
+        );
 
     return {
         Status: 0,
+
         Category:
             'Запрос информации',
-        CreatedAt: now,
-        UpdatedAt: now,
-        Author: currentUser.Name,
-        AuthorEmail:
-            currentUser.Email,
-        Subject:
-            normalizeRequiredString(
-                payload.Subject,
-            ),
-        Content:
-            normalizeRequiredString(
-                payload.Content,
-            ),
+
+
+
+
+
+
         UserStatus: 0,
+
         Comments: [],
+
         RelatedIssues: [],
+
         RelatedSuggestions: [],
+
         Labels: [],
+
         CustomerOrganizationName:
             currentUser.Company
                 ?.Name ?? '',
+
         ...mutableFields,
+
         Subject:
             normalizeRequiredString(
                 payload.Subject,
             ),
+
         Content:
             normalizeRequiredString(
                 payload.Content,
             ),
+
         CreatedAt: now,
+
         UpdatedAt: now,
-        Author: currentUser.Name,
+
+        Author:
+        currentUser.Name,
+
         AuthorEmail:
-            currentUser.Email,
+        currentUser.Email,
     };
 };
 
@@ -351,59 +436,75 @@ const createReplacementIssue = (
     currentUser,
 ) => {
     const now =
-        new Date().toISOString();
+        new Date()
+            .toISOString();
 
     const mutableFields =
-        sanitizeIssuePayload(payload);
+        sanitizeIssuePayload(
+            payload,
+        );
 
     return {
-        Id: existingIssue.Id,
-        Number:
-            existingIssue.Number,
+
+
         Status: 0,
+
         Category:
             'Запрос информации',
-        CreatedAt:
-            existingIssue.CreatedAt,
+
+
+
         Author:
-            existingIssue.Author ??
+            existingIssue
+                .Author ??
             currentUser.Name,
+
         AuthorEmail:
-            existingIssue.AuthorEmail ??
+            existingIssue
+                .AuthorEmail ??
             currentUser.Email,
+
         Subject:
             normalizeRequiredString(
                 payload.Subject,
             ),
+
         Content:
             normalizeRequiredString(
                 payload.Content,
             ),
+
         UserStatus: 0,
+
         Comments: [],
+
         RelatedIssues: [],
+
         RelatedSuggestions: [],
+
         Labels: [],
+
         CustomerOrganizationName:
             currentUser.Company
                 ?.Name ?? '',
+
         ...mutableFields,
-        Id: existingIssue.Id,
+
+        Id:
+        existingIssue.Id,
+
         Number:
-            existingIssue.Number,
+        existingIssue.Number,
+
         CreatedAt:
-            existingIssue.CreatedAt,
+        existingIssue
+            .CreatedAt,
+
         UpdatedAt: now,
+
         UpdatedBy:
-            currentUser.Name,
-        Subject:
-            normalizeRequiredString(
-                payload.Subject,
-            ),
-        Content:
-            normalizeRequiredString(
-                payload.Content,
-            ),
+        currentUser.Name,
+
     };
 };
 
@@ -412,7 +513,9 @@ const createIssuePatch = (
     currentUser,
 ) => {
     const changes =
-        sanitizeIssuePayload(payload);
+        sanitizeIssuePayload(
+            payload,
+        );
 
     if (
         Object.hasOwn(
@@ -440,275 +543,390 @@ const createIssuePatch = (
 
     return {
         ...changes,
+
         UpdatedAt:
-            new Date().toISOString(),
+            new Date()
+                .toISOString(),
+
         UpdatedBy:
-            currentUser.Name,
+        currentUser.Name,
     };
 };
 
-const handleIssueCollection = async (
-    request,
-    response,
-) => {
-    const currentUser =
-        requireCurrentUser(
-            request,
-            response,
-        );
-
-    if (!currentUser) {
-        return;
-    }
-
-    if (request.method === 'GET') {
-        const issues = getIssues();
-
-        sendJson(
-            request,
-            response,
-            200,
-            {
-                Data: issues,
-                TotalCount:
-                    issues.length,
-            },
-        );
-
-        return;
-    }
-
-    if (request.method === 'POST') {
-        const payload =
-            await readJsonBody(request);
-
-        const validationError =
-            validateIssuePayload(
-                payload,
-            );
-
-        if (validationError) {
-            sendError(
-                request,
-                response,
-                400,
-                validationError,
-            );
-            return;
-        }
-
-        const issue =
-            createIssueModel(
-                payload,
-                currentUser,
-            );
-
-        const createdIssue =
-            await createIssue(issue);
-
-        sendJson(
-            request,
-            response,
-            201,
-            createdIssue,
-            {
-                Location:
-                    `/api/issues/${createdIssue.Id}`,
-            },
-        );
-
-        return;
-    }
-
-    sendError(
+const handleClaimCollection =
+    async (
         request,
         response,
-        405,
-        `Метод ${request.method} не поддерживается для /api/issues`,
-    );
-};
-
-const handleIssueItem = async (
-    request,
-    response,
-    issueId,
-) => {
-    const currentUser =
-        requireCurrentUser(
-            request,
-            response,
-        );
-
-    if (!currentUser) {
-        return;
-    }
-
-    const existingIssue =
-        getIssueById(issueId);
-
-    if (!existingIssue) {
-        sendError(
-            request,
-            response,
-            404,
-            `Обращение с Id ${issueId} не найдено`,
-        );
-        return;
-    }
-
-    if (request.method === 'GET') {
-        sendJson(
-            request,
-            response,
-            200,
-            existingIssue,
-        );
-        return;
-    }
-
-    if (request.method === 'PUT') {
-        const payload =
-            await readJsonBody(request);
-
-        const validationError =
-            validateIssuePayload(
-                payload,
-            );
-
-        if (validationError) {
-            sendError(
+    ) => {
+        const currentUser =
+            requireCurrentUser(
                 request,
                 response,
-                400,
-                validationError,
             );
+
+        if (!currentUser) {
             return;
         }
-
-        const replacement =
-            createReplacementIssue(
-                existingIssue,
-                payload,
-                currentUser,
-            );
-
-        const updatedIssue =
-            await replaceIssue(
-                issueId,
-                replacement,
-            );
-
-        sendJson(
-            request,
-            response,
-            200,
-            updatedIssue,
-        );
-        return;
-    }
-
-    if (request.method === 'PATCH') {
-        const payload =
-            await readJsonBody(request);
 
         if (
-            !isObject(payload) ||
-            Object.keys(payload)
-                .length === 0
+            request.method ===
+            'GET'
         ) {
-            sendError(
+            const claims =
+                getClaims();
+
+            sendJson(
                 request,
                 response,
-                400,
-                'Не переданы поля для изменения',
-            );
-            return;
-        }
-
-        const validationError =
-            validateIssuePayload(
-                payload,
+                200,
                 {
-                    partial: true,
+                    Data:
+                    claims,
+
+                    TotalCount:
+                    claims.length,
                 },
             );
 
-        if (validationError) {
-            sendError(
-                request,
-                response,
-                400,
-                validationError,
-            );
             return;
         }
 
-        const mutablePayload =
-            sanitizeIssuePayload(
-                payload,
-            );
-
-        if (
-            Object.keys(mutablePayload)
-                .length === 0
-        ) {
-            sendError(
-                request,
-                response,
-                400,
-                'Не переданы изменяемые поля',
-            );
-            return;
-        }
-
-        const changes =
-            createIssuePatch(
-                mutablePayload,
-                currentUser,
-            );
-
-        const updatedIssue =
-            await patchIssue(
-                issueId,
-                changes,
-            );
-
-        sendJson(
+        sendError(
             request,
             response,
-            200,
-            updatedIssue,
+            405,
+            `Метод ${request.method} не поддерживается для /api/claims`,
         );
-        return;
-    }
+    };
 
-    if (request.method === 'DELETE') {
-        await deleteIssue(issueId);
-        sendNoContent(
-            request,
-            response,
-        );
-        return;
-    }
-
-    sendError(
+const handleIssueCollection =
+    async (
         request,
         response,
-        405,
-        `Метод ${request.method} не поддерживается для /api/issues/${issueId}`,
-    );
-};
+    ) => {
+        const currentUser =
+            requireCurrentUser(
+                request,
+                response,
+            );
+
+        if (!currentUser) {
+            return;
+        }
+
+        if (
+            request.method ===
+            'GET'
+        ) {
+            const issues =
+                getIssues();
+
+            sendJson(
+                request,
+                response,
+                200,
+                {
+                    Data:
+                    issues,
+
+                    TotalCount:
+                    issues.length,
+                },
+            );
+
+            return;
+        }
+
+        if (
+            request.method ===
+            'POST'
+        ) {
+            const payload =
+                await readJsonBody(
+                    request,
+                );
+
+            const validationError =
+                validateIssuePayload(
+                    payload,
+                );
+
+            if (
+                validationError
+            ) {
+                sendError(
+                    request,
+                    response,
+                    400,
+                    validationError,
+                );
+
+                return;
+            }
+
+            const issue =
+                createIssueModel(
+                    payload,
+                    currentUser,
+                );
+
+            const createdIssue =
+                await createIssue(
+                    issue,
+                );
+
+            sendJson(
+                request,
+                response,
+                201,
+                createdIssue,
+                {
+                    Location:
+                        `/api/issues/${createdIssue.Id}`,
+                },
+            );
+
+            return;
+        }
+
+        sendError(
+            request,
+            response,
+            405,
+            `Метод ${request.method} не поддерживается для /api/issues`,
+        );
+    };
+
+const handleIssueItem =
+    async (
+        request,
+        response,
+        issueId,
+    ) => {
+        const currentUser =
+            requireCurrentUser(
+                request,
+                response,
+            );
+
+        if (!currentUser) {
+            return;
+        }
+
+        const existingIssue =
+            getIssueById(
+                issueId,
+            );
+
+        if (!existingIssue) {
+            sendError(
+                request,
+                response,
+                404,
+                `Обращение с Id ${issueId} не найдено`,
+            );
+
+            return;
+        }
+
+        if (
+            request.method ===
+            'GET'
+        ) {
+            sendJson(
+                request,
+                response,
+                200,
+                existingIssue,
+            );
+
+            return;
+        }
+
+        if (
+            request.method ===
+            'PUT'
+        ) {
+            const payload =
+                await readJsonBody(
+                    request,
+                );
+
+            const validationError =
+                validateIssuePayload(
+                    payload,
+                );
+
+            if (
+                validationError
+            ) {
+                sendError(
+                    request,
+                    response,
+                    400,
+                    validationError,
+                );
+
+                return;
+            }
+
+            const replacement =
+                createReplacementIssue(
+                    existingIssue,
+                    payload,
+                    currentUser,
+                );
+
+            const updatedIssue =
+                await replaceIssue(
+                    issueId,
+                    replacement,
+                );
+
+            sendJson(
+                request,
+                response,
+                200,
+                updatedIssue,
+            );
+
+            return;
+        }
+
+        if (
+            request.method ===
+            'PATCH'
+        ) {
+            const payload =
+                await readJsonBody(
+                    request,
+                );
+
+            if (
+                !isObject(
+                    payload,
+                ) ||
+                Object.keys(
+                    payload,
+                ).length === 0
+            ) {
+                sendError(
+                    request,
+                    response,
+                    400,
+                    'Не переданы поля для изменения',
+                );
+
+                return;
+            }
+
+            const validationError =
+                validateIssuePayload(
+                    payload,
+                    {
+                        partial:
+                            true,
+                    },
+                );
+
+            if (
+                validationError
+            ) {
+                sendError(
+                    request,
+                    response,
+                    400,
+                    validationError,
+                );
+
+                return;
+            }
+
+            const mutablePayload =
+                sanitizeIssuePayload(
+                    payload,
+                );
+
+            if (
+                Object.keys(
+                    mutablePayload,
+                ).length === 0
+            ) {
+                sendError(
+                    request,
+                    response,
+                    400,
+                    'Не переданы изменяемые поля',
+                );
+
+                return;
+            }
+
+            const changes =
+                createIssuePatch(
+                    mutablePayload,
+                    currentUser,
+                );
+
+            const updatedIssue =
+                await patchIssue(
+                    issueId,
+                    changes,
+                );
+
+            sendJson(
+                request,
+                response,
+                200,
+                updatedIssue,
+            );
+
+            return;
+        }
+
+        if (
+            request.method ===
+            'DELETE'
+        ) {
+            await deleteIssue(
+                issueId,
+            );
+
+            sendNoContent(
+                request,
+                response,
+            );
+
+            return;
+        }
+
+        sendError(
+            request,
+            response,
+            405,
+            `Метод ${request.method} не поддерживается для /api/issues/${issueId}`,
+        );
+    };
 
 const requestHandler = async (
     request,
     response,
 ) => {
-    if (request.method === 'OPTIONS') {
-        response.writeHead(204, {
-            ...getCorsHeaders(request),
-        });
+    if (
+        request.method ===
+        'OPTIONS'
+    ) {
+        response.writeHead(
+            204,
+            {
+                ...getCorsHeaders(
+                    request,
+                ),
+            },
+        );
 
         response.end();
+
         return;
     }
 
@@ -723,9 +941,10 @@ const requestHandler = async (
 
     try {
         if (
-            request.method === 'POST' &&
+            request.method ===
+            'POST' &&
             url.pathname ===
-                '/api/auth/login'
+            '/api/auth/login'
         ) {
             const body =
                 await readJsonBody(
@@ -744,13 +963,17 @@ const requestHandler = async (
                     ? body.password
                     : '';
 
-            if (!login || !password) {
+            if (
+                !login ||
+                !password
+            ) {
                 sendError(
                     request,
                     response,
                     400,
                     'Логин и пароль обязательны',
                 );
+
                 return;
             }
 
@@ -758,24 +981,29 @@ const requestHandler = async (
                 credentials.find(
                     (item) =>
                         item.login ===
-                            login &&
+                        login &&
                         item.password ===
-                            password,
+                        password,
                 );
 
-            if (!userCredentials) {
+            if (
+                !userCredentials
+            ) {
                 sendError(
                     request,
                     response,
                     401,
                     'Неверный логин или пароль',
                 );
+
                 return;
             }
 
-            const user = getUserById(
-                userCredentials.userId,
-            );
+            const user =
+                getUserById(
+                    userCredentials
+                        .userId,
+                );
 
             if (!user) {
                 sendError(
@@ -784,13 +1012,19 @@ const requestHandler = async (
                     500,
                     'Пользователь не найден',
                 );
+
                 return;
             }
 
-            deleteSession(request);
+            deleteSession(
+                request,
+            );
 
-            const { sessionId } =
-                createSession(user.Id);
+            const {
+                sessionId,
+            } = createSession(
+                user.Id,
+            );
 
             sendJson(
                 request,
@@ -804,15 +1038,19 @@ const requestHandler = async (
                         ),
                 },
             );
+
             return;
         }
 
         if (
-            request.method === 'POST' &&
+            request.method ===
+            'POST' &&
             url.pathname ===
-                '/api/auth/logout'
+            '/api/auth/logout'
         ) {
-            deleteSession(request);
+            deleteSession(
+                request,
+            );
 
             sendJson(
                 request,
@@ -826,16 +1064,20 @@ const requestHandler = async (
                         createExpiredSessionCookie(),
                 },
             );
+
             return;
         }
 
         if (
-            request.method === 'GET' &&
+            request.method ===
+            'GET' &&
             url.pathname ===
-                '/api/users/current'
+            '/api/users/current'
         ) {
             const currentUser =
-                getCurrentUser(request);
+                getCurrentUser(
+                    request,
+                );
 
             if (!currentUser) {
                 sendError(
@@ -844,6 +1086,7 @@ const requestHandler = async (
                     401,
                     'Пользователь не авторизован',
                 );
+
                 return;
             }
 
@@ -853,16 +1096,31 @@ const requestHandler = async (
                 200,
                 currentUser,
             );
+
             return;
         }
 
         if (
-            url.pathname === '/api/issues'
+            url.pathname ===
+            '/api/claims'
+        ) {
+            await handleClaimCollection(
+                request,
+                response,
+            );
+
+            return;
+        }
+
+        if (
+            url.pathname ===
+            '/api/issues'
         ) {
             await handleIssueCollection(
                 request,
                 response,
             );
+
             return;
         }
 
@@ -879,13 +1137,15 @@ const requestHandler = async (
                     issueMatch[1],
                 ),
             );
+
             return;
         }
 
         if (
-            request.method === 'GET' &&
+            request.method ===
+            'GET' &&
             url.pathname ===
-                '/api/users/labels'
+            '/api/users/labels'
         ) {
             sendJson(
                 request,
@@ -893,6 +1153,7 @@ const requestHandler = async (
                 200,
                 userLabels,
             );
+
             return;
         }
 
@@ -902,7 +1163,8 @@ const requestHandler = async (
             );
 
         if (
-            request.method === 'GET' &&
+            request.method ===
+            'GET' &&
             subUsersMatch
         ) {
             const userId =
@@ -911,7 +1173,8 @@ const requestHandler = async (
             const userExists =
                 users.some(
                     (user) =>
-                        user.Id === userId,
+                        user.Id ===
+                        userId,
                 );
 
             if (!userExists) {
@@ -921,20 +1184,25 @@ const requestHandler = async (
                     404,
                     `Пользователь с Id ${userId} не найден`,
                 );
+
                 return;
             }
 
             const subUsers =
-                getSubUsers(userId);
+                getSubUsers(
+                    userId,
+                );
 
             sendJson(
                 request,
                 response,
                 200,
                 {
-                    Users: subUsers,
+                    Users:
+                    subUsers,
                 },
             );
+
             return;
         }
 
@@ -948,11 +1216,12 @@ const requestHandler = async (
         console.error(error);
 
         if (
-            error instanceof SyntaxError ||
+            error instanceof
+            SyntaxError ||
             error.message ===
-                'Некорректный JSON' ||
+            'Некорректный JSON' ||
             error.message ===
-                'Тело запроса слишком большое'
+            'Тело запроса слишком большое'
         ) {
             sendError(
                 request,
@@ -960,6 +1229,7 @@ const requestHandler = async (
                 400,
                 error.message,
             );
+
             return;
         }
 
@@ -972,52 +1242,78 @@ const requestHandler = async (
     }
 };
 
-const server = http.createServer(
-    requestHandler,
-);
+const server =
+    http.createServer(
+        requestHandler,
+    );
 
-server.listen(PORT, HOST, () => {
-    console.log('');
-    console.log(
-        `Mock server запущен: http://${HOST}:${PORT}`,
-    );
-    console.log('');
-    console.log('Доступные маршруты:');
-    console.log(
-        `POST   http://${HOST}:${PORT}/api/auth/login`,
-    );
-    console.log(
-        `POST   http://${HOST}:${PORT}/api/auth/logout`,
-    );
-    console.log(
-        `GET    http://${HOST}:${PORT}/api/users/current`,
-    );
-    console.log(
-        `GET    http://${HOST}:${PORT}/api/issues`,
-    );
-    console.log(
-        `POST   http://${HOST}:${PORT}/api/issues`,
-    );
-    console.log(
-        `GET    http://${HOST}:${PORT}/api/issues/:id`,
-    );
-    console.log(
-        `PUT    http://${HOST}:${PORT}/api/issues/:id`,
-    );
-    console.log(
-        `PATCH  http://${HOST}:${PORT}/api/issues/:id`,
-    );
-    console.log(
-        `DELETE http://${HOST}:${PORT}/api/issues/:id`,
-    );
-    console.log(
-        `GET    http://${HOST}:${PORT}/api/users/1/sub-users`,
-    );
-    console.log(
-        `GET    http://${HOST}:${PORT}/api/users/labels`,
-    );
-    console.log('');
-});
+server.listen(
+    PORT,
+    HOST,
+    () => {
+        console.log('');
+
+        console.log(
+            `Mock server запущен: http://${HOST}:${PORT}`,
+        );
+
+        console.log('');
+
+        console.log(
+            'Доступные маршруты:',
+        );
+
+        console.log(
+            `POST   http://${HOST}:${PORT}/api/auth/login`,
+        );
+
+        console.log(
+            `POST   http://${HOST}:${PORT}/api/auth/logout`,
+        );
+
+        console.log(
+            `GET    http://${HOST}:${PORT}/api/users/current`,
+        );
+
+        console.log(
+            `GET    http://${HOST}:${PORT}/api/claims`,
+        );
+
+        console.log(
+            `GET    http://${HOST}:${PORT}/api/issues`,
+        );
+
+        console.log(
+            `POST   http://${HOST}:${PORT}/api/issues`,
+        );
+
+        console.log(
+            `GET    http://${HOST}:${PORT}/api/issues/:id`,
+        );
+
+        console.log(
+            `PUT    http://${HOST}:${PORT}/api/issues/:id`,
+        );
+
+        console.log(
+            `PATCH  http://${HOST}:${PORT}/api/issues/:id`,
+        );
+
+        console.log(
+            `DELETE http://${HOST}:${PORT}/api/issues/:id`,
+        );
+
+        console.log(
+            `GET    http://${HOST}:${PORT}/api/users/1/sub-users`,
+        );
+
+        console.log(
+            `GET    http://${HOST}:${PORT}/api/users/labels`,
+        );
+
+        console.log('');
+    },
+);
 
 const closeServer = () => {
     console.log(
@@ -1029,5 +1325,12 @@ const closeServer = () => {
     });
 };
 
-process.on('SIGINT', closeServer);
-process.on('SIGTERM', closeServer);
+process.on(
+    'SIGINT',
+    closeServer,
+);
+
+process.on(
+    'SIGTERM',
+    closeServer,
+);
