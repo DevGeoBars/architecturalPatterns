@@ -1,0 +1,16 @@
+.issue-details-dialog {
+  &__state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+
+    min-height: 120px;
+
+    padding: 16px;
+
+    p {
+      margin: 0;
+    }
+  }
+}

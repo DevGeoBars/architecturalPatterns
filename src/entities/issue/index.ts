@@ -5,24 +5,36 @@ export {
 } from './api';
 
 export {
+  ISSUE_STATUSES,
+  ISSUE_USER_STATUSES,
+
+  createIssueStore,
+  createIssuesStore,
+
   type AttachedFile,
   type Comment,
+  type CreateIssueData,
   type Direction,
   type Issue,
   type IssueLabel,
   type Responsible,
   type Suggestion,
+
+  type IIssueState,
+  type IIssuesState,
+
+  type TIssueRequestStatus,
+
+  type TIssuesStore,
+  type TIssueStore,
+
   type TIssueStatus,
-  type TIssueUserStatus,
   type TIssueStatusCode,
+
+  type TIssueUserStatus,
   type TIssueUserStatusCode,
-  type CreateIssueData,
-  ISSUE_USER_STATUSES,
-  ISSUE_STATUSES
 } from './model';
 
 export {
-  type IIssuesState,
-  type TIssuesStore,
-  createIssuesStore
-} from './model'
+  IssueCard,
+} from './ui';

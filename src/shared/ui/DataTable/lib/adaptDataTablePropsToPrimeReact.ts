@@ -30,5 +30,7 @@ export const adaptDataTablePropsToPrimeReact = <
 
     stripedRows:
       props.withStripedRows ?? true,
+
+
   };
 };

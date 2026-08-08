@@ -1,6 +1,7 @@
 import {
   useEffect,
   useMemo,
+  useState,
 } from 'react';
 
 import {
@@ -19,9 +20,17 @@ import {
   adaptIssuesToTableRows,
 } from '../lib/adaptIssueToTableRow';
 
+import type {
+  IssueTableRow,
+} from '../model/issueTableRow';
+
 import {
   useIssuesStore,
 } from '../model/context/useIssuesStore';
+
+import {
+  IssueDetailsDialog,
+} from './IssueDetailsDialog';
 
 import './IssuesList.scss';
 
@@ -56,6 +65,13 @@ export const IssuesList = () => {
         state.reloadIssues,
     );
 
+  const [
+    viewedIssueId,
+    setViewedIssueId,
+  ] = useState<
+    number | null
+  >(null);
+
   const tableRows = useMemo(
     () =>
       adaptIssuesToTableRows(
@@ -67,6 +83,21 @@ export const IssuesList = () => {
   useEffect(() => {
     void loadIssues();
   }, [loadIssues]);
+
+  const handleIssueDoubleClick = (
+    row: IssueTableRow,
+  ): void => {
+    setViewedIssueId(
+      row.id,
+    );
+  };
+
+  const closeIssueDetails =
+    (): void => {
+      setViewedIssueId(
+        null,
+      );
+    };
 
   if (
     requestStatus === 'idle' ||
@@ -144,6 +175,18 @@ export const IssuesList = () => {
         minWidth="98rem"
         withGridlines
         withStripedRows
+        onRowDoubleClick={
+          handleIssueDoubleClick
+        }
+      />
+
+      <IssueDetailsDialog
+        issueId={
+          viewedIssueId
+        }
+        onClose={
+          closeIssueDetails
+        }
       />
     </div>
   );

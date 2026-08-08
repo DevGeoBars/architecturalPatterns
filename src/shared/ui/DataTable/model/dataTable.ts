@@ -15,4 +15,8 @@ export interface IDataTableProps<
   withGridlines?: boolean;
 
   withStripedRows?: boolean;
+
+  onRowDoubleClick?: (
+    row: TRow,
+  ) => void;
 }

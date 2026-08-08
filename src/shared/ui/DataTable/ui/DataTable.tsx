@@ -18,6 +18,7 @@ export function DataTable<
   minWidth = '48rem',
   withGridlines = true,
   withStripedRows = true,
+  onRowDoubleClick,
 }: IDataTableProps<TRow>) {
   const primeReactProps =
     adaptDataTablePropsToPrimeReact({
@@ -29,6 +30,19 @@ export function DataTable<
   return (
     <PrimeDataTable.Root
       {...primeReactProps}
+      rowHover={
+        onRowDoubleClick !==
+        undefined
+      }
+      onRowDoubleClick={
+        onRowDoubleClick
+          ? (event: any) => {
+            onRowDoubleClick(
+              event.data as TRow,
+            );
+          }
+          : undefined
+      }
     >
       <PrimeDataTable.TableContainer>
         <PrimeDataTable.Table
@@ -64,7 +78,16 @@ export function DataTable<
                 item as TRow;
 
               return (
-                <PrimeDataTable.Row>
+                <PrimeDataTable.Row
+                  style={
+                    onRowDoubleClick
+                      ? {
+                        cursor:
+                          'pointer',
+                      }
+                      : undefined
+                  }
+                >
                   {columns.map(
                     (column) => (
                       <PrimeDataTable.Cell
