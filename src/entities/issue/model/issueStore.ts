@@ -3,8 +3,13 @@ import {
   type StoreApi,
 } from 'zustand/vanilla';
 
-import type { IIssueApi } from '../api';
-import type { Issue } from './interface/issue';
+import type {
+  IIssueApi,
+} from '../api';
+
+import type {
+  Issue,
+} from './interface/issue';
 
 export type TIssueRequestStatus =
   | 'idle'
@@ -14,12 +19,19 @@ export type TIssueRequestStatus =
 
 export interface IIssueState {
   currentIssue: Issue | null;
-  requestStatus: TIssueRequestStatus;
+
+  requestStatus:
+    TIssueRequestStatus;
+
   error: string | null;
 
   getCurrentIssue: (
     issueId: number,
   ) => Promise<void>;
+
+  setCurrentIssue: (
+    issue: Issue,
+  ) => void;
 
   clearCurrentIssue: () => void;
 }
@@ -40,43 +52,79 @@ const getErrorMessage = (
 export const createIssueStore = (
   issueApi: IIssueApi,
 ): TIssueStore => {
-  return createStore<IIssueState>((set) => ({
-    currentIssue: null,
-    requestStatus: 'idle',
-    error: null,
+  return createStore<IIssueState>(
+    (set) => ({
+      currentIssue: null,
 
-    getCurrentIssue: async (
-      issueId: number,
-    ): Promise<void> => {
-      set({
-        requestStatus: 'loading',
-        error: null,
-      });
+      requestStatus: 'idle',
 
-      try {
-        const currentIssue =
-          await issueApi.getIssue(issueId);
+      error: null,
 
+      getCurrentIssue: async (
+        issueId: number,
+      ): Promise<void> => {
         set({
-          currentIssue,
-          requestStatus: 'success',
+          requestStatus:
+            'loading',
+
           error: null,
         });
-      } catch (error: unknown) {
-        set({
-          currentIssue: null,
-          requestStatus: 'error',
-          error: getErrorMessage(error),
-        });
-      }
-    },
 
-    clearCurrentIssue: (): void => {
-      set({
-        currentIssue: null,
-        requestStatus: 'idle',
-        error: null,
-      });
-    },
-  }));
+        try {
+          const currentIssue =
+            await issueApi.getIssue(
+              issueId,
+            );
+
+          set({
+            currentIssue,
+
+            requestStatus:
+              'success',
+
+            error: null,
+          });
+        } catch (
+          error: unknown
+          ) {
+          set({
+            currentIssue: null,
+
+            requestStatus:
+              'error',
+
+            error:
+              getErrorMessage(
+                error,
+              ),
+          });
+        }
+      },
+
+      setCurrentIssue: (
+        issue,
+      ): void => {
+        set({
+          currentIssue: issue,
+
+          requestStatus:
+            'success',
+
+          error: null,
+        });
+      },
+
+      clearCurrentIssue:
+        (): void => {
+          set({
+            currentIssue: null,
+
+            requestStatus:
+              'idle',
+
+            error: null,
+          });
+        },
+    }),
+  );
 };

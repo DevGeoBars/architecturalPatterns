@@ -1,5 +1,6 @@
 import {
   useEffect,
+
   useState,
 } from 'react';
 
@@ -13,30 +14,44 @@ import {
 
 import {
   createIssueStore,
+
   ISSUE_API_TOKEN,
+
   IssueCard,
 
   type IIssueApi,
+
+  type Issue,
 } from '@/entities/issue';
+
+import {
+  EditIssueForm,
+} from '@/features/edit-issue';
+
+import {
+  useService,
+} from '@/shared/lib/di';
 
 import {
   Dialog,
 } from '@/shared/ui/Dialog';
 
 import {
-  useService,
-} from '@/shared/lib/di';
+  useIssuesStore,
+} from '../model/context/useIssuesStore';
 
 import './IssueDetailsDialog.scss';
 
 interface IIssueDetailsDialogProps {
-  issueId: number | null;
+  issueId:
+    number | null;
 
   onClose: () => void;
 }
 
 export const IssueDetailsDialog = ({
   issueId,
+
   onClose,
 }: IIssueDetailsDialogProps) => {
   const issueApi =
@@ -44,15 +59,23 @@ export const IssueDetailsDialog = ({
       ISSUE_API_TOKEN,
     );
 
-  const [store] = useState(() =>
-    createIssueStore(
-      issueApi,
-    ),
+  const [store] = useState(
+    () =>
+      createIssueStore(
+        issueApi,
+      ),
   );
+
+  const [
+    isEditing,
+
+    setIsEditing,
+  ] = useState(false);
 
   const currentIssue =
     useStore(
       store,
+
       (state) =>
         state.currentIssue,
     );
@@ -60,6 +83,7 @@ export const IssueDetailsDialog = ({
   const requestStatus =
     useStore(
       store,
+
       (state) =>
         state.requestStatus,
     );
@@ -67,6 +91,7 @@ export const IssueDetailsDialog = ({
   const error =
     useStore(
       store,
+
       (state) =>
         state.error,
     );
@@ -74,24 +99,46 @@ export const IssueDetailsDialog = ({
   const getCurrentIssue =
     useStore(
       store,
+
       (state) =>
         state.getCurrentIssue,
+    );
+
+  const setCurrentIssue =
+    useStore(
+      store,
+
+      (state) =>
+        state.setCurrentIssue,
     );
 
   const clearCurrentIssue =
     useStore(
       store,
+
       (state) =>
         state.clearCurrentIssue,
+    );
+
+  const updateIssueInList =
+    useIssuesStore(
+      (state) =>
+        state.updateIssue,
     );
 
   const isOpen =
     issueId !== null;
 
   useEffect(() => {
-    if (issueId === null) {
+    if (
+      issueId === null
+    ) {
       return;
     }
+
+    setIsEditing(
+      false,
+    ); //todo@bars спорно
 
     void getCurrentIssue(
       issueId,
@@ -102,13 +149,28 @@ export const IssueDetailsDialog = ({
     };
   }, [
     issueId,
+
     getCurrentIssue,
+
     clearCurrentIssue,
   ]);
 
+  const handleClose =
+    (): void => {
+      setIsEditing(
+        false,
+      );
+
+      clearCurrentIssue();
+
+      onClose();
+    };
+
   const handleRetry =
     (): void => {
-      if (issueId === null) {
+      if (
+        issueId === null
+      ) {
         return;
       }
 
@@ -117,23 +179,46 @@ export const IssueDetailsDialog = ({
       );
     };
 
+  const handleUpdated = (
+    updatedIssue: Issue,
+  ): void => {
+    setCurrentIssue(
+      updatedIssue,
+    );
+
+    updateIssueInList(
+      updatedIssue,
+    );
+
+    setIsEditing(
+      false,
+    );
+  };
+
+  const dialogTitle =
+    isEditing
+      ? 'Редактирование обращения'
+      : 'Просмотр обращения';
+
   return (
     <Dialog
-      isOpen={isOpen}
-      title="Просмотр обращения"
-      onClose={onClose}
+      isOpen={
+        isOpen
+      }
+      title={
+        dialogTitle
+      }
+      onClose={
+        handleClose
+      }
     >
       {isOpen && (
-        <>
+        <div className="issue-details-dialog">
           {(requestStatus ===
             'idle' ||
             requestStatus ===
             'loading') && (
-            <div
-              className={
-                'issue-details-dialog__state'
-              }
-            >
+            <div className="issue-details-dialog__state">
               Загрузка обращения...
             </div>
           )}
@@ -141,9 +226,7 @@ export const IssueDetailsDialog = ({
           {requestStatus ===
             'error' && (
               <div
-                className={
-                  'issue-details-dialog__state'
-                }
+                className="issue-details-dialog__state"
                 role="alert"
               >
                 <p>
@@ -165,14 +248,53 @@ export const IssueDetailsDialog = ({
           {requestStatus ===
             'success' &&
             currentIssue !==
-            null && (
-              <IssueCard
+            null &&
+            !isEditing && (
+              <>
+                <IssueCard
+                  issue={
+                    currentIssue
+                  }
+                />
+
+                <div className="issue-details-dialog__actions">
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setIsEditing(
+                        true,
+                      );
+                    }}
+                  >
+                    Редактировать
+                  </Button>
+                </div>
+              </>
+            )}
+
+          {requestStatus ===
+            'success' &&
+            currentIssue !==
+            null &&
+            isEditing && (
+              <EditIssueForm
+                key={
+                  currentIssue.id
+                }
                 issue={
                   currentIssue
                 }
+                onUpdated={
+                  handleUpdated
+                }
+                onCancel={() => {
+                  setIsEditing(
+                    false,
+                  );
+                }}
               />
             )}
-        </>
+        </div>
       )}
     </Dialog>
   );

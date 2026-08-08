@@ -3,20 +3,23 @@ export type {
 } from './interface/issue';
 
 export type {
+  TIssueStatus,
+} from './interface/issueStatus';
+
+export type {
   IssueLabel,
 } from './interface/issueLabel';
 
 export {
-  ISSUE_STATUSES,
-  type TIssueStatus,
-  type TIssueStatusCode,
-} from './interface/issueStatus';
-
-export {
-  ISSUE_USER_STATUSES,
   type TIssueUserStatus,
   type TIssueUserStatusCode,
+  ISSUE_USER_STATUSES,
 } from './interface/issueUserStatus';
+
+export {
+  type TIssueStatusCode,
+  ISSUE_STATUSES,
+} from './interface/issueStatus';
 
 export type {
   Comment,
@@ -42,11 +45,17 @@ export type {
   CreateIssueData,
 } from './interface/createIssueData';
 
+export type {
+  UpdateIssueData,
+} from './interface/updateIssueData';
+
 export {
   createIssueStore,
 
   type IIssueState,
+
   type TIssueRequestStatus,
+
   type TIssueStore,
 } from './issueStore';
 
@@ -54,5 +63,6 @@ export {
   createIssuesStore,
 
   type IIssuesState,
+
   type TIssuesStore,
 } from './issuesStore';

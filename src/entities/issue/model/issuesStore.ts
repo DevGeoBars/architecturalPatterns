@@ -7,7 +7,9 @@ import type {
   IIssueApi,
 } from '../api';
 
-import type { Issue } from "./interface/issue";
+import type {
+  Issue,
+} from './interface/issue';
 
 export type TIssuesListRequestStatus =
   | 'idle'
@@ -17,12 +19,24 @@ export type TIssuesListRequestStatus =
 
 export interface IIssuesState {
   issues: Issue[];
-  requestStatus: TIssuesListRequestStatus;
+
+  requestStatus:
+    TIssuesListRequestStatus;
+
   error: string | null;
 
   loadIssues: () => Promise<void>;
-  reloadIssues: () => Promise<void>;
-  addIssue: (issue: Issue) => void;
+
+  reloadIssues:
+    () => Promise<void>;
+
+  addIssue: (
+    issue: Issue,
+  ) => void;
+
+  updateIssue: (
+    issue: Issue,
+  ) => void;
 }
 
 export type TIssuesStore =
@@ -35,7 +49,7 @@ const getErrorMessage = (
     return error.message;
   }
 
-  return 'Не удалось загрузить заявки';
+  return 'Не удалось загрузить обращения';
 };
 
 export const createIssuesStore = (
@@ -46,7 +60,9 @@ export const createIssuesStore = (
       const fetchIssues =
         async (): Promise<void> => {
           set({
-            requestStatus: 'loading',
+            requestStatus:
+              'loading',
+
             error: null,
           });
 
@@ -56,12 +72,18 @@ export const createIssuesStore = (
 
             set({
               issues,
-              requestStatus: 'success',
+
+              requestStatus:
+                'success',
+
               error: null,
             });
-          } catch (error: unknown) {
+          } catch (
+            error: unknown
+            ) {
             set({
-              requestStatus: 'error',
+              requestStatus:
+                'error',
 
               error:
                 getErrorMessage(
@@ -78,26 +100,31 @@ export const createIssuesStore = (
 
         error: null,
 
-        loadIssues: async () => {
-          const {
-            requestStatus,
-          } = get();
+        loadIssues:
+          async () => {
+            const {
+              requestStatus,
+            } = get();
 
-          if (
-            requestStatus !== 'idle'
-          ) {
-            return;
-          }
+            if (
+              requestStatus !==
+              'idle'
+            ) {
+              return;
+            }
 
-          await fetchIssues();
-        },
+            await fetchIssues();
+          },
 
-        reloadIssues: fetchIssues,
+        reloadIssues:
+        fetchIssues,
 
         addIssue: (issue) => {
           const issueExists =
             get().issues.some(
-              (currentIssue) =>
+              (
+                currentIssue,
+              ) =>
                 currentIssue.id ===
                 issue.id,
             );
@@ -109,10 +136,32 @@ export const createIssuesStore = (
           set((state) => ({
             issues: [
               ...state.issues,
+
               issue,
             ],
 
-            requestStatus: 'success',
+            requestStatus:
+              'success',
+
+            error: null,
+          }));
+        },
+
+        updateIssue: (issue) => {
+          set((state) => ({
+            issues:
+              state.issues.map(
+                (
+                  currentIssue,
+                ) =>
+                  currentIssue.id ===
+                  issue.id
+                    ? issue
+                    : currentIssue,
+              ),
+
+            requestStatus:
+              'success',
 
             error: null,
           }));

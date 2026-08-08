@@ -23,3 +23,5 @@ export interface Comment {
   status: TIssueStatus | null;
   userStatus: TIssueUserStatus | null;
 }
+
+//todo@bars - вынести в отдельный entities и через cross-импорты связать с issue

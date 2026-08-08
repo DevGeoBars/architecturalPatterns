@@ -8,9 +8,8 @@ import type {
   HttpRequestConfig,
   TMethodConfig,
 } from './httpApiClient.contract';
+
 import { HttpClientError } from './httpClientError';
-
-
 
 export class HttpApiClient
   implements IHttpApiClient
@@ -49,10 +48,12 @@ export class HttpApiClient
       ...config,
       url,
       method: 'POST',
+
       body:
         body === undefined
           ? undefined
           : JSON.stringify(body),
+
       headers: {
         ...config?.headers,
       },
@@ -68,10 +69,33 @@ export class HttpApiClient
       ...config,
       url,
       method: 'PUT',
+
       body:
         body === undefined
           ? undefined
           : JSON.stringify(body),
+
+      headers: {
+        ...config?.headers,
+      },
+    });
+  }
+
+  public patch<TResponse>(
+    url: string,
+    body?: unknown,
+    config?: TMethodConfig,
+  ): Promise<TResponse> {
+    return this.request<TResponse>({
+      ...config,
+      url,
+      method: 'PATCH',
+
+      body:
+        body === undefined
+          ? undefined
+          : JSON.stringify(body),
+
       headers: {
         ...config?.headers,
       },
@@ -86,6 +110,7 @@ export class HttpApiClient
       ...config,
       url,
       method: 'DELETE',
+
       headers: {
         ...config?.headers,
       },
@@ -101,23 +126,31 @@ export class HttpApiClient
     signal,
   }: HttpRequestConfig): Promise<TResponse> {
     const response = await fetch(
-      urlJoin(this.appConfig.apiUrl, url),
+      urlJoin(
+        this.appConfig.apiUrl,
+        url,
+      ),
       {
         method,
         body,
+
         headers: {
           ...this.defaultHeaders,
           ...headers,
         },
+
         credentials:
           credentials ??
           this.defaultCredentials,
+
         signal,
       },
     );
 
     if (!response.ok) {
-      throw new HttpClientError(response);
+      throw new HttpClientError(
+        response,
+      );
     }
 
     return parseResponse<TResponse>(

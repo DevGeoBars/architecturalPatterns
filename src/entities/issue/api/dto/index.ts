@@ -28,4 +28,10 @@ export type {
   IssueListDto,
 } from './issueDto';
 
-export type { CreateIssueDto } from './createIssueDto'
+export type {
+  CreateIssueDto,
+} from './createIssueDto';
+
+export type {
+  UpdateIssueDto,
+} from './updateIssueDto';

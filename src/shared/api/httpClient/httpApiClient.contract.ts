@@ -2,6 +2,7 @@ export type THttpMethod =
   | 'GET'
   | 'POST'
   | 'PUT'
+  | 'PATCH'
   | 'DELETE';
 
 export type HttpRequestConfig = {
@@ -37,6 +38,12 @@ export interface IHttpApiClient {
   ): Promise<TResponse>;
 
   put<TResponse>(
+    url: string,
+    body?: unknown,
+    config?: TMethodConfig,
+  ): Promise<TResponse>;
+
+  patch<TResponse>(
     url: string,
     body?: unknown,
     config?: TMethodConfig,
