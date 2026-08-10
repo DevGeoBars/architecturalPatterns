@@ -46,23 +46,18 @@ export type {
 } from './interface/createIssueData';
 
 export type {
-  UpdateIssueData,
-} from './interface/updateIssueData';
+  CreateCommentData,
+} from './interface/createCommentData';
 
 export {
-  createIssueStore,
-
-  type IIssueState,
-
-  type TIssueRequestStatus,
-
-  type TIssueStore,
-} from './issueStore';
-
-export {
-  createIssuesStore,
-
   type IIssuesState,
-
   type TIssuesStore,
+  createIssuesStore,
 } from './issuesStore';
+
+export {
+  type IIssueState,
+  type TIssueRequestStatus,
+  type TIssueStore,
+  createIssueStore,
+} from './issueStore';

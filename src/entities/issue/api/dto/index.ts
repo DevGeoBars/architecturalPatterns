@@ -33,5 +33,5 @@ export type {
 } from './createIssueDto';
 
 export type {
-  UpdateIssueDto,
-} from './updateIssueDto';
+  UpdateIssueCommentsDto,
+} from '../updateIssueCommentsDto';

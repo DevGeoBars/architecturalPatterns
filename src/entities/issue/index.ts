@@ -11,6 +11,8 @@ export {
 
   type Comment,
 
+  type CreateCommentData,
+
   type CreateIssueData,
 
   type Direction,
@@ -31,15 +33,9 @@ export {
 
   type TIssueUserStatusCode,
 
-  type UpdateIssueData,
-
   ISSUE_STATUSES,
 
   ISSUE_USER_STATUSES,
-
-  createIssueStore,
-
-  createIssuesStore,
 
   type IIssueState,
 
@@ -50,8 +46,8 @@ export {
   type TIssueStore,
 
   type TIssuesStore,
-} from './model';
 
-export {
-  IssueCard,
-} from './ui';
+  createIssueStore,
+
+  createIssuesStore,
+} from './model';

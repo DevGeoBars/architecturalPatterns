@@ -3,6 +3,10 @@ import type {
 } from '@/shared/api/httpClient';
 
 import type {
+  CreateCommentData,
+} from '../model/interface/createCommentData';
+
+import type {
   CreateIssueData,
 } from '../model/interface/createIssueData';
 
@@ -10,29 +14,36 @@ import type {
   Issue,
 } from '../model/interface/issue';
 
-import type {
-  UpdateIssueData,
-} from '../model/interface/updateIssueData';
+import {
+  adaptCommentToDto,
+} from './adaptCommentToDto';
+
+import {
+  adaptCreateCommentDataToDto,
+} from './adaptCreateCommentDataToDto';
 
 import {
   adaptCreateIssueDataToDto,
 } from './adaptCreateIssueDataToDto';
 
-import {
-  adaptUpdateIssueDataToDto,
-} from './adaptUpdateIssueDataToDto';
-
 import type {
   IssueDto,
   IssueListDto,
+  UpdateIssueCommentsDto,
 } from './dto';
+
+import {
+  getNextCommentId,
+} from './getNextCommentId';
 
 import {
   adaptIssueDto,
 } from './mapper';
 
 export interface IIssueApi {
-  getIssues(): Promise<Issue[]>;
+  getIssues(): Promise<
+    Issue[]
+  >;
 
   getIssue(
     issueId: number,
@@ -42,10 +53,11 @@ export interface IIssueApi {
     data: CreateIssueData,
   ): Promise<Issue>;
 
-  updateIssue(
-    issueId: number,
+  addComment(
+    issue: Issue,
 
-    data: UpdateIssueData,
+    data:
+    CreateCommentData,
   ): Promise<Issue>;
 }
 
@@ -78,7 +90,9 @@ export class IssueApi
         `/api/issues/${issueId}`,
       );
 
-    return adaptIssueDto(dto);
+    return adaptIssueDto(
+      dto,
+    );
   }
 
   async createIssue(
@@ -93,23 +107,56 @@ export class IssueApi
         ),
       );
 
-    return adaptIssueDto(dto);
+    return adaptIssueDto(
+      dto,
+    );
   }
 
-  async updateIssue(
-    issueId: number,
+  async addComment(
+    issue: Issue,
 
-    data: UpdateIssueData,
+    data:
+    CreateCommentData,
   ): Promise<Issue> {
-    const dto =
-      await this.httpApiClient.patch<IssueDto>(
-        `/api/issues/${issueId}`,
+    const currentComments =
+      issue.comments.map(
+        adaptCommentToDto,
+      );
 
-        adaptUpdateIssueDataToDto(
-          data,
+    const newComment =
+      adaptCreateCommentDataToDto(
+        data,
+
+        getNextCommentId(
+          issue.comments,
         ),
       );
 
-    return adaptIssueDto(dto);
+    const payload:
+      UpdateIssueCommentsDto = {
+      Comments: [
+        ...currentComments,
+
+        newComment,
+      ],
+    };
+
+    /**
+     * Для feature это операция "добавить комментарий".
+     *
+     * То, что HTTP API реализует её как PATCH Issue
+     * с новым полным списком Comments, остаётся
+     * внутренней транспортной деталью entities/issue.
+     */
+    const dto =
+      await this.httpApiClient.patch<IssueDto>(
+        `/api/issues/${issue.id}`,
+
+        payload,
+      );
+
+    return adaptIssueDto(
+      dto,
+    );
   }
 }
