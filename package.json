@@ -16,6 +16,8 @@
     "@primeuix/themes": "^3.0.0",
     "classnames": "^2.5.1",
     "primeicons": "^8.0.0",
+    "primereact": "^11.1.0",
+    "quill": "^2.0.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.17.0",

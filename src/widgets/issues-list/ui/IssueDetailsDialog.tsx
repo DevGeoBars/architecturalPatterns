@@ -1,6 +1,5 @@
 import {
   useEffect,
-
   useState,
 } from 'react';
 
@@ -23,6 +22,10 @@ import {
 
   type Issue,
 } from '@/entities/issue';
+
+import {
+  AddCommentForm,
+} from '@/features/add-comment';
 
 import {
   EditIssueForm,
@@ -59,12 +62,13 @@ export const IssueDetailsDialog = ({
       ISSUE_API_TOKEN,
     );
 
-  const [store] = useState(
-    () =>
-      createIssueStore(
-        issueApi,
-      ),
-  );
+  const [store] =
+    useState(
+      () =>
+        createIssueStore(
+          issueApi,
+        ),
+    );
 
   const [
     isEditing,
@@ -138,7 +142,7 @@ export const IssueDetailsDialog = ({
 
     setIsEditing(
       false,
-    ); //todo@bars спорно
+    );
 
     void getCurrentIssue(
       issueId,
@@ -179,7 +183,15 @@ export const IssueDetailsDialog = ({
       );
     };
 
-  const handleUpdated = (
+  /**
+   * И редактирование обращения,
+   * и добавление комментария возвращают
+   * уже обновлённую Issue.
+   *
+   * Поэтому widget одинаково синхронизирует
+   * store карточки и store таблицы.
+   */
+  const handleIssueUpdated = (
     updatedIssue: Issue,
   ): void => {
     setCurrentIssue(
@@ -187,6 +199,14 @@ export const IssueDetailsDialog = ({
     );
 
     updateIssueInList(
+      updatedIssue,
+    );
+  };
+
+  const handleEditUpdated = (
+    updatedIssue: Issue,
+  ): void => {
+    handleIssueUpdated(
       updatedIssue,
     );
 
@@ -257,6 +277,17 @@ export const IssueDetailsDialog = ({
                   }
                 />
 
+                <div className="issue-details-dialog__comment">
+                  <AddCommentForm
+                    issue={
+                      currentIssue
+                    }
+                    onAdded={
+                      handleIssueUpdated
+                    }
+                  />
+                </div>
+
                 <div className="issue-details-dialog__actions">
                   <Button
                     type="button"
@@ -278,14 +309,11 @@ export const IssueDetailsDialog = ({
             null &&
             isEditing && (
               <EditIssueForm
-                key={
-                  currentIssue.id
-                }
                 issue={
                   currentIssue
                 }
                 onUpdated={
-                  handleUpdated
+                  handleEditUpdated
                 }
                 onCancel={() => {
                   setIsEditing(

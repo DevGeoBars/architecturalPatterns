@@ -1,8 +1,10 @@
-import {
-  Editor as PrimeReactEditor,
+import type {
+  ChangeEvent,
+} from 'react';
 
-  type EditorTextChangeEvent,
-} from 'primereact/editor';
+import {
+  Textarea,
+} from '@primereact/ui/textarea';
 
 import type {
   IHtmlEditorProps,
@@ -12,33 +14,28 @@ import './HtmlEditor.scss';
 
 export const HtmlEditor = ({
   value,
-
   onChange,
-
   isDisabled = false,
 }: IHtmlEditorProps) => {
-  const handleTextChange = (
+  const handleChange = (
     event:
-    EditorTextChangeEvent,
+    ChangeEvent<HTMLTextAreaElement>,
   ): void => {
     onChange(
-      event.htmlValue ?? '',
+      event.target.value,
     );
   };
 
   return (
     <div className="html-editor">
-      <PrimeReactEditor
+      <Textarea
         value={value}
-        readOnly={
-          isDisabled
+        disabled={isDisabled}
+        rows={8}
+        autoResize
+        onChange={
+          handleChange
         }
-        onTextChange={
-          handleTextChange
-        }
-        style={{
-          height: '180px',
-        }}
       />
     </div>
   );
