@@ -1,5 +1,6 @@
 import http from 'node:http';
 
+import { issueReferenceData } from './data/issueReferenceData.mjs';
 import {
     credentials,
     subUserIdsByUserId,
@@ -15,6 +16,8 @@ import {
     getSession,
 } from './model/session.mjs';
 
+import { getClaims } from './repository/claimRepository.mjs';
+
 import {
     createIssue,
     deleteIssue,
@@ -24,315 +27,153 @@ import {
     replaceIssue,
 } from './repository/issueRepository.mjs';
 
-import {
-    getClaims,
-} from './repository/claimRepository.mjs';
-
 const HOST = 'localhost';
 const PORT = 3001;
-const MAX_BODY_SIZE_BYTES =
-    1024 * 1024;
+const MAX_BODY_SIZE_BYTES = 1024 * 1024;
 
-const getCorsHeaders = (
-    request,
-) => {
-    const origin =
-        request.headers.origin;
+const getCorsHeaders = (request) => {
+    const origin = request.headers.origin;
 
     if (!origin) {
         return {};
     }
 
     return {
-        'Access-Control-Allow-Origin':
-        origin,
-
-        'Access-Control-Allow-Credentials':
-            'true',
-
-        'Access-Control-Allow-Methods':
-            'GET, POST, PUT, PATCH, DELETE, OPTIONS',
-
-        'Access-Control-Allow-Headers':
-            'Content-Type, Authorization',
-
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         Vary: 'Origin',
     };
 };
 
 const sendJson = (
-    request,
-    response,
-    statusCode,
-    data,
-    additionalHeaders = {},
+  request,
+  response,
+  statusCode,
+  data,
+  additionalHeaders = {},
 ) => {
-    response.writeHead(
-        statusCode,
-        {
-            'Content-Type':
-                'application/json; charset=utf-8',
+    response.writeHead(statusCode, {
+        'Content-Type': 'application/json; charset=utf-8',
+        ...getCorsHeaders(request),
+        ...additionalHeaders,
+    });
 
-            ...getCorsHeaders(
-                request,
-            ),
-
-            ...additionalHeaders,
-        },
-    );
-
-    response.end(
-        JSON.stringify(data),
-    );
+    response.end(JSON.stringify(data));
 };
 
-const sendNoContent = (
-    request,
-    response,
-) => {
-    response.writeHead(
-        204,
-        {
-            ...getCorsHeaders(
-                request,
-            ),
-        },
-    );
-
+const sendNoContent = (request, response) => {
+    response.writeHead(204, getCorsHeaders(request));
     response.end();
 };
 
-const sendError = (
-    request,
-    response,
-    statusCode,
-    message,
-) => {
-    sendJson(
-        request,
-        response,
-        statusCode,
-        {
-            message,
-        },
-    );
+const sendError = (request, response, statusCode, message) => {
+    sendJson(request, response, statusCode, { message });
 };
 
-const readJsonBody = (
-    request,
-) => {
-    return new Promise(
-        (
-            resolve,
-            reject,
-        ) => {
-            let body = '';
-            let bodySize = 0;
+const readJsonBody = (request) => {
+    return new Promise((resolve, reject) => {
+        let body = '';
+        let bodySize = 0;
 
-            request.on(
-                'data',
-                (chunk) => {
-                    bodySize +=
-                        chunk.length;
+        request.on('data', (chunk) => {
+            bodySize += chunk.length;
 
-                    if (
-                        bodySize >
-                        MAX_BODY_SIZE_BYTES
-                    ) {
-                        reject(
-                            new Error(
-                                'Тело запроса слишком большое',
-                            ),
-                        );
+            if (bodySize > MAX_BODY_SIZE_BYTES) {
+                reject(new Error('Тело запроса слишком большое'));
+                request.destroy();
+                return;
+            }
 
-                        request.destroy();
+            body += chunk.toString();
+        });
 
-                        return;
-                    }
+        request.on('end', () => {
+            if (!body) {
+                resolve({});
+                return;
+            }
 
-                    body +=
-                        chunk.toString();
-                },
-            );
+            try {
+                resolve(JSON.parse(body));
+            } catch {
+                reject(new Error('Некорректный JSON'));
+            }
+        });
 
-            request.on(
-                'end',
-                () => {
-                    if (!body) {
-                        resolve({});
-
-                        return;
-                    }
-
-                    try {
-                        resolve(
-                            JSON.parse(
-                                body,
-                            ),
-                        );
-                    } catch {
-                        reject(
-                            new Error(
-                                'Некорректный JSON',
-                            ),
-                        );
-                    }
-                },
-            );
-
-            request.on(
-                'error',
-                reject,
-            );
-        },
-    );
+        request.on('error', reject);
+    });
 };
 
-const isObject = (
-    value,
-) => {
-    return (
-        typeof value ===
-        'object' &&
-        value !== null &&
-        !Array.isArray(value)
-    );
+const isObject = (value) => {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
 };
 
-const getUserById = (
-    userId,
-) => {
-    return users.find(
-        (user) =>
-            user.Id === userId,
-    );
+const getUserById = (userId) => {
+    return users.find((user) => user.Id === userId);
 };
 
-const getCurrentUser = (
-    request,
-) => {
-    const session =
-        getSession(request);
+const getCurrentUser = (request) => {
+    const session = getSession(request);
 
     if (!session) {
         return null;
     }
 
-    return (
-        getUserById(
-            session.userId,
-        ) ?? null
-    );
+    return getUserById(session.userId) ?? null;
 };
 
-const requireCurrentUser = (
-    request,
-    response,
-) => {
-    const currentUser =
-        getCurrentUser(
-            request,
-        );
+const requireCurrentUser = (request, response) => {
+    const currentUser = getCurrentUser(request);
 
     if (!currentUser) {
-        sendError(
-            request,
-            response,
-            401,
-            'Пользователь не авторизован',
-        );
-
+        sendError(request, response, 401, 'Пользователь не авторизован');
         return null;
     }
 
     return currentUser;
 };
 
-const getSubUsers = (
-    userId,
-) => {
-    const subUserIds =
-        subUserIdsByUserId[
-            userId
-            ] ?? [];
+const getSubUsers = (userId) => {
+    const subUserIds = subUserIdsByUserId[userId] ?? [];
 
-    return users.filter(
-        (user) =>
-            subUserIds.includes(
-                user.Id,
-            ),
-    );
+    return users.filter((user) => subUserIds.includes(user.Id));
 };
 
-const normalizeRequiredString = (
-    value,
-) => {
-    return typeof value ===
-    'string'
-        ? value.trim()
-        : '';
+const normalizeRequiredString = (value) => {
+    return typeof value === 'string' ? value.trim() : '';
 };
 
-const validateIssuePayload = (
-    payload,
-    {
-        partial = false,
-    } = {},
-) => {
+const validateIssuePayload = (payload, { partial = false } = {}) => {
     if (!isObject(payload)) {
         return 'Тело запроса должно быть объектом';
     }
 
     if (
-        !partial ||
-        Object.hasOwn(
-            payload,
-            'Subject',
-        )
+      (!partial || Object.hasOwn(payload, 'Subject')) &&
+      !normalizeRequiredString(payload.Subject)
     ) {
-        if (
-            !normalizeRequiredString(
-                payload.Subject,
-            )
-        ) {
-            return 'Поле Subject обязательно';
-        }
+        return 'Поле Subject обязательно';
     }
 
     if (
-        !partial ||
-        Object.hasOwn(
-            payload,
-            'Content',
-        )
+      (!partial || Object.hasOwn(payload, 'Content')) &&
+      !normalizeRequiredString(payload.Content)
     ) {
-        if (
-            !normalizeRequiredString(
-                payload.Content,
-            )
-        ) {
-            return 'Поле Content обязательно';
-        }
+        return 'Поле Content обязательно';
     }
 
     if (
-        Object.hasOwn(
-            payload,
-            'Status',
-        ) &&
-        typeof payload.Status !==
-        'number'
+      Object.hasOwn(payload, 'Status') &&
+      typeof payload.Status !== 'number'
     ) {
         return 'Поле Status должно быть числом';
     }
 
     if (
-        Object.hasOwn(
-            payload,
-            'UserStatus',
-        ) &&
-        typeof payload.UserStatus !==
-        'number'
+      Object.hasOwn(payload, 'UserStatus') &&
+      typeof payload.UserStatus !== 'number'
     ) {
         return 'Поле UserStatus должно быть числом';
     }
@@ -340,997 +181,643 @@ const validateIssuePayload = (
     return null;
 };
 
-const sanitizeIssuePayload = (
-    payload,
-) => {
+const sanitizeIssuePayload = (payload) => {
     const {
         Id: _id,
-
         Number: _number,
-
-        CreatedAt:
-            _createdAt,
-
-        UpdatedAt:
-            _updatedAt,
-
-        UpdatedBy:
-            _updatedBy,
-
+        CreatedAt: _createdAt,
+        UpdatedAt: _updatedAt,
+        UpdatedBy: _updatedBy,
         Author: _author,
-
-        AuthorEmail:
-            _authorEmail,
-
+        AuthorEmail: _authorEmail,
         ...mutableFields
     } = payload;
 
     return mutableFields;
 };
 
-const createIssueModel = (
-    payload,
-    currentUser,
-) => {
-    const now =
-        new Date()
-            .toISOString();
-
-    const mutableFields =
-        sanitizeIssuePayload(
-            payload,
-        );
+const createIssueModel = (payload, currentUser) => {
+    const now = new Date().toISOString();
+    const mutableFields = sanitizeIssuePayload(payload);
 
     return {
         Status: 0,
-
-        Category:
-            'Запрос информации',
-
-
-
-
-
-
+        Category: 'Запрос информации',
         UserStatus: 0,
-
         Comments: [],
-
         RelatedIssues: [],
-
         RelatedSuggestions: [],
-
         Labels: [],
-
-        CustomerOrganizationName:
-            currentUser.Company
-                ?.Name ?? '',
-
+        CustomerOrganizationName: currentUser.Company?.Name ?? '',
         ...mutableFields,
-
-        Subject:
-            normalizeRequiredString(
-                payload.Subject,
-            ),
-
-        Content:
-            normalizeRequiredString(
-                payload.Content,
-            ),
-
+        Subject: normalizeRequiredString(payload.Subject),
+        Content: normalizeRequiredString(payload.Content),
         CreatedAt: now,
-
         UpdatedAt: now,
-
-        Author:
-        currentUser.Name,
-
-        AuthorEmail:
-        currentUser.Email,
+        Author: currentUser.Name,
+        AuthorEmail: currentUser.Email,
     };
 };
 
 const createReplacementIssue = (
-    existingIssue,
-    payload,
-    currentUser,
+  existingIssue,
+  payload,
+  currentUser,
 ) => {
-    const now =
-        new Date()
-            .toISOString();
-
-    const mutableFields =
-        sanitizeIssuePayload(
-            payload,
-        );
+    const now = new Date().toISOString();
+    const mutableFields = sanitizeIssuePayload(payload);
 
     return {
-
-
         Status: 0,
-
-        Category:
-            'Запрос информации',
-
-
-
-        Author:
-            existingIssue
-                .Author ??
-            currentUser.Name,
-
-        AuthorEmail:
-            existingIssue
-                .AuthorEmail ??
-            currentUser.Email,
-
-        Subject:
-            normalizeRequiredString(
-                payload.Subject,
-            ),
-
-        Content:
-            normalizeRequiredString(
-                payload.Content,
-            ),
-
+        Category: 'Запрос информации',
+        Author: existingIssue.Author ?? currentUser.Name,
+        AuthorEmail: existingIssue.AuthorEmail ?? currentUser.Email,
+        Subject: normalizeRequiredString(payload.Subject),
+        Content: normalizeRequiredString(payload.Content),
         UserStatus: 0,
-
         Comments: [],
-
         RelatedIssues: [],
-
         RelatedSuggestions: [],
-
         Labels: [],
-
-        CustomerOrganizationName:
-            currentUser.Company
-                ?.Name ?? '',
-
+        CustomerOrganizationName: currentUser.Company?.Name ?? '',
         ...mutableFields,
-
-        Id:
-        existingIssue.Id,
-
-        Number:
-        existingIssue.Number,
-
-        CreatedAt:
-        existingIssue
-            .CreatedAt,
-
+        Id: existingIssue.Id,
+        Number: existingIssue.Number,
+        CreatedAt: existingIssue.CreatedAt,
         UpdatedAt: now,
-
-        UpdatedBy:
-        currentUser.Name,
-
+        UpdatedBy: currentUser.Name,
     };
 };
 
-const createIssuePatch = (
-    payload,
-    currentUser,
-) => {
-    const changes =
-        sanitizeIssuePayload(
-            payload,
-        );
+const createIssuePatch = (payload, currentUser) => {
+    const changes = sanitizeIssuePayload(payload);
 
-    if (
-        Object.hasOwn(
-            changes,
-            'Subject',
-        )
-    ) {
-        changes.Subject =
-            normalizeRequiredString(
-                changes.Subject,
-            );
+    if (Object.hasOwn(changes, 'Subject')) {
+        changes.Subject = normalizeRequiredString(changes.Subject);
     }
 
-    if (
-        Object.hasOwn(
-            changes,
-            'Content',
-        )
-    ) {
-        changes.Content =
-            normalizeRequiredString(
-                changes.Content,
-            );
+    if (Object.hasOwn(changes, 'Content')) {
+        changes.Content = normalizeRequiredString(changes.Content);
     }
 
     return {
         ...changes,
-
-        UpdatedAt:
-            new Date()
-                .toISOString(),
-
-        UpdatedBy:
-        currentUser.Name,
+        UpdatedAt: new Date().toISOString(),
+        UpdatedBy: currentUser.Name,
     };
 };
 
-const handleClaimCollection =
-    async (
-        request,
-        response,
-    ) => {
-        const currentUser =
-            requireCurrentUser(
-                request,
-                response,
-            );
+const handleClaimCollection = async (request, response) => {
+    const currentUser = requireCurrentUser(request, response);
 
-        if (!currentUser) {
-            return;
-        }
+    if (!currentUser) {
+        return;
+    }
 
-        if (
-            request.method ===
-            'GET'
-        ) {
-            const claims =
-                getClaims();
+    if (request.method === 'GET') {
+        const claims = getClaims();
 
-            sendJson(
-                request,
-                response,
-                200,
-                {
-                    Data:
-                    claims,
+        sendJson(request, response, 200, {
+            Data: claims,
+            TotalCount: claims.length,
+        });
 
-                    TotalCount:
-                    claims.length,
-                },
-            );
+        return;
+    }
 
-            return;
-        }
+    sendError(
+      request,
+      response,
+      405,
+      `Метод ${request.method} не поддерживается для /api/claims`,
+    );
+};
 
-        sendError(
-            request,
-            response,
-            405,
-            `Метод ${request.method} не поддерживается для /api/claims`,
-        );
-    };
-
-const handleIssueCollection =
-    async (
-        request,
-        response,
-    ) => {
-        const currentUser =
-            requireCurrentUser(
-                request,
-                response,
-            );
-
-        if (!currentUser) {
-            return;
-        }
-
-        if (
-            request.method ===
-            'GET'
-        ) {
-            const issues =
-                getIssues();
-
-            sendJson(
-                request,
-                response,
-                200,
-                {
-                    Data:
-                    issues,
-
-                    TotalCount:
-                    issues.length,
-                },
-            );
-
-            return;
-        }
-
-        if (
-            request.method ===
-            'POST'
-        ) {
-            const payload =
-                await readJsonBody(
-                    request,
-                );
-
-            const validationError =
-                validateIssuePayload(
-                    payload,
-                );
-
-            if (
-                validationError
-            ) {
-                sendError(
-                    request,
-                    response,
-                    400,
-                    validationError,
-                );
-
-                return;
-            }
-
-            const issue =
-                createIssueModel(
-                    payload,
-                    currentUser,
-                );
-
-            const createdIssue =
-                await createIssue(
-                    issue,
-                );
-
-            sendJson(
-                request,
-                response,
-                201,
-                createdIssue,
-                {
-                    Location:
-                        `/api/issues/${createdIssue.Id}`,
-                },
-            );
-
-            return;
-        }
-
-        sendError(
-            request,
-            response,
-            405,
-            `Метод ${request.method} не поддерживается для /api/issues`,
-        );
-    };
-
-const handleIssueItem =
-    async (
-        request,
-        response,
-        issueId,
-    ) => {
-        const currentUser =
-            requireCurrentUser(
-                request,
-                response,
-            );
-
-        if (!currentUser) {
-            return;
-        }
-
-        const existingIssue =
-            getIssueById(
-                issueId,
-            );
-
-        if (!existingIssue) {
-            sendError(
-                request,
-                response,
-                404,
-                `Обращение с Id ${issueId} не найдено`,
-            );
-
-            return;
-        }
-
-        if (
-            request.method ===
-            'GET'
-        ) {
-            sendJson(
-                request,
-                response,
-                200,
-                existingIssue,
-            );
-
-            return;
-        }
-
-        if (
-            request.method ===
-            'PUT'
-        ) {
-            const payload =
-                await readJsonBody(
-                    request,
-                );
-
-            const validationError =
-                validateIssuePayload(
-                    payload,
-                );
-
-            if (
-                validationError
-            ) {
-                sendError(
-                    request,
-                    response,
-                    400,
-                    validationError,
-                );
-
-                return;
-            }
-
-            const replacement =
-                createReplacementIssue(
-                    existingIssue,
-                    payload,
-                    currentUser,
-                );
-
-            const updatedIssue =
-                await replaceIssue(
-                    issueId,
-                    replacement,
-                );
-
-            sendJson(
-                request,
-                response,
-                200,
-                updatedIssue,
-            );
-
-            return;
-        }
-
-        if (
-            request.method ===
-            'PATCH'
-        ) {
-            const payload =
-                await readJsonBody(
-                    request,
-                );
-
-            if (
-                !isObject(
-                    payload,
-                ) ||
-                Object.keys(
-                    payload,
-                ).length === 0
-            ) {
-                sendError(
-                    request,
-                    response,
-                    400,
-                    'Не переданы поля для изменения',
-                );
-
-                return;
-            }
-
-            const validationError =
-                validateIssuePayload(
-                    payload,
-                    {
-                        partial:
-                            true,
-                    },
-                );
-
-            if (
-                validationError
-            ) {
-                sendError(
-                    request,
-                    response,
-                    400,
-                    validationError,
-                );
-
-                return;
-            }
-
-            const mutablePayload =
-                sanitizeIssuePayload(
-                    payload,
-                );
-
-            if (
-                Object.keys(
-                    mutablePayload,
-                ).length === 0
-            ) {
-                sendError(
-                    request,
-                    response,
-                    400,
-                    'Не переданы изменяемые поля',
-                );
-
-                return;
-            }
-
-            const changes =
-                createIssuePatch(
-                    mutablePayload,
-                    currentUser,
-                );
-
-            const updatedIssue =
-                await patchIssue(
-                    issueId,
-                    changes,
-                );
-
-            sendJson(
-                request,
-                response,
-                200,
-                updatedIssue,
-            );
-
-            return;
-        }
-
-        if (
-            request.method ===
-            'DELETE'
-        ) {
-            await deleteIssue(
-                issueId,
-            );
-
-            sendNoContent(
-                request,
-                response,
-            );
-
-            return;
-        }
-
-        sendError(
-            request,
-            response,
-            405,
-            `Метод ${request.method} не поддерживается для /api/issues/${issueId}`,
-        );
-    };
-
-const requestHandler = async (
-    request,
-    response,
+const handleIssueReferenceData = async (
+  request,
+  response,
+  referenceDataName,
 ) => {
-    if (
-        request.method ===
-        'OPTIONS'
-    ) {
-        response.writeHead(
-            204,
-            {
-                ...getCorsHeaders(
-                    request,
-                ),
-            },
+    const currentUser = requireCurrentUser(request, response);
+
+    if (!currentUser) {
+        return;
+    }
+
+    if (request.method !== 'GET') {
+        sendError(
+          request,
+          response,
+          405,
+          `Метод ${request.method} не поддерживается для справочника ${referenceDataName}`,
         );
 
+        return;
+    }
+
+    const data = issueReferenceData[referenceDataName];
+
+    if (!data) {
+        sendError(
+          request,
+          response,
+          404,
+          `Справочник ${referenceDataName} не найден`,
+        );
+
+        return;
+    }
+
+    sendJson(request, response, 200, {
+        Data: data,
+    });
+};
+
+const handleIssueCollection = async (request, response) => {
+    const currentUser = requireCurrentUser(request, response);
+
+    if (!currentUser) {
+        return;
+    }
+
+    if (request.method === 'GET') {
+        const issues = getIssues();
+
+        sendJson(request, response, 200, {
+            Data: issues,
+            TotalCount: issues.length,
+        });
+
+        return;
+    }
+
+    if (request.method === 'POST') {
+        const payload = await readJsonBody(request);
+        const validationError = validateIssuePayload(payload);
+
+        if (validationError) {
+            sendError(request, response, 400, validationError);
+            return;
+        }
+
+        const issue = createIssueModel(payload, currentUser);
+        const createdIssue = await createIssue(issue);
+
+        sendJson(request, response, 201, createdIssue, {
+            Location: `/api/issues/${createdIssue.Id}`,
+        });
+
+        return;
+    }
+
+    sendError(
+      request,
+      response,
+      405,
+      `Метод ${request.method} не поддерживается для /api/issues`,
+    );
+};
+
+const handleIssueItem = async (
+  request,
+  response,
+  issueId,
+) => {
+    const currentUser = requireCurrentUser(request, response);
+
+    if (!currentUser) {
+        return;
+    }
+
+    const existingIssue = getIssueById(issueId);
+
+    if (!existingIssue) {
+        sendError(
+          request,
+          response,
+          404,
+          `Обращение с Id ${issueId} не найдено`,
+        );
+
+        return;
+    }
+
+    if (request.method === 'GET') {
+        sendJson(request, response, 200, existingIssue);
+        return;
+    }
+
+    if (request.method === 'PUT') {
+        const payload = await readJsonBody(request);
+        const validationError = validateIssuePayload(payload);
+
+        if (validationError) {
+            sendError(request, response, 400, validationError);
+            return;
+        }
+
+        const replacement = createReplacementIssue(
+          existingIssue,
+          payload,
+          currentUser,
+        );
+
+        const updatedIssue = await replaceIssue(
+          issueId,
+          replacement,
+        );
+
+        sendJson(request, response, 200, updatedIssue);
+        return;
+    }
+
+    if (request.method === 'PATCH') {
+        const payload = await readJsonBody(request);
+
+        if (!isObject(payload) || Object.keys(payload).length === 0) {
+            sendError(
+              request,
+              response,
+              400,
+              'Не переданы поля для изменения',
+            );
+
+            return;
+        }
+
+        const validationError = validateIssuePayload(payload, {
+            partial: true,
+        });
+
+        if (validationError) {
+            sendError(request, response, 400, validationError);
+            return;
+        }
+
+        const mutablePayload = sanitizeIssuePayload(payload);
+
+        if (Object.keys(mutablePayload).length === 0) {
+            sendError(
+              request,
+              response,
+              400,
+              'Не переданы изменяемые поля',
+            );
+
+            return;
+        }
+
+        const changes = createIssuePatch(
+          mutablePayload,
+          currentUser,
+        );
+
+        const updatedIssue = await patchIssue(
+          issueId,
+          changes,
+        );
+
+        sendJson(request, response, 200, updatedIssue);
+        return;
+    }
+
+    if (request.method === 'DELETE') {
+        await deleteIssue(issueId);
+
+        sendNoContent(request, response);
+        return;
+    }
+
+    sendError(
+      request,
+      response,
+      405,
+      `Метод ${request.method} не поддерживается для /api/issues/${issueId}`,
+    );
+};
+
+const requestHandler = async (request, response) => {
+    if (request.method === 'OPTIONS') {
+        response.writeHead(204, getCorsHeaders(request));
         response.end();
 
         return;
     }
 
     const url = new URL(
-        request.url ?? '/',
-        `http://${request.headers.host}`,
+      request.url ?? '/',
+      `http://${request.headers.host}`,
     );
 
-    console.log(
-        `${request.method} ${url.pathname}`,
-    );
+    console.log(`${request.method} ${url.pathname}`);
 
     try {
         if (
-            request.method ===
-            'POST' &&
-            url.pathname ===
-            '/api/auth/login'
+          request.method === 'POST' &&
+          url.pathname === '/api/auth/login'
         ) {
-            const body =
-                await readJsonBody(
-                    request,
-                );
+            const body = await readJsonBody(request);
 
             const login =
-                typeof body.login ===
-                'string'
-                    ? body.login.trim()
-                    : '';
+              typeof body.login === 'string'
+                ? body.login.trim()
+                : '';
 
             const password =
-                typeof body.password ===
-                'string'
-                    ? body.password
-                    : '';
+              typeof body.password === 'string'
+                ? body.password
+                : '';
 
-            if (
-                !login ||
-                !password
-            ) {
+            if (!login || !password) {
                 sendError(
-                    request,
-                    response,
-                    400,
-                    'Логин и пароль обязательны',
+                  request,
+                  response,
+                  400,
+                  'Логин и пароль обязательны',
                 );
 
                 return;
             }
 
-            const userCredentials =
-                credentials.find(
-                    (item) =>
-                        item.login ===
-                        login &&
-                        item.password ===
-                        password,
-                );
+            const userCredentials = credentials.find(
+              (item) =>
+                item.login === login &&
+                item.password === password,
+            );
 
-            if (
-                !userCredentials
-            ) {
+            if (!userCredentials) {
                 sendError(
-                    request,
-                    response,
-                    401,
-                    'Неверный логин или пароль',
+                  request,
+                  response,
+                  401,
+                  'Неверный логин или пароль',
                 );
 
                 return;
             }
 
-            const user =
-                getUserById(
-                    userCredentials
-                        .userId,
-                );
+            const user = getUserById(
+              userCredentials.userId,
+            );
 
             if (!user) {
                 sendError(
-                    request,
-                    response,
-                    500,
-                    'Пользователь не найден',
+                  request,
+                  response,
+                  500,
+                  'Пользователь не найден',
                 );
 
                 return;
             }
 
-            deleteSession(
-                request,
-            );
+            deleteSession(request);
 
-            const {
-                sessionId,
-            } = createSession(
-                user.Id,
-            );
+            const { sessionId } = createSession(user.Id);
 
             sendJson(
-                request,
-                response,
-                200,
-                user,
-                {
-                    'Set-Cookie':
-                        createSessionCookie(
-                            sessionId,
-                        ),
-                },
+              request,
+              response,
+              200,
+              user,
+              {
+                  'Set-Cookie': createSessionCookie(sessionId),
+              },
             );
 
             return;
         }
 
         if (
-            request.method ===
-            'POST' &&
-            url.pathname ===
-            '/api/auth/logout'
+          request.method === 'POST' &&
+          url.pathname === '/api/auth/logout'
         ) {
-            deleteSession(
-                request,
-            );
+            deleteSession(request);
 
             sendJson(
-                request,
-                response,
-                200,
-                {
-                    success: true,
-                },
-                {
-                    'Set-Cookie':
-                        createExpiredSessionCookie(),
-                },
+              request,
+              response,
+              200,
+              {
+                  success: true,
+              },
+              {
+                  'Set-Cookie': createExpiredSessionCookie(),
+              },
             );
 
             return;
         }
 
         if (
-            request.method ===
-            'GET' &&
-            url.pathname ===
-            '/api/users/current'
+          request.method === 'GET' &&
+          url.pathname === '/api/users/current'
         ) {
-            const currentUser =
-                getCurrentUser(
-                    request,
-                );
+            const currentUser = getCurrentUser(request);
 
             if (!currentUser) {
                 sendError(
-                    request,
-                    response,
-                    401,
-                    'Пользователь не авторизован',
+                  request,
+                  response,
+                  401,
+                  'Пользователь не авторизован',
                 );
 
                 return;
             }
 
             sendJson(
-                request,
-                response,
-                200,
-                currentUser,
+              request,
+              response,
+              200,
+              currentUser,
             );
 
             return;
         }
 
-        if (
-            url.pathname ===
-            '/api/claims'
-        ) {
+        if (url.pathname === '/api/claims') {
             await handleClaimCollection(
-                request,
-                response,
+              request,
+              response,
             );
 
             return;
         }
 
-        if (
-            url.pathname ===
-            '/api/issues'
-        ) {
+        if (url.pathname === '/api/issues') {
             await handleIssueCollection(
-                request,
-                response,
+              request,
+              response,
             );
 
             return;
         }
 
-        const issueMatch =
-            url.pathname.match(
-                /^\/api\/issues\/([^/]+)$/,
+        const issueReferenceDataMatch = url.pathname.match(
+          /^\/api\/issues\/reference-data\/(products|categories|os-types)$/,
+        );
+
+        if (issueReferenceDataMatch) {
+            await handleIssueReferenceData(
+              request,
+              response,
+              issueReferenceDataMatch[1],
             );
+
+            return;
+        }
+
+        const issueMatch = url.pathname.match(
+          /^\/api\/issues\/([^/]+)$/,
+        );
 
         if (issueMatch) {
             await handleIssueItem(
-                request,
-                response,
-                decodeURIComponent(
-                    issueMatch[1],
-                ),
+              request,
+              response,
+              decodeURIComponent(issueMatch[1]),
             );
 
             return;
         }
 
         if (
-            request.method ===
-            'GET' &&
-            url.pathname ===
-            '/api/users/labels'
+          request.method === 'GET' &&
+          url.pathname === '/api/users/labels'
         ) {
             sendJson(
-                request,
-                response,
-                200,
-                userLabels,
+              request,
+              response,
+              200,
+              userLabels,
             );
 
             return;
         }
 
-        const subUsersMatch =
-            url.pathname.match(
-                /^\/api\/users\/([^/]+)\/sub-users$/,
-            );
+        const subUsersMatch = url.pathname.match(
+          /^\/api\/users\/([^/]+)\/sub-users$/,
+        );
 
         if (
-            request.method ===
-            'GET' &&
-            subUsersMatch
+          request.method === 'GET' &&
+          subUsersMatch
         ) {
-            const userId =
-                subUsersMatch[1];
+            const userId = subUsersMatch[1];
 
-            const userExists =
-                users.some(
-                    (user) =>
-                        user.Id ===
-                        userId,
-                );
+            const userExists = users.some(
+              (user) => user.Id === userId,
+            );
 
             if (!userExists) {
                 sendError(
-                    request,
-                    response,
-                    404,
-                    `Пользователь с Id ${userId} не найден`,
+                  request,
+                  response,
+                  404,
+                  `Пользователь с Id ${userId} не найден`,
                 );
 
                 return;
             }
 
-            const subUsers =
-                getSubUsers(
-                    userId,
-                );
-
             sendJson(
-                request,
-                response,
-                200,
-                {
-                    Users:
-                    subUsers,
-                },
+              request,
+              response,
+              200,
+              {
+                  Users: getSubUsers(userId),
+              },
             );
 
             return;
         }
 
         sendError(
-            request,
-            response,
-            404,
-            `Маршрут ${request.method} ${url.pathname} не найден`,
+          request,
+          response,
+          404,
+          `Маршрут ${request.method} ${url.pathname} не найден`,
         );
     } catch (error) {
         console.error(error);
 
         if (
-            error instanceof
-            SyntaxError ||
-            error.message ===
-            'Некорректный JSON' ||
-            error.message ===
-            'Тело запроса слишком большое'
+          error instanceof SyntaxError ||
+          error.message === 'Некорректный JSON' ||
+          error.message === 'Тело запроса слишком большое'
         ) {
             sendError(
-                request,
-                response,
-                400,
-                error.message,
+              request,
+              response,
+              400,
+              error.message,
             );
 
             return;
         }
 
         sendError(
-            request,
-            response,
-            500,
-            'Внутренняя ошибка mock-server',
+          request,
+          response,
+          500,
+          'Внутренняя ошибка mock-server',
         );
     }
 };
 
-const server =
-    http.createServer(
-        requestHandler,
+const server = http.createServer(requestHandler);
+
+server.listen(PORT, HOST, () => {
+    console.log('');
+    console.log(`Mock server запущен: http://${HOST}:${PORT}`);
+    console.log('');
+    console.log('Доступные маршруты:');
+
+    console.log(`POST   http://${HOST}:${PORT}/api/auth/login`);
+    console.log(`POST   http://${HOST}:${PORT}/api/auth/logout`);
+
+    console.log(`GET    http://${HOST}:${PORT}/api/users/current`);
+
+    console.log(`GET    http://${HOST}:${PORT}/api/claims`);
+
+    console.log(`GET    http://${HOST}:${PORT}/api/issues`);
+    console.log(`POST   http://${HOST}:${PORT}/api/issues`);
+    console.log(`GET    http://${HOST}:${PORT}/api/issues/:id`);
+    console.log(`PUT    http://${HOST}:${PORT}/api/issues/:id`);
+    console.log(`PATCH  http://${HOST}:${PORT}/api/issues/:id`);
+    console.log(`DELETE http://${HOST}:${PORT}/api/issues/:id`);
+
+    console.log(
+      `GET    http://${HOST}:${PORT}/api/issues/reference-data/products`,
     );
 
-server.listen(
-    PORT,
-    HOST,
-    () => {
-        console.log('');
+    console.log(
+      `GET    http://${HOST}:${PORT}/api/issues/reference-data/categories`,
+    );
 
-        console.log(
-            `Mock server запущен: http://${HOST}:${PORT}`,
-        );
+    console.log(
+      `GET    http://${HOST}:${PORT}/api/issues/reference-data/os-types`,
+    );
 
-        console.log('');
+    console.log(
+      `GET    http://${HOST}:${PORT}/api/users/1/sub-users`,
+    );
 
-        console.log(
-            'Доступные маршруты:',
-        );
+    console.log(
+      `GET    http://${HOST}:${PORT}/api/users/labels`,
+    );
 
-        console.log(
-            `POST   http://${HOST}:${PORT}/api/auth/login`,
-        );
-
-        console.log(
-            `POST   http://${HOST}:${PORT}/api/auth/logout`,
-        );
-
-        console.log(
-            `GET    http://${HOST}:${PORT}/api/users/current`,
-        );
-
-        console.log(
-            `GET    http://${HOST}:${PORT}/api/claims`,
-        );
-
-        console.log(
-            `GET    http://${HOST}:${PORT}/api/issues`,
-        );
-
-        console.log(
-            `POST   http://${HOST}:${PORT}/api/issues`,
-        );
-
-        console.log(
-            `GET    http://${HOST}:${PORT}/api/issues/:id`,
-        );
-
-        console.log(
-            `PUT    http://${HOST}:${PORT}/api/issues/:id`,
-        );
-
-        console.log(
-            `PATCH  http://${HOST}:${PORT}/api/issues/:id`,
-        );
-
-        console.log(
-            `DELETE http://${HOST}:${PORT}/api/issues/:id`,
-        );
-
-        console.log(
-            `GET    http://${HOST}:${PORT}/api/users/1/sub-users`,
-        );
-
-        console.log(
-            `GET    http://${HOST}:${PORT}/api/users/labels`,
-        );
-
-        console.log('');
-    },
-);
+    console.log('');
+});
 
 const closeServer = () => {
-    console.log(
-        '\nMock server остановлен',
-    );
+    console.log('\nMock server остановлен');
 
     server.close(() => {
         process.exit(0);
     });
 };
 
-process.on(
-    'SIGINT',
-    closeServer,
-);
-
-process.on(
-    'SIGTERM',
-    closeServer,
-);
+process.on('SIGINT', closeServer);
+process.on('SIGTERM', closeServer);

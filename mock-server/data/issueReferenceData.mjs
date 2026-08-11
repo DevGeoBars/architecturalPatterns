@@ -1,0 +1,60 @@
+export const products = [
+  { Id: 1, Name: 'T-FLEX CAD', Icon: '' },
+  { Id: 2, Name: 'T-FLEX DOCs', Icon: '' },
+  { Id: 4, Name: 'T-FLEX Технология', Icon: '' },
+  { Id: 5, Name: 'T-FLEX Электротехника', Icon: '' },
+  { Id: 6, Name: 'T-FLEX Анализ', Icon: '' },
+  { Id: 7, Name: 'T-FLEX Динамика', Icon: '' },
+  { Id: 8, Name: 'T-FLEX ЧПУ', Icon: '' },
+  { Id: 9, Name: 'T-FLEX Раскрой', Icon: '' },
+  { Id: 11, Name: 'T-FLEX DOCs Web', Icon: '' },
+  { Id: 12, Name: 'T-FLEX Service Desk', Icon: '' },
+  { Id: 15, Name: 'T-FLEX Печатные платы', Icon: null },
+  { Id: 16, Name: 'T-FLEX VR', Icon: null },
+  { Id: 17, Name: 'T-FLEX Зубчатые передачи', Icon: null },
+  { Id: 18, Name: 'T-FLEX DOCs. MDM', Icon: null },
+  { Id: 19, Name: 'T-FLEX DOCs. PDM', Icon: null },
+  { Id: 20, Name: 'T-FLEX DOCs. Управление проектами', Icon: null },
+  { Id: 21, Name: 'T-FLEX DOCs. Управление требованиями', Icon: null },
+  { Id: 22, Name: 'Портал проекта', Icon: null },
+  { Id: 23, Name: 'CADFLO', Icon: '' },
+  { Id: 26, Name: 'T-FLEX CAM', Icon: null },
+];
+
+export const categories = [
+  { Id: 0, Name: 'Запрос информации', Icon: '' },
+  { Id: 1, Name: 'Запрос на обслуживание', Icon: '' },
+  { Id: 2, Name: 'Ошибка', Icon: '' },
+  { Id: 3, Name: 'Предложение', Icon: '' },
+  { Id: 4, Name: 'Инцидент', Icon: '' },
+  { Id: 7, Name: 'Быстродействие', Icon: '' },
+];
+
+export const osTypes = [
+  { Id: 1, Name: 'Windows XP', Icon: '' },
+  { Id: 2, Name: 'Windows XP x64', Icon: '' },
+  { Id: 3, Name: 'Windows Vista', Icon: '' },
+  { Id: 4, Name: 'Windows Vista x64', Icon: '' },
+  { Id: 5, Name: 'Windows 2000', Icon: '' },
+  { Id: 6, Name: 'Windows 7', Icon: '' },
+  { Id: 7, Name: 'Windows 7 x64', Icon: '' },
+  { Id: 8, Name: 'Windows 8', Icon: '' },
+  { Id: 9, Name: 'Windows 10', Icon: '' },
+  { Id: 10, Name: 'Ubuntu 18.04', Icon: '' },
+  { Id: 11, Name: 'Ubuntu 19.04', Icon: '' },
+  { Id: 12, Name: 'Ubuntu 20.04', Icon: '' },
+  { Id: 13, Name: 'Ubuntu 21.04', Icon: '' },
+  { Id: 14, Name: 'Android', Icon: '' },
+  { Id: 15, Name: 'iOS', Icon: '' },
+  { Id: 16, Name: 'Astra Linux 2.12.43 Orel', Icon: '' },
+  { Id: 17, Name: 'Astra Linux 1.7 Smolensk', Icon: '' },
+  { Id: 18, Name: 'Astra Linux 1.7.5 SE', Icon: '' },
+  { Id: 19, Name: 'Astra Linux 1.8 RC', Icon: '' },
+  { Id: 20, Name: 'Windows 11', Icon: '' },
+];
+
+export const issueReferenceData = {
+  products,
+  categories,
+  'os-types': osTypes,
+};

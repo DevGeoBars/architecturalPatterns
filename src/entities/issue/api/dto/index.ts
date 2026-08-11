@@ -1,41 +1,11 @@
-export type {
-  AttachedFileDto,
-} from './attachedFileDto';
-
-export type {
-  CommentDto,
-  CommentThemeDto,
-} from './commentDto';
-
-export type {
-  DirectionDto,
-} from './directionDto';
-
-export type {
-  IssueLabelDto,
-} from './issueLabelDto';
-
-export type {
-  ResponsibleDto,
-} from './responsibleDto';
-
-export type {
-  SuggestionDto,
-} from './suggestionDto';
-
-export type {
-  IssueDto,
-  IssueListDto,
-} from './issueDto';
-
-export type {
-  CreateIssueDto,
-} from './createIssueDto';
-
-export type {
-  UpdateIssueCommentsDto,
-} from '../updateIssueCommentsDto';
-
-export type {
-  UpdateIssueDto,
-} from './updateIssueDto';
+export type { AttachedFileDto } from './attachedFileDto';
+export type { CommentDto, CommentThemeDto } from './commentDto';
+export type { CreateIssueDto } from './createIssueDto';
+export type { DirectionDto } from './directionDto';
+export type { IssueDto, IssueListDto } from './issueDto';
+export type { IssueLabelDto } from './issueLabelDto';
+export type { IssueReferenceDataDto } from './issueReferenceDataDto';
+export type { IssueReferenceDataItemDto } from './issueReferenceDataItemDto';
+export type { ResponsibleDto } from './responsibleDto';
+export type { SuggestionDto } from './suggestionDto';
+export type { UpdateIssueDto } from './updateIssueDto';

@@ -6,56 +6,39 @@ import { PrimeReactProvider } from '@primereact/core';
 import Aura from '@primeuix/themes/aura';
 import 'primeicons/primeicons.css';
 
-import {
-  appConfig,
-} from '@/shared/config';
+import { appConfig } from '@/shared/config';
+import { DIProvider } from '@/shared/lib/di';
 
-import {
-  DIProvider,
-} from '@/shared/lib/di';
-
-import {
-  AppRouter,
-} from '../providers/appRouter';
-
-import {
-  createRootDIContainer,
-} from '../di/createRootDIContainer';
+import { createRootDIContainer } from '../di/createRootDIContainer';
+import { AppRouter } from '../providers/appRouter';
+import { IssueReferenceDataProvider } from '../providers/issueReferenceData';
 
 import '../styles/index.scss';
 
 const primereact = {
   theme: {
-    preset: Aura
+    preset: Aura,
   },
-  license: 'PrimeUI-Commercial-Key...'
+  license: 'PrimeUI-Commercial-Key...',
 };
 
 export const renderApp = () => {
-
-  const rootElement =
-    document.getElementById('root');
+  const rootElement = document.getElementById('root');
 
   if (!rootElement) {
-    throw new Error(
-      '#root элемент не найден в DOM',
-    );
+    throw new Error('#root элемент не найден в DOM');
   }
 
+  const rootContainer = createRootDIContainer(appConfig);
 
-  const rootContainer =
-    createRootDIContainer(appConfig);
-
-  ReactDOM.createRoot(
-    rootElement,
-  ).render(
+  ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <PrimeReactProvider {...primereact}>
-      <DIProvider
-        container={rootContainer}
-      >
-        <AppRouter />
-      </DIProvider>
+        <DIProvider container={rootContainer}>
+          <IssueReferenceDataProvider>
+            <AppRouter />
+          </IssueReferenceDataProvider>
+        </DIProvider>
       </PrimeReactProvider>
     </React.StrictMode>,
   );

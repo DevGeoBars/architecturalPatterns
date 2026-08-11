@@ -1,59 +1,41 @@
 export {
   IssueApi,
-
-  type IIssueApi,
-
+  IssueReferenceDataApi,
   ISSUE_API_TOKEN,
+  ISSUE_REFERENCE_DATA_API_TOKEN,
+  type IIssueApi,
+  type IIssueReferenceDataApi,
 } from './api';
 
 export {
-  type AttachedFile,
-
-  type Comment,
-
-  type CreateCommentData,
-
-  type CreateIssueData,
-
-  type Direction,
-
-  type Issue,
-
-  type IssueLabel,
-
-  type Responsible,
-
-  type Suggestion,
-
-  type TIssueStatus,
-
-  type TIssueStatusCode,
-
-  type TIssueUserStatus,
-
-  type TIssueUserStatusCode,
-
-  type UpdateIssueData,
-
   ISSUE_STATUSES,
-
   ISSUE_USER_STATUSES,
-
-  type IIssueState,
-
-  type IIssuesState,
-
-  type TIssueRequestStatus,
-
-  type TIssueStore,
-
-  type TIssuesStore,
-
   createIssueStore,
-
   createIssuesStore,
+  useIssueReferenceDataStore,
+  type AttachedFile,
+  type Comment,
+  type CreateCommentData,
+  type CreateIssueData,
+  type Direction,
+  type IIssueReferenceDataState,
+  type IIssueState,
+  type IIssuesState,
+  type Issue,
+  type IssueLabel,
+  type IssueReferenceData,
+  type IssueReferenceDataItem,
+  type Responsible,
+  type Suggestion,
+  type TIssueReferenceDataRequestStatus,
+  type TIssueRequestStatus,
+  type TIssueStatus,
+  type TIssueStatusCode,
+  type TIssueStore,
+  type TIssueUserStatus,
+  type TIssueUserStatusCode,
+  type TIssuesStore,
+  type UpdateIssueData,
 } from './model';
 
-export {
-  IssueCard,
-} from './ui';
+export { IssueCard } from './ui';
