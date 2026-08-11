@@ -1,11 +1,11 @@
-export { IssueApi, type IIssueApi } from './issueApi';
-export { ISSUE_API_TOKEN } from './issueApiToken';
-
 export {
   IssueReferenceDataApi,
+  ISSUE_REFERENCE_DATA_API_TOKEN,
   type IIssueReferenceDataApi,
-} from './issueReferenceDataApi';
+} from './static-dictionaries-data';
 
 export {
-  ISSUE_REFERENCE_DATA_API_TOKEN,
-} from './issueReferenceDataApiToken';
+  IssueApi,
+  ISSUE_API_TOKEN,
+  type IIssueApi,
+} from './issue';

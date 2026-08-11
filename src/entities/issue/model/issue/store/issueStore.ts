@@ -5,11 +5,11 @@ import {
 
 import type {
   IIssueApi,
-} from '../api';
+} from '../../../api/static-dictionaries-data';
 
 import type {
   Issue,
-} from './interface/issue';
+} from '../types/issue';
 
 export type TIssueRequestStatus =
   | 'idle'

@@ -1,6 +1,6 @@
 import type {
   CommentDto,
-} from './dto/commentDto';
+} from './commentDto';
 
 export interface UpdateIssueCommentsDto {
   Comments: CommentDto[];

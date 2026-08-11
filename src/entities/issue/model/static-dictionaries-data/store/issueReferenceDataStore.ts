@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 
-import type { IIssueReferenceDataApi } from '../api/issueReferenceDataApi';
+import type { IIssueReferenceDataApi } from '../../../api/static-dictionaries-data';
+import type { IssueReferenceData } from '../types/issueReferenceData';
+
 import {
   getStoredIssueReferenceData,
   setStoredIssueReferenceData,
-} from '../lib/issueReferenceDataStorage';
-import type { IssueReferenceData } from './interface/issueReferenceData';
+} from '../../../lib/storage/issueReferenceDataStorage';
 
 export type TIssueReferenceDataRequestStatus =
   | 'idle'

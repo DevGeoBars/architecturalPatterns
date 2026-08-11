@@ -1,10 +1,10 @@
 import type {
   Issue,
-} from '../../model/interface/issue';
+} from '../../model/issue/types/issue';
 
 import {
   getResponsibleFullName,
-} from '../../model/interface/responsible';
+} from '../../model/issue/types/responsible';
 
 import './index.scss';
 

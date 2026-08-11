@@ -1,7 +1,7 @@
 import { storage } from '@/shared/lib/storage';
 
-import type { IssueReferenceData } from '../model/interface/issueReferenceData';
-import type { IssueReferenceDataItem } from '../model/interface/issueReferenceDataItem';
+import type { IssueReferenceData } from '../../model/static-dictionaries-data/types/issueReferenceData';
+import type { IssueReferenceDataItem } from '../../model/static-dictionaries-data/types/issueReferenceDataItem';
 
 const STORAGE_KEY = 'IssueReferenceData:v1';
 

@@ -1,10 +1,10 @@
 import type {
   CreateIssueData,
-} from '../model/interface/createIssueData';
+} from '../../../model/issue/types/createIssueData';
 
 import type {
   CreateIssueDto,
-} from './dto';
+} from '../dto';
 
 export const adaptCreateIssueDataToDto = (
   data: CreateIssueData,

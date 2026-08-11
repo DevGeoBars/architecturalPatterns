@@ -1,18 +1,20 @@
 import type { IHttpApiClient } from '@/shared/api/httpClient';
 
-import type { CreateCommentData } from '../model/interface/createCommentData';
-import type { CreateIssueData } from '../model/interface/createIssueData';
-import type { Issue } from '../model/interface/issue';
-import type { UpdateIssueData } from '../model/interface/updateIssueData';
+import type { IssueDto, IssueListDto, UpdateIssueCommentsDto } from './dto';
 
-import { adaptCommentToDto } from './adaptCommentToDto';
-import { adaptCreateCommentDataToDto } from './adaptCreateCommentDataToDto';
-import { adaptCreateIssueDataToDto } from './adaptCreateIssueDataToDto';
-import { adaptUpdateIssueDataToDto } from './adaptUpdateIssueDataToDto';
-import type { IssueDto, IssueListDto } from './dto';
-import { getNextCommentId } from './getNextCommentId';
-import { adaptIssueDto } from './mapper';
-import type { UpdateIssueCommentsDto } from './updateIssueCommentsDto';
+import type { CreateCommentData } from '../../model/issue/types/createCommentData';
+import type { CreateIssueData } from '../../model/issue/types/createIssueData';
+import type { Issue } from '../../model/issue/types/issue';
+import type { UpdateIssueData } from '../../model/issue/types/updateIssueData';
+
+import { adaptCommentToDto } from './mapper/adaptCommentToDto';
+import { adaptCreateCommentDataToDto } from './mapper/adaptCreateCommentDataToDto';
+import { adaptCreateIssueDataToDto } from './mapper/adaptCreateIssueDataToDto';
+import { adaptUpdateIssueDataToDto } from './mapper/adaptUpdateIssueDataToDto';
+import { adaptIssueDto } from './mapper/adaptIssueDto';
+
+import { getNextCommentId } from './lib/getNextCommentId';
+
 
 export interface IIssueApi {
   getIssues(): Promise<Issue[]>;

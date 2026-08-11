@@ -1,6 +1,6 @@
 import type {
   Comment,
-} from '../model/interface/comment';
+} from '../../../model/issue/types/comment';
 
 /**
  * Сейчас комментарии обновляются как часть

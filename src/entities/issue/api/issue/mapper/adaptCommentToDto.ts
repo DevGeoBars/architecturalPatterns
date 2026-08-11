@@ -1,24 +1,24 @@
 import type {
   Comment,
-} from '../model/interface/comment';
+} from '../../../model/issue/types/comment';
 
 import {
   ISSUE_STATUSES,
 
   type TIssueStatus,
   type TIssueStatusCode,
-} from '../model/interface/issueStatus';
+} from '../../../model/issue/types/issueStatus';
 
 import {
   ISSUE_USER_STATUSES,
 
   type TIssueUserStatus,
   type TIssueUserStatusCode,
-} from '../model/interface/issueUserStatus';
+} from '../../../model/issue/types/issueUserStatus';
 
 import type {
   CommentDto,
-} from './dto';
+} from '../dto';
 
 const getIssueStatusCode = (
   status:

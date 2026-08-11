@@ -1,0 +1,32 @@
+export type { AttachedFile } from './attachedFile';
+export type { Comment, TCommentTheme } from './comment';
+export type { CreateCommentData } from './createCommentData';
+export type { CreateIssueData } from './createIssueData';
+export type { Direction } from './direction';
+
+export {
+  isIssueClosed,
+  type Issue,
+} from './issue';
+
+export type { IssueLabel } from './issueLabel';
+
+export {
+  ISSUE_STATUSES,
+  type TIssueStatus,
+  type TIssueStatusCode,
+} from './issueStatus';
+
+export {
+  ISSUE_USER_STATUSES,
+  type TIssueUserStatus,
+  type TIssueUserStatusCode,
+} from './issueUserStatus';
+
+export {
+  getResponsibleFullName,
+  type Responsible,
+} from './responsible';
+
+export type { Suggestion } from './suggestion';
+export type { UpdateIssueData } from './updateIssueData';

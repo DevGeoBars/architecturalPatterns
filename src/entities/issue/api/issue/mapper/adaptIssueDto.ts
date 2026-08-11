@@ -1,35 +1,35 @@
 import type {
   AttachedFile,
-} from '../model/interface/attachedFile';
+} from '../../../model/issue/types/attachedFile';
 import type {
   Comment,
   TCommentTheme,
-} from '../model/interface/comment';
+} from '../../../model/issue/types/comment';
 import type {
   Direction,
-} from '../model/interface/direction';
+} from '../../../model/issue/types/direction';
 import type {
   Issue,
-} from '../model/interface/issue';
+} from '../../../model/issue/types/issue';
 import type {
   IssueLabel,
-} from '../model/interface/issueLabel';
+} from '../../../model/issue/types/issueLabel';
 import {
   ISSUE_STATUSES,
   type TIssueStatus,
   type TIssueStatusCode,
-} from '../model/interface/issueStatus';
+} from '../../../model/issue/types/issueStatus';
 import {
   ISSUE_USER_STATUSES,
   type TIssueUserStatus,
   type TIssueUserStatusCode,
-} from '../model/interface/issueUserStatus';
+} from '../../../model/issue/types/issueUserStatus';
 import type {
   Responsible,
-} from '../model/interface/responsible';
+} from '../../../model/issue/types/responsible';
 import type {
   Suggestion,
-} from '../model/interface/suggestion';
+} from '../../../model/issue/types/suggestion';
 
 import type {
   AttachedFileDto,
@@ -39,7 +39,7 @@ import type {
   IssueLabelDto,
   ResponsibleDto,
   SuggestionDto,
-} from './dto';
+} from '../dto';
 
 const adaptIssueStatus = (
   statusCode: number,

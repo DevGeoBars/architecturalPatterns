@@ -1,10 +1,10 @@
 import type {
   CreateCommentData,
-} from '../model/interface/createCommentData';
+} from '../../../model/issue/types/createCommentData';
 
 import type {
   CommentDto,
-} from './dto';
+} from '../dto';
 
 export const adaptCreateCommentDataToDto = (
   data:

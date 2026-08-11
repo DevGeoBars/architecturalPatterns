@@ -1,10 +1,10 @@
 import type {
   UpdateIssueData,
-} from '../model/interface/updateIssueData';
+} from '../../../model/issue/types/updateIssueData';
 
 import type {
   UpdateIssueDto,
-} from './dto';
+} from '../dto';
 
 export const adaptUpdateIssueDataToDto = (
   data: UpdateIssueData,
