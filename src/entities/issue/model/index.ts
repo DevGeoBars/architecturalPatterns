@@ -49,6 +49,10 @@ export type {
   CreateCommentData,
 } from './interface/createCommentData';
 
+export type {
+  UpdateIssueData,
+} from './interface/updateIssueData';
+
 export {
   type IIssuesState,
   type TIssuesStore,

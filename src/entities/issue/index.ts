@@ -33,6 +33,8 @@ export {
 
   type TIssueUserStatusCode,
 
+  type UpdateIssueData,
+
   ISSUE_STATUSES,
 
   ISSUE_USER_STATUSES,
@@ -52,4 +54,6 @@ export {
   createIssuesStore,
 } from './model';
 
-export { IssueCard } from './ui'
+export {
+  IssueCard,
+} from './ui';

@@ -1,12 +1,19 @@
 import {
   useEffect,
   useMemo,
-  useState,
 } from 'react';
+
+import {
+  useNavigate,
+} from 'react-router-dom';
 
 import {
   Button,
 } from '@primereact/ui/button';
+
+import {
+  getIssueDetailRoute,
+} from '@/shared/routes';
 
 import {
   DataTable,
@@ -28,13 +35,11 @@ import {
   useIssuesStore,
 } from '../model/context/useIssuesStore';
 
-import {
-  IssueDetailsDialog,
-} from './IssueDetailsDialog';
-
 import './IssuesList.scss';
 
 export const IssuesList = () => {
+  const navigate = useNavigate();
+
   const issues =
     useIssuesStore(
       (state) =>
@@ -65,13 +70,6 @@ export const IssuesList = () => {
         state.reloadIssues,
     );
 
-  const [
-    viewedIssueId,
-    setViewedIssueId,
-  ] = useState<
-    number | null
-  >(null);
-
   const tableRows = useMemo(
     () =>
       adaptIssuesToTableRows(
@@ -87,17 +85,12 @@ export const IssuesList = () => {
   const handleIssueDoubleClick = (
     row: IssueTableRow,
   ): void => {
-    setViewedIssueId(
-      row.id,
+    navigate(
+      getIssueDetailRoute(
+        row.id,
+      ),
     );
   };
-
-  const closeIssueDetails =
-    (): void => {
-      setViewedIssueId(
-        null,
-      );
-    };
 
   if (
     requestStatus === 'idle' ||
@@ -177,15 +170,6 @@ export const IssuesList = () => {
         withStripedRows
         onRowDoubleClick={
           handleIssueDoubleClick
-        }
-      />
-
-      <IssueDetailsDialog
-        issueId={
-          viewedIssueId
-        }
-        onClose={
-          closeIssueDetails
         }
       />
     </div>

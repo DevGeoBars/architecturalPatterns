@@ -29,14 +29,6 @@ export interface IIssuesState {
 
   reloadIssues:
     () => Promise<void>;
-
-  addIssue: (
-    issue: Issue,
-  ) => void;
-
-  updateIssue: (
-    issue: Issue,
-  ) => void;
 }
 
 export type TIssuesStore =
@@ -118,54 +110,6 @@ export const createIssuesStore = (
 
         reloadIssues:
         fetchIssues,
-
-        addIssue: (issue) => {
-          const issueExists =
-            get().issues.some(
-              (
-                currentIssue,
-              ) =>
-                currentIssue.id ===
-                issue.id,
-            );
-
-          if (issueExists) {
-            return;
-          }
-
-          set((state) => ({
-            issues: [
-              ...state.issues,
-
-              issue,
-            ],
-
-            requestStatus:
-              'success',
-
-            error: null,
-          }));
-        },
-
-        updateIssue: (issue) => {
-          set((state) => ({
-            issues:
-              state.issues.map(
-                (
-                  currentIssue,
-                ) =>
-                  currentIssue.id ===
-                  issue.id
-                    ? issue
-                    : currentIssue,
-              ),
-
-            requestStatus:
-              'success',
-
-            error: null,
-          }));
-        },
       };
     },
   );

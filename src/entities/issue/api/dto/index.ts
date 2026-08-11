@@ -35,3 +35,7 @@ export type {
 export type {
   UpdateIssueCommentsDto,
 } from '../updateIssueCommentsDto';
+
+export type {
+  UpdateIssueDto,
+} from './updateIssueDto';

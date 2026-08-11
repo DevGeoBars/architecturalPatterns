@@ -1,34 +1,24 @@
 import {
-  useState,
-} from 'react';
+  useNavigate,
+} from 'react-router-dom';
 
 import {
   Button,
 } from '@primereact/ui/button';
 
 import {
-  CreateIssueDialog,
-} from './CreateIssueDialog';
+  APP_ROUTES,
+} from '@/shared/routes';
 
 import './IssuesListToolbar.scss';
 
 export const IssuesListToolbar = () => {
-  const [
-    isCreateDialogOpen,
-    setIsCreateDialogOpen,
-  ] = useState(false);
+  const navigate = useNavigate();
 
-  const openCreateDialog =
+  const handleCreateIssue =
     (): void => {
-      setIsCreateDialogOpen(
-        true,
-      );
-    };
-
-  const closeCreateDialog =
-    (): void => {
-      setIsCreateDialogOpen(
-        false,
+      navigate(
+        APP_ROUTES.ISSUE_NEW,
       );
     };
 
@@ -37,20 +27,11 @@ export const IssuesListToolbar = () => {
       <Button
         type="button"
         onClick={
-          openCreateDialog
+          handleCreateIssue
         }
       >
         Создать обращение
       </Button>
-
-      <CreateIssueDialog
-        isOpen={
-          isCreateDialogOpen
-        }
-        onClose={
-          closeCreateDialog
-        }
-      />
     </div>
   );
 };

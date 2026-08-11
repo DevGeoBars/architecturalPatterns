@@ -1,21 +1,58 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import {
+    createBrowserRouter,
+    Navigate,
+} from 'react-router-dom';
 
-import { ProtectedRoute } from '@/features/auth';
-import { APP_ROUTES } from '@/shared/routes';
-import { lazyPage } from '@/shared/lib/lazy-loading';
+import {
+    ProtectedRoute,
+} from '@/features/auth';
 
-import { MainLayout } from '../ui/MainLayout';
+import {
+    lazyPage,
+} from '@/shared/lib/lazy-loading';
 
+import {
+    APP_ROUTES,
+} from '@/shared/routes';
 
+import {
+    MainLayout,
+} from '../ui/MainLayout';
 
-// Ленивая загрузка страниц
-const LoginPage = lazyPage(() => import('@/pages/auth'), 'LoginPage');
-const HomePage = lazyPage(() => import('@/pages/home'), 'HomePage');
-const ClaimsPage = lazyPage(() => import('@/pages/claims'), 'ClaimsPage');
-const AddIssuePage = lazyPage(() => import('@/pages/add-issue'), 'AddIssuePage');
-const IssuePage = lazyPage(() => import('@/pages/issue'), 'IssuePage');
-const IssuesPage = lazyPage(() => import('@/pages/issues'), 'IssuesPage');
-const ActionsPage = lazyPage(() => import('@/pages/actions'), 'ActionsPage');
+const LoginPage = lazyPage(
+  () => import('@/pages/auth'),
+  'LoginPage',
+);
+
+const HomePage = lazyPage(
+  () => import('@/pages/home'),
+  'HomePage',
+);
+
+const ClaimsPage = lazyPage(
+  () => import('@/pages/claims'),
+  'ClaimsPage',
+);
+
+const AddIssuePage = lazyPage(
+  () => import('@/pages/add-issue'),
+  'AddIssuePage',
+);
+
+const IssuePage = lazyPage(
+  () => import('@/pages/issue'),
+  'IssuePage',
+);
+
+const IssuesPage = lazyPage(
+  () => import('@/pages/issues'),
+  'IssuesPage',
+);
+
+const ActionsPage = lazyPage(
+  () => import('@/pages/actions'),
+  'ActionsPage',
+);
 
 export const router = createBrowserRouter([
     {
@@ -28,10 +65,14 @@ export const router = createBrowserRouter([
             {
                 element: <MainLayout />,
                 children: [
-
                     {
                         index: true,
-                        element: <Navigate to={APP_ROUTES.HOME} replace />,
+                        element: (
+                          <Navigate
+                            to={APP_ROUTES.HOME}
+                            replace
+                          />
+                        ),
                     },
                     {
                         path: APP_ROUTES.HOME,
@@ -50,7 +91,7 @@ export const router = createBrowserRouter([
                         element: <ClaimsPage />,
                     },
                     {
-                        path: APP_ROUTES.ISSUE_EDIT,
+                        path: APP_ROUTES.ISSUE_NEW,
                         element: <AddIssuePage />,
                     },
                     {
@@ -58,12 +99,17 @@ export const router = createBrowserRouter([
                         element: <IssuePage />,
                     },
                     {
-                        path: APP_ROUTES.ISSUE_NEW,
-                        element: <AddIssuePage />,
+                        path: APP_ROUTES.ISSUE_EDIT,
+                        element: <IssuePage />,
                     },
                     {
                         path: '*',
-                        element: <Navigate to={APP_ROUTES.HOME} replace />,
+                        element: (
+                          <Navigate
+                            to={APP_ROUTES.HOME}
+                            replace
+                          />
+                        ),
                     },
                 ],
             },
