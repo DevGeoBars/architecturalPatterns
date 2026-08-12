@@ -34,10 +34,10 @@ export {
 export type {
   IssueReferenceData,
   IssueReferenceDataItem,
-} from './reference-data';
+} from './static-dictionaries-data';
 
 export {
   useIssueReferenceDataStore,
   type IIssueReferenceDataState,
   type TIssueReferenceDataRequestStatus,
-} from './reference-data';
+} from './static-dictionaries-data';
