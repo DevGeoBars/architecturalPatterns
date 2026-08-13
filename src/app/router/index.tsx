@@ -83,7 +83,7 @@ export const router = createBrowserRouter([
                         element: (
                           <ProtectedRoute
                             allowedRoles={NON_CUSTOMER_ROUTE_ROLES}
-                            fallback={<Navigate to={APP_ROUTES.CLAIMS} replace />}
+                            fallback={<Navigate to={APP_ROUTES.HOME} replace />}
                           />
                         ),
                         children: [

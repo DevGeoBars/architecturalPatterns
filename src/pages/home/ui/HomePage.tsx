@@ -1,28 +1,22 @@
-import { type FC } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { APP_ROUTES } from "@/shared/routes";
+import { USER_ROLES, useUserStore } from '@/entities/user';
+
+import { APP_ROUTES } from '@/shared/routes';
 
 import './HomePage.scss';
 
+export const HomePage = () => {
+  const currentUser = useUserStore((state) => state.currentUser);
 
-type HomePageProps = {};
+  if (currentUser === null) {
+    return <Navigate to={APP_ROUTES.LOGIN} replace />;
+  }
 
-export const HomePage: FC<HomePageProps> = () => {
-  const authStore = {
-    User: {
-      Role: 'Представитель партнера',
-      ClaimsActivity: 'Seller'
-    }
-  };
+  const redirectRoute =
+    currentUser.role === USER_ROLES.Customer
+      ? APP_ROUTES.CLAIMS
+      : APP_ROUTES.ISSUES;
 
-  const isSellerPartner =
-    authStore.User?.Role === 'Представитель партнера' &&
-    authStore.User?.ClaimsActivity === 'Seller';
-
-  return <Navigate
-    to={isSellerPartner ? APP_ROUTES.CLAIMS : APP_ROUTES.ISSUES}
-    replace
-  />;
-
+  return <Navigate to={redirectRoute} replace />;
 };
