@@ -2,18 +2,12 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-
   width: 100%;
+  color: var(--text);
 
   &__grid {
     display: grid;
-
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
-
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
   }
 
@@ -21,10 +15,10 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-
     min-width: 0;
 
     span {
+      color: var(--text);
       font-size: 14px;
       font-weight: 500;
     }
@@ -33,21 +27,17 @@
     select,
     textarea {
       width: 100%;
-
       padding: 8px 10px;
-
-      border: 1px solid
-      var(--border);
-
+      color: var(--text);
+      background-color: var(--bg);
+      border: 1px solid var(--border);
       border-radius: 4px;
-
-      background:
-              var(--bg);
-
-      color:
-              var(--text);
-
       font: inherit;
+
+      &:focus {
+        border-color: var(--pr);
+        outline: none;
+      }
     }
 
     textarea {
@@ -57,14 +47,14 @@
     input:disabled,
     select:disabled,
     textarea:disabled {
+      color: var(--text-disabled);
+      background-color: var(--bg-disabled);
       cursor: not-allowed;
-
       opacity: 0.7;
     }
 
     &--wide {
-      grid-column:
-              1 / -1;
+      grid-column: 1 / -1;
     }
   }
 
@@ -76,7 +66,6 @@
 
     input {
       width: auto;
-
       margin: 0;
     }
   }
@@ -89,18 +78,14 @@
 
   &__error {
     margin: 0;
-
-    color: #c62828;
+    color: var(--danger);
   }
 }
 
-@media (
-max-width: 768px
-) {
+@media (max-width: 768px) {
   .edit-issue-form {
     &__grid {
-      grid-template-columns:
-        minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr);
     }
 
     &__field--wide {

@@ -18,6 +18,9 @@ import '../styles/index.scss';
 const primereact = {
   theme: {
     preset: Aura,
+    options: {
+      darkModeSelector: '.app-dark',
+    },
   },
   license: 'PrimeUI-Commercial-Key...',
 };

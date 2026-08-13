@@ -3,23 +3,26 @@
     --pr-light: #7986cb;
     --pr-dark: #303f9f;
 
-    --font-sergio: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    --text: #010101;
-    --text-secondary: #424242;
-    --text-disabled: #bdbdbd;
-    --text-hover: #5c6bc0;
+    --font-family: 'Segoe UI', Arial, sans-serif;
+
+    --text: #1f2937;
+    --text-secondary: #6b7280;
+    --text-disabled: #9ca3af;
+    --text-hover: #3f51b5;
     --text-on-primary: #ffffff;
 
-    --bg: #fdfdfd;
-    --bg-secondary: #f5f5f5;
+    --bg: #ffffff;
+    --bg-secondary: #f5f6f8;
     --bg-disabled: #eeeeee;
-    --bg-hover: #e8eaf6;
-    --bg-active: #c5cae9;
+    --bg-hover: #eef0fb;
+    --bg-active: #dfe3f7;
 
-    --divider: #e0e0e0;
-    --border: #9e9e9e;
+    --divider: #e5e7eb;
+    --border: #d1d5db;
 
-    --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 6px 14px rgba(0, 0, 0, 0.18);
+    --danger: #c62828;
+
+    --shadow: 0 2px 4px rgb(0 0 0 / 10%);
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 5%);
+    --shadow-lg: 0 6px 14px rgb(0 0 0 / 18%);
 }
