@@ -32,5 +32,9 @@ export {
 } from './model/userStore';
 
 export {
+  USER_ROLES,
+} from './model/userRole';
+
+export {
   UserCard,
 } from './ui';

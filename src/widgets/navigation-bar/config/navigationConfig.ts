@@ -2,9 +2,16 @@ import { APP_ROUTES } from '@/shared/routes';
 
 import type { INavigationItem } from '../model/navigation';
 
-
 export const NAVIGATION_CONFIG = {
-  admin: [
+  customer: [
+    {
+      text: 'Заявки',
+      path: APP_ROUTES.CLAIMS,
+      icon: 'pi pi-check',
+    },
+  ],
+
+  nonCustomer: [
     {
       text: 'Обращения',
       path: APP_ROUTES.ISSUES,
@@ -16,25 +23,7 @@ export const NAVIGATION_CONFIG = {
       icon: 'pi pi-book',
     },
   ],
-
-  seller: [
-    {
-      text: 'Заявки',
-      path: APP_ROUTES.CLAIMS,
-      icon: 'pi pi-check',
-    },
-    {
-      text: 'Маркетинговые материалы',
-      path: '/marketingMaterials',
-      icon: 'pi pi-check',
-    },
-    {
-      text: 'Документы и обучающие материалы',
-      path: '/marketingDocuments',
-      icon: 'pi pi-check',
-    },
-  ],
 } satisfies Record<
-  'admin' | 'seller',
+  'customer' | 'nonCustomer',
   INavigationItem[]
 >;

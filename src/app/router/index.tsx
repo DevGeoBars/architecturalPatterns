@@ -18,6 +18,7 @@ import {
 import {
     MainLayout,
 } from '../ui/MainLayout';
+import { CUSTOMER_ROUTE_ROLES, NON_CUSTOMER_ROUTE_ROLES } from "./config/routeAccess";
 
 const LoginPage = lazyPage(
   () => import('@/pages/auth'),
@@ -53,7 +54,6 @@ const ActionsPage = lazyPage(
   () => import('@/pages/actions'),
   'ActionsPage',
 );
-
 export const router = createBrowserRouter([
     {
         path: APP_ROUTES.LOGIN,
@@ -66,50 +66,60 @@ export const router = createBrowserRouter([
                 element: <MainLayout />,
                 children: [
                     {
-                        index: true,
                         element: (
-                          <Navigate
-                            to={APP_ROUTES.HOME}
-                            replace
+                          <ProtectedRoute
+                            allowedRoles={CUSTOMER_ROUTE_ROLES}
+                            fallback={<Navigate to={APP_ROUTES.HOME} replace />}
                           />
                         ),
+                        children: [
+                            {
+                                path: APP_ROUTES.CLAIMS,
+                                element: <ClaimsPage />,
+                            },
+                        ],
                     },
                     {
-                        path: APP_ROUTES.HOME,
-                        element: <HomePage />,
-                    },
-                    {
-                        path: APP_ROUTES.ISSUES,
-                        element: <IssuesPage />,
-                    },
-                    {
-                        path: APP_ROUTES.ACTIONS,
-                        element: <ActionsPage />,
-                    },
-                    {
-                        path: APP_ROUTES.CLAIMS,
-                        element: <ClaimsPage />,
-                    },
-                    {
-                        path: APP_ROUTES.ISSUE_NEW,
-                        element: <AddIssuePage />,
-                    },
-                    {
-                        path: APP_ROUTES.ISSUE_DETAIL,
-                        element: <IssuePage />,
-                    },
-                    {
-                        path: APP_ROUTES.ISSUE_EDIT,
-                        element: <IssuePage />,
+                        element: (
+                          <ProtectedRoute
+                            allowedRoles={NON_CUSTOMER_ROUTE_ROLES}
+                            fallback={<Navigate to={APP_ROUTES.CLAIMS} replace />}
+                          />
+                        ),
+                        children: [
+                            {
+                                index: true,
+                                element: <Navigate to={APP_ROUTES.HOME} replace />,
+                            },
+                            {
+                                path: APP_ROUTES.HOME,
+                                element: <HomePage />,
+                            },
+                            {
+                                path: APP_ROUTES.ISSUES,
+                                element: <IssuesPage />,
+                            },
+                            {
+                                path: APP_ROUTES.ACTIONS,
+                                element: <ActionsPage />,
+                            },
+                            {
+                                path: APP_ROUTES.ISSUE_NEW,
+                                element: <AddIssuePage />,
+                            },
+                            {
+                                path: APP_ROUTES.ISSUE_DETAIL,
+                                element: <IssuePage />,
+                            },
+                            {
+                                path: APP_ROUTES.ISSUE_EDIT,
+                                element: <IssuePage />,
+                            },
+                        ],
                     },
                     {
                         path: '*',
-                        element: (
-                          <Navigate
-                            to={APP_ROUTES.HOME}
-                            replace
-                          />
-                        ),
+                        element: <Navigate to={APP_ROUTES.HOME} replace />,
                     },
                 ],
             },

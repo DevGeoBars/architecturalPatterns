@@ -1,16 +1,28 @@
 import { useMemo } from 'react';
 
-import { NAVIGATION_CONFIG } from '../config/navigationConfig';
-import type { INavigationItem } from '../model/navigation';
-import type { User } from "@/entities/user";
+import {
+  USER_ROLES,
+  type User,
+} from '@/entities/user';
 
-export const useNavigationItems = (user: User | null): INavigationItem[] => {
+import {
+  NAVIGATION_CONFIG,
+} from '../config/navigationConfig';
 
+import type {
+  INavigationItem,
+} from '../model/navigation';
+
+export const useNavigationItems = (
+  user: User | null,
+): INavigationItem[] => {
   return useMemo(() => {
-    if (!user) return [];
-    const isSeller = user.role === 'Представитель партнера' && user.claimsActivity === 'Seller';
-    if (isSeller) return NAVIGATION_CONFIG.seller;
-    if (user.isAdmin()) return NAVIGATION_CONFIG.admin;
-    return [];
+    if (user === null) {
+      return [];
+    }
+
+    return user.role === USER_ROLES.Customer
+      ? NAVIGATION_CONFIG.customer
+      : NAVIGATION_CONFIG.nonCustomer;
   }, [user]);
 };

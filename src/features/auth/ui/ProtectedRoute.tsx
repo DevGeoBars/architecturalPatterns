@@ -42,30 +42,15 @@ export const ProtectedRoute = ({
         state.currentUser,
     );
 
-  const status =
-    useAuthStore(
-      (state) => state.status,
-    );
-
-  const authError =
-    useAuthStore(
-      (state) => state.error,
-    );
-
-  const checkAuth =
-    useAuthStore(
-      (state) =>
-        state.checkAuth,
-    );
+  const status = useAuthStore((state) => state.status);
+  const authError = useAuthStore((state) => state.error);
+  const checkAuth = useAuthStore((state) => state.checkAuth);
 
   useEffect(() => {
     if (status === 'unknown') {
       void checkAuth();
     }
-  }, [
-    status,
-    checkAuth,
-  ]);
+  }, [status, checkAuth]);
 
   if (
     status === 'unknown' ||
@@ -73,7 +58,7 @@ export const ProtectedRoute = ({
   ) {
     return loadingFallback ?? (
       <div>
-        Проверяем авторизацию...
+        Проверяем данных пользователя...
       </div>
     );
   }
