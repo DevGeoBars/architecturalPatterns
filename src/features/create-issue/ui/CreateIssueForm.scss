@@ -4,11 +4,15 @@
   gap: 16px;
   width: 100%;
   color: var(--text);
+  height: 100%;
+  overflow: hidden;
 
   &__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
+    height: calc(100% - 40px);
+    overflow: auto;
   }
 
   &__field {

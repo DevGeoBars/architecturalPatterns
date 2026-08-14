@@ -9,6 +9,8 @@
   border: 1px solid var(--divider);
   border-radius: 12px;
   box-shadow: var(--shadow-sm);
+  height: 100%;
+  overflow: auto;
 
   &__comments {
     display: flex;
