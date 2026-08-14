@@ -1,10 +1,12 @@
 import type { Issue } from '../../model/issue/types/issue';
 import { getResponsibleFullName } from '../../model/issue/types/responsible';
+import { Comments } from '../comments/Comments';
 
-import './IssueDetails.scss';
+import './IssueCard.scss';
 
-interface IIssueDetailsProps {
+interface IIssueCardProps {
   issue: Issue;
+  currentUserId: string | null;
 }
 
 const issueDateFormatter = new Intl.DateTimeFormat('ru-RU', {
@@ -33,7 +35,7 @@ const getBooleanLabel = (value: boolean): string => {
   return value ? 'Да' : 'Нет';
 };
 
-export const IssueDetails = ({ issue }: IIssueDetailsProps) => {
+export const IssueCard = ({ issue, currentUserId }: IIssueCardProps) => {
   const responsibleName = issue.responsible
     ? getResponsibleFullName(issue.responsible)
     : undefined;
@@ -68,80 +70,89 @@ export const IssueDetails = ({ issue }: IIssueDetailsProps) => {
   ];
 
   return (
-    <div className="issue-details">
-    <header className="issue-details__header">
-    <div>
-      <span className="issue-details__number">Обращение №{issue.number}</span>
-  <h2 className="issue-details__subject">{getTextValue(issue.subject)}</h2>
-  </div>
-
-  <span className="issue-details__status">{issue.status}</span>
-    </header>
-
-    <dl className="issue-details__details">
-    {details.map(({ label, value }) => (
-        <div key={label} className="issue-details__detail">
-        <dt>{label}</dt>
-        <dd>{value}</dd>
+    <section className="issue-card" aria-label={`Обращение №${issue.number}`}>
+      <header className="issue-card__header">
+        <div>
+          <span className="issue-card__number">Обращение №{issue.number}</span>
+          <h2 className="issue-card__subject">{getTextValue(issue.subject)}</h2>
         </div>
-))}
-  </dl>
 
-  <section className="issue-details__section">
-    <h3>Описание</h3>
-    <p className="issue-details__content">{getTextValue(issue.content)}</p>
-  </section>
+        <span className="issue-card__status">{issue.status}</span>
+      </header>
 
-  <div className="issue-details__counters">
-  <div className="issue-details__counter">
-    <span>Комментарии</span>
-    <strong>{issue.comments.length}</strong>
-    </div>
+      <dl className="issue-card__details">
+        {details.map(({ label, value }) => (
+          <div key={label} className="issue-card__detail">
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
 
-    <div className="issue-details__counter">
-    <span>Файлы</span>
-    <strong>{issue.files.length}</strong>
-    </div>
+      <section className="issue-card__section">
+        <h3>Описание</h3>
+        <p className="issue-card__content">{getTextValue(issue.content)}</p>
+      </section>
 
-    <div className="issue-details__counter">
-    <span>Метки</span>
-    <strong>{issue.labels.length}</strong>
-    </div>
+      <div className="issue-card__counters">
+        <div className="issue-card__counter">
+          <span>Комментарии</span>
+          <strong>{issue.comments.length}</strong>
+        </div>
 
-    <div className="issue-details__counter">
-    <span>Связанные обращения</span>
-  <strong>{issue.relatedIssues.length}</strong>
-  </div>
+        <div className="issue-card__counter">
+          <span>Файлы</span>
+          <strong>{issue.files.length}</strong>
+        </div>
 
-  <div className="issue-details__counter">
-    <span>Предложения</span>
-    <strong>{issue.relatedSuggestions.length}</strong>
-    </div>
-    </div>
+        <div className="issue-card__counter">
+          <span>Метки</span>
+          <strong>{issue.labels.length}</strong>
+        </div>
 
-  {issue.files.length > 0 && (
-    <section className="issue-details__section">
-      <h3>Файлы</h3>
+        <div className="issue-card__counter">
+          <span>Связанные обращения</span>
+          <strong>{issue.relatedIssues.length}</strong>
+        </div>
 
-      <ul className="issue-details__list">
-    {issue.files.map((file) => (
-        <li key={file.id}>{file.name}</li>
-      ))}
-    </ul>
+        <div className="issue-card__counter">
+          <span>Предложения</span>
+          <strong>{issue.relatedSuggestions.length}</strong>
+        </div>
+      </div>
+
+      <section className="issue-card__section">
+        <h3>Комментарии</h3>
+
+        <Comments
+          comments={issue.comments}
+          currentUserId={currentUserId}
+        />
+      </section>
+
+      {issue.files.length > 0 && (
+        <section className="issue-card__section">
+          <h3>Файлы</h3>
+
+          <ul className="issue-card__list">
+            {issue.files.map((file) => (
+              <li key={file.id}>{file.name}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {issue.labels.length > 0 && (
+        <section className="issue-card__section">
+          <h3>Метки</h3>
+
+          <ul className="issue-card__list">
+            {issue.labels.map((label) => (
+              <li key={label.id}>{label.name}</li>
+            ))}
+          </ul>
+        </section>
+      )}
     </section>
-  )}
-
-  {issue.labels.length > 0 && (
-    <section className="issue-details__section">
-      <h3>Метки</h3>
-
-      <ul className="issue-details__list">
-    {issue.labels.map((label) => (
-        <li key={label.id}>{label.name}</li>
-      ))}
-    </ul>
-    </section>
-  )}
-  </div>
-);
+  );
 };

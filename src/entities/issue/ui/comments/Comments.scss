@@ -1,0 +1,65 @@
+.issue-comments {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+
+  &__message {
+    align-self: flex-start;
+    width: fit-content;
+    max-width: 70%;
+    padding: 10px 12px;
+    background-color: #eef5ff;
+    border-radius: 4px 12px 12px;
+
+    &--own {
+      align-self: flex-end;
+      background-color: #e8f5e9;
+      border-radius: 12px 4px 12px 12px;
+    }
+  }
+
+  &__message-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 4px;
+    color: var(--text-secondary);
+    font-size: 12px;
+
+    time {
+      white-space: nowrap;
+    }
+  }
+
+  &__message-author {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  &__message-content {
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+
+  &__empty {
+    margin: 0;
+    padding: 16px;
+    color: var(--text-secondary);
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .issue-comments__message {
+    max-width: 88%;
+  }
+}

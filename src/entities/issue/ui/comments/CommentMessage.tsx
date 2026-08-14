@@ -1,4 +1,4 @@
-import type { Comment } from '@/entities/issue';
+import type { Comment } from '../../model/issue/types/comment';
 
 interface ICommentMessageProps {
   comment: Comment;
@@ -15,20 +15,20 @@ const commentDateFormatter = new Intl.DateTimeFormat('ru-RU', {
 
 export const CommentMessage = ({ comment, isOwn }: ICommentMessageProps) => {
   const className = isOwn
-    ? 'issue-card__message issue-card__message--own'
-    : 'issue-card__message';
+    ? 'issue-comments__message issue-comments__message--own'
+    : 'issue-comments__message';
 
   return (
     <article className={className}>
-      <div className="issue-card__message-header">
-        <span className="issue-card__message-author">{comment.authorName}</span>
+      <div className="issue-comments__message-header">
+        <span className="issue-comments__message-author">{comment.authorName}</span>
 
         <time dateTime={comment.createdAt.toISOString()}>
           {commentDateFormatter.format(comment.createdAt)}
         </time>
       </div>
 
-      <p className="issue-card__message-content">{comment.content}</p>
+      <p className="issue-comments__message-content">{comment.content}</p>
     </article>
   );
 };

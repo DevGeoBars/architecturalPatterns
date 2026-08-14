@@ -1,3 +1,2 @@
-
-export { IssueDetails } from './issue-details';
+export { IssueCard } from './issueCard/IssueCard';
 

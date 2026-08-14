@@ -38,4 +38,4 @@ export {
   type UpdateIssueData,
 } from './model';
 
-export { IssueDetails } from './ui';
+export { IssueCard } from './ui';
