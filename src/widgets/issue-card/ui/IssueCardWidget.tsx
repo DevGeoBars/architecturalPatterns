@@ -16,7 +16,6 @@ export const IssueCardWidget = ({ issue, onIssueUpdated }: IIssueCardWidgetProps
     <section className="issue-widget" aria-label={`Обращение №${issue.number}`}>
       <div className={'issue-widget__details'}>
         <IssueCard issue={issue} currentUserId={currentUserId}/>
-        <AddCommentForm issue={issue} onAdded={onIssueUpdated}/>
       </div>
       <div className="issue-card__comment-form">
         <AddCommentForm issue={issue} onAdded={onIssueUpdated}/>
