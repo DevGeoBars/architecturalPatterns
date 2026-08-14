@@ -1,0 +1,102 @@
+.issue-card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  padding: 20px;
+  color: var(--text);
+  background-color: var(--bg);
+  border: 1px solid var(--divider);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+
+  &__comments {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--divider);
+  }
+
+  &__comments-title {
+    margin: 0;
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  &__messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  &__message {
+    align-self: flex-start;
+    width: fit-content;
+    max-width: 70%;
+    padding: 10px 12px;
+    background-color: #eef5ff;
+    border-radius: 4px 12px 12px 12px;
+
+    &--own {
+      align-self: flex-end;
+      background-color: #e8f5e9;
+      border-radius: 12px 4px 12px 12px;
+    }
+  }
+
+  &__message-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 4px;
+    color: var(--text-secondary);
+    font-size: 12px;
+
+    time {
+      white-space: nowrap;
+    }
+  }
+
+  &__message-author {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  &__message-content {
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+
+  &__comments-empty {
+    margin: 0;
+    padding: 16px;
+    color: var(--text-secondary);
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  &__comment-form {
+    padding-top: 16px;
+    border-top: 1px solid var(--divider);
+  }
+}
+
+@media (max-width: 768px) {
+  .issue-card {
+    padding: 16px;
+
+    &__message {
+      max-width: 88%;
+    }
+  }
+}

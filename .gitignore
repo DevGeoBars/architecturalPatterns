@@ -27,3 +27,4 @@ dist-ssr
 /mock-server/database/claims.json
 /mock-server/model/session.mjs
 /mock-server/README.md
+/package-lock.json

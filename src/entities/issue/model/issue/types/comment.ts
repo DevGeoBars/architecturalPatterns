@@ -1,8 +1,6 @@
 import type { AttachedFile } from './attachedFile';
 import type { TIssueStatus } from './issueStatus';
-import type {
-  TIssueUserStatus,
-} from './issueUserStatus';
+import type { TIssueUserStatus } from './issueUserStatus';
 
 export type TCommentTheme =
   | 'Новый комментарий'
@@ -23,5 +21,3 @@ export interface Comment {
   status: TIssueStatus | null;
   userStatus: TIssueUserStatus | null;
 }
-
-//todo@bars - вынести в отдельный entities и через cross-импорты связать с issue
