@@ -1,7 +1,7 @@
 import type { IHttpApiClient } from '@/shared/api';
 
 import type { Claim } from '../../model/claim';
-import { isClaimsCollectionDto } from './lib/isClaimsCollectionDto';
+import { isClaimsCollectionDto } from './validation/isClaimsCollectionDto';
 import { adaptClaimDto } from './mapper/adaptClaimDto';
 
 export interface IClaimApi {

@@ -1,4 +1,4 @@
-// shared/lib/lazy-loading/lazyPage.tsx
+// shared/validation/lazy-loading/lazyPage.tsx
 
 import {
   lazy,
