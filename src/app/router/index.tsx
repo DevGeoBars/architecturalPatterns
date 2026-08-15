@@ -1,59 +1,24 @@
+import { createBrowserRouter, Navigate } from 'react-router-dom';
+
+import { ProtectedRoute } from '@/features/auth';
+import { lazyPage } from '@/shared/lib/lazy-loading';
+import { APP_ROUTES } from '@/shared/routes';
+
+import { QueryProvider } from '../providers/queryClient';
+import { MainLayout } from '../ui/MainLayout';
 import {
-    createBrowserRouter,
-    Navigate,
-} from 'react-router-dom';
+    CUSTOMER_ROUTE_ROLES,
+    NON_CUSTOMER_ROUTE_ROLES,
+} from './config/routeAccess';
 
-import {
-    ProtectedRoute,
-} from '@/features/auth';
+const LoginPage = lazyPage(() => import('@/pages/auth'), 'LoginPage');
+const HomePage = lazyPage(() => import('@/pages/home'), 'HomePage');
+const ClaimsPage = lazyPage(() => import('@/pages/claims'), 'ClaimsPage');
+const AddIssuePage = lazyPage(() => import('@/pages/add-issue'), 'AddIssuePage');
+const IssuePage = lazyPage(() => import('@/pages/issue'), 'IssuePage');
+const IssuesPage = lazyPage(() => import('@/pages/issues'), 'IssuesPage');
+const ActionsPage = lazyPage(() => import('@/pages/actions'), 'ActionsPage');
 
-import {
-    lazyPage,
-} from '@/shared/lib/lazy-loading';
-
-import {
-    APP_ROUTES,
-} from '@/shared/routes';
-
-import {
-    MainLayout,
-} from '../ui/MainLayout';
-import { CUSTOMER_ROUTE_ROLES, NON_CUSTOMER_ROUTE_ROLES } from "./config/routeAccess";
-
-const LoginPage = lazyPage(
-  () => import('@/pages/auth'),
-  'LoginPage',
-);
-
-const HomePage = lazyPage(
-  () => import('@/pages/home'),
-  'HomePage',
-);
-
-const ClaimsPage = lazyPage(
-  () => import('@/pages/claims'),
-  'ClaimsPage',
-);
-
-const AddIssuePage = lazyPage(
-  () => import('@/pages/add-issue'),
-  'AddIssuePage',
-);
-
-const IssuePage = lazyPage(
-  () => import('@/pages/issue'),
-  'IssuePage',
-);
-
-const IssuesPage = lazyPage(
-  () => import('@/pages/issues'),
-  'IssuesPage',
-);
-
-const ActionsPage = lazyPage(
-  () => import('@/pages/actions'),
-  'ActionsPage',
-);
 export const router = createBrowserRouter([
     {
         path: APP_ROUTES.LOGIN,
@@ -63,7 +28,11 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
             {
-                element: <MainLayout />,
+                element: (
+                  <QueryProvider>
+                      <MainLayout />
+                  </QueryProvider>
+                ),
                 children: [
                     {
                         element: (

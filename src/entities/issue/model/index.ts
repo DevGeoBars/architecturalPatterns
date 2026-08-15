@@ -20,15 +20,11 @@ export {
   ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
   createIssueStore,
-  createIssuesStore,
   getResponsibleFullName,
   isIssueClosed,
   type IIssueState,
-  type IIssuesState,
   type TIssueRequestStatus,
-  type TIssuesListRequestStatus,
   type TIssueStore,
-  type TIssuesStore,
 } from './issue';
 
 export type {

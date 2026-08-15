@@ -25,11 +25,7 @@ export {
 
 export {
   createIssueStore,
-  createIssuesStore,
   type IIssueState,
-  type IIssuesState,
   type TIssueRequestStatus,
-  type TIssuesListRequestStatus,
   type TIssueStore,
-  type TIssuesStore,
 } from './store';

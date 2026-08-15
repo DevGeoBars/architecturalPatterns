@@ -1,35 +1,41 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useQuery } from '@tanstack/react-query';
+
+import {
+  getIssuesQueryOptions,
+  ISSUE_API_TOKEN,
+  type IIssueApi,
+} from '@/entities/issue';
+import { useService } from '@/shared/lib/di';
 import { getIssueDetailRoute } from '@/shared/routes';
 import { DataTable } from '@/shared/ui/DataTable';
 
 import { ISSUES_TABLE_COLUMNS } from '../config/issuesTableColumns';
 import { adaptIssuesToTableRows } from '../lib/adaptIssueToTableRow';
-import { useIssuesStore } from '../model/context/useIssuesStore';
 import type { IssueTableRow } from '../model/issueTableRow';
 
 import './IssuesList.scss';
 
 export const IssuesList = () => {
   const navigate = useNavigate();
+  const issueApi = useService<IIssueApi>(ISSUE_API_TOKEN);
 
-  const issues = useIssuesStore((state) => state.issues);
-  const requestStatus = useIssuesStore((state) => state.requestStatus);
-  const error = useIssuesStore((state) => state.error);
-  const loadIssues = useIssuesStore((state) => state.loadIssues);
+  const {
+    data: issues = [],
+    error,
+    isError,
+    isPending,
+  } = useQuery(getIssuesQueryOptions(issueApi));
 
   const tableRows = useMemo(() => adaptIssuesToTableRows(issues), [issues]);
-
-  useEffect(() => {
-    void loadIssues();
-  }, [loadIssues]);
 
   const handleIssueDoubleClick = (row: IssueTableRow): void => {
     navigate(getIssueDetailRoute(row.id));
   };
 
-  if (requestStatus === 'idle' || requestStatus === 'loading') {
+  if (isPending) {
     return (
       <div className="issues-list issues-list__state">
         Загрузка обращений...
@@ -37,10 +43,10 @@ export const IssuesList = () => {
     );
   }
 
-  if (requestStatus === 'error') {
+  if (isError) {
     return (
       <div className="issues-list issues-list__state" role="alert">
-        <p>{error ?? 'Не удалось загрузить обращения'}</p>
+        <p>{error.message}</p>
       </div>
     );
   }

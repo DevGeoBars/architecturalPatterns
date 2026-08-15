@@ -3,6 +3,8 @@ export {
   IssueReferenceDataApi,
   ISSUE_API_TOKEN,
   ISSUE_REFERENCE_DATA_API_TOKEN,
+  getIssuesQueryKey,
+  getIssuesQueryOptions,
   type IIssueApi,
   type IIssueReferenceDataApi,
 } from './api';
@@ -11,7 +13,6 @@ export {
   ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
   createIssueStore,
-  createIssuesStore,
   useIssueReferenceDataStore,
   type AttachedFile,
   type Comment,
@@ -20,7 +21,6 @@ export {
   type Direction,
   type IIssueReferenceDataState,
   type IIssueState,
-  type IIssuesState,
   type Issue,
   type IssueLabel,
   type IssueReferenceData,
@@ -34,7 +34,6 @@ export {
   type TIssueStore,
   type TIssueUserStatus,
   type TIssueUserStatusCode,
-  type TIssuesStore,
   type UpdateIssueData,
 } from './model';
 

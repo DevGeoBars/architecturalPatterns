@@ -7,5 +7,7 @@ export {
 export {
   IssueApi,
   ISSUE_API_TOKEN,
+  getIssuesQueryKey,
+  getIssuesQueryOptions,
   type IIssueApi,
 } from './issue';
