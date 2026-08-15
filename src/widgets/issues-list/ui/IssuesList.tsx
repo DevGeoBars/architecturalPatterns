@@ -13,6 +13,7 @@ import './IssuesList.scss';
 
 export const IssuesList = () => {
   const navigate = useNavigate();
+
   const issues = useIssuesStore((state) => state.issues);
   const requestStatus = useIssuesStore((state) => state.requestStatus);
   const error = useIssuesStore((state) => state.error);
@@ -29,12 +30,16 @@ export const IssuesList = () => {
   };
 
   if (requestStatus === 'idle' || requestStatus === 'loading') {
-    return <div className="issues-list__state">Загрузка обращений...</div>;
+    return (
+      <div className="issues-list issues-list__state">
+        Загрузка обращений...
+      </div>
+    );
   }
 
   if (requestStatus === 'error') {
     return (
-      <div className="issues-list__state" role="alert">
+      <div className="issues-list issues-list__state" role="alert">
         <p>{error ?? 'Не удалось загрузить обращения'}</p>
       </div>
     );
@@ -42,7 +47,7 @@ export const IssuesList = () => {
 
   if (issues.length === 0) {
     return (
-      <div className="issues-list__state">
+      <div className="issues-list issues-list__state">
         <p>Обращения отсутствуют</p>
       </div>
     );
@@ -50,14 +55,16 @@ export const IssuesList = () => {
 
   return (
     <div className="issues-list">
-      <DataTable
-        rows={tableRows}
-        columns={ISSUES_TABLE_COLUMNS}
-        minWidth="98rem"
-        withGridlines
-        withStripedRows
-        onRowDoubleClick={handleIssueDoubleClick}
-      />
+      <div className="issues-list__table">
+        <DataTable
+          rows={tableRows}
+          columns={ISSUES_TABLE_COLUMNS}
+          minWidth="98rem"
+          withGridlines
+          withStripedRows
+          onRowDoubleClick={handleIssueDoubleClick}
+        />
+      </div>
     </div>
   );
 };

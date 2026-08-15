@@ -1,12 +1,13 @@
-import {
-  IssuesListWidget,
-} from '@/widgets/issues-list';
+import { IssuesListWidget } from '@/widgets/issues-list';
+
+import './IssuesPage.scss';
 
 export const IssuesPage = () => {
   return (
-    <div>
+    <section className="issues-page">
       <h1>Обращения</h1>
+
       <IssuesListWidget />
-    </div>
+    </section>
   );
 };

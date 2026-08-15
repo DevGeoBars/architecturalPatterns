@@ -9,6 +9,7 @@
 
 .app-header {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: flex-end;
   height: 40px;
@@ -24,7 +25,6 @@
   min-height: 0;
   overflow: hidden;
   background-color: var(--bg);
-  height: 100%;
 }
 
 .app-sidebar {
@@ -34,16 +34,19 @@
 }
 
 .app-content {
+  display: flex;
   flex: 1;
   min-width: 0;
-  overflow-y: hidden;
+  min-height: 0;
   padding: 20px;
+  overflow: hidden;
   color: var(--text);
   background-color: var(--bg);
 }
 
 .app-footer {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   height: 30px;
