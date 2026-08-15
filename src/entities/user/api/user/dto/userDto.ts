@@ -1,7 +1,7 @@
-import type { CompanyDto } from "./companyDto";
-import type { UserRoleDto } from "./userRoleDto";
-import type { TFLEXUserDto } from "./tflexUserDto";
-import type { ClaimsActivityDto } from "./claimsActivity";
+import type { ClaimsActivityDto } from './claimsActivityDto';
+import type { CompanyDto } from './companyDto';
+import type { TFLEXUserDto } from './tflexUserDto';
+import type { UserRoleDto } from './userRoleDto';
 
 export interface UserDto {
   Id: string;
@@ -16,8 +16,4 @@ export interface UserDto {
   Administrator: string;
   ClaimsActivity: ClaimsActivityDto;
   IsForApproveAction: boolean;
-}
-
-export interface UsersListDto {
-  Users: UserDto[];
 }

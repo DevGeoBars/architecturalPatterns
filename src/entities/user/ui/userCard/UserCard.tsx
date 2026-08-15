@@ -4,9 +4,9 @@ import type {
 
 import type {
   TUserActivity,
-} from '../../model/userActivity';
+} from '../../model/user';
 
-import './index.scss';
+import './UserCard.scss';
 
 interface IUserCardProps {
   user: User;
