@@ -28,3 +28,4 @@ dist-ssr
 /mock-server/model/session.mjs
 /mock-server/README.md
 /package-lock.json
+AGENTS.md
