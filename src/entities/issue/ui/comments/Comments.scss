@@ -1,20 +1,26 @@
 .issue-comments {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
+  min-width: 0;
+  padding: 4px 0;
 
   &__message {
     align-self: flex-start;
     width: fit-content;
-    max-width: 70%;
+    max-width: 72%;
+    min-width: 180px;
     padding: 10px 12px;
     background-color: #eef5ff;
+    border: 1px solid #dbeafe;
     border-radius: 4px 12px 12px;
+    box-shadow: var(--shadow-sm);
 
     &--own {
       align-self: flex-end;
       background-color: #e8f5e9;
+      border-color: #c8e6c9;
       border-radius: 12px 4px 12px 12px;
     }
   }
@@ -24,18 +30,24 @@
     align-items: baseline;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
     color: var(--text-secondary);
     font-size: 12px;
+    line-height: 1.3;
 
     time {
+      flex-shrink: 0;
       white-space: nowrap;
     }
   }
 
   &__message-author {
+    min-width: 0;
+    overflow: hidden;
     color: var(--text);
     font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__message-content {
@@ -52,6 +64,7 @@
     padding: 16px;
     color: var(--text-secondary);
     background-color: var(--bg-secondary);
+    border: 1px solid var(--divider);
     border-radius: 8px;
     font-size: 14px;
     text-align: center;
@@ -59,7 +72,10 @@
 }
 
 @media (max-width: 768px) {
-  .issue-comments__message {
-    max-width: 88%;
+  .issue-comments {
+    &__message {
+      max-width: 88%;
+      min-width: 0;
+    }
   }
 }
