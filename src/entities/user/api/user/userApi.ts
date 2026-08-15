@@ -1,7 +1,7 @@
 import { HttpClientError, type IHttpApiClient } from '@/shared/api';
 
 import type { User } from '../../model/user';
-import { isUserDto } from './lib/isUserDto';
+import { isUserDto } from './isUserDto';
 import { adaptUserDto } from './mapper/adaptUserDto';
 
 export const parseUser = (value: unknown): User => {

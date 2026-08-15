@@ -1,7 +1,7 @@
 export {
   HtmlEditor,
-} from './ui/HtmlEditor';
+} from './HtmlEditor';
 
 export type {
   IHtmlEditorProps,
-} from './model/htmlEditor';
+} from './htmlEditor.types';

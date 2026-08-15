@@ -9,11 +9,11 @@ import {
 
 import {
   adaptDialogPropsToPrimeReact,
-} from '../lib/adaptDialogPropsToPrimeReact';
+} from './adaptDialogPropsToPrimeReact';
 
 import type {
   IDialogProps,
-} from '../model/dialog';
+} from './dialog.types';
 
 export const Dialog = ({
   isOpen,

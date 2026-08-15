@@ -1,7 +1,7 @@
 export {
   Dialog,
-} from './ui/Dialog';
+} from './Dialog';
 
 export type {
   IDialogProps,
-} from './model/dialog';
+} from './dialog.types';

@@ -8,7 +8,7 @@ import {
 
 import type {
   IHtmlEditorProps,
-} from '../model/htmlEditor';
+} from './htmlEditor.types';
 
 import './HtmlEditor.scss';
 

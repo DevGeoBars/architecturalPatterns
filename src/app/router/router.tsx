@@ -9,7 +9,7 @@ import { MainLayout } from '../layout/MainLayout';
 import {
     CUSTOMER_ROUTE_ROLES,
     NON_CUSTOMER_ROUTE_ROLES,
-} from './config/routeAccess';
+} from './access/routeAccess';
 
 const LoginPage = lazyPage(() => import('@/pages/auth'), 'LoginPage');
 const HomePage = lazyPage(() => import('@/pages/home'), 'HomePage');

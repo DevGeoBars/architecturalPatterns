@@ -13,7 +13,7 @@ import { adaptCreateIssueDataToDto } from './mapper/adaptCreateIssueDataToDto';
 import { adaptUpdateIssueDataToDto } from './mapper/adaptUpdateIssueDataToDto';
 import { adaptIssueDto } from './mapper/adaptIssueDto';
 
-import { getNextCommentId } from './lib/getNextCommentId';
+import { getNextCommentId } from './getNextCommentId';
 
 const isRecord = (value: unknown): value is Record<string, unknown> => {
   return typeof value === 'object' && value !== null;

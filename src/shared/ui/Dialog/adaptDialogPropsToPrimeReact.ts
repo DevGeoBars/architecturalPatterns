@@ -4,7 +4,7 @@ import type {
 
 import type {
   IDialogProps,
-} from '../model/dialog';
+} from './dialog.types';
 
 type TDialogAdapterSource = Pick<
   IDialogProps,
