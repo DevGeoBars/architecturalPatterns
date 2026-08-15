@@ -32,8 +32,3 @@ export type {
   IssueReferenceDataItem,
 } from './static-dictionaries-data';
 
-export {
-  useIssueReferenceDataStore,
-  type IIssueReferenceDataState,
-  type TIssueReferenceDataRequestStatus,
-} from './static-dictionaries-data';

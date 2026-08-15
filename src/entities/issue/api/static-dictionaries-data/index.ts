@@ -1,8 +1,12 @@
 export {
   IssueReferenceDataApi,
-  type IIssueReferenceDataApi
+  type IIssueReferenceDataApi,
 } from './issueReferenceDataApi';
 
 export {
   ISSUE_REFERENCE_DATA_API_TOKEN,
 } from './issueReferenceDataApiToken';
+
+export {
+  getIssueReferenceDataQueryOptions,
+} from './query';

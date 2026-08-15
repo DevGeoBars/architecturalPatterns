@@ -1,6 +1,7 @@
 export {
   IssueReferenceDataApi,
   ISSUE_REFERENCE_DATA_API_TOKEN,
+  getIssueReferenceDataQueryOptions,
   type IIssueReferenceDataApi,
 } from './static-dictionaries-data';
 

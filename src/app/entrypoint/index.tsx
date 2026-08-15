@@ -11,7 +11,6 @@ import { DIProvider } from '@/shared/lib/di';
 
 import { createRootDIContainer } from '../di/createRootDIContainer';
 import { AppRouter } from '../providers/appRouter';
-import { IssueReferenceDataProvider } from '../providers/issueReferenceData';
 
 import '../styles/index.scss';
 
@@ -38,9 +37,7 @@ export const renderApp = () => {
     <React.StrictMode>
       <PrimeReactProvider {...primereact}>
         <DIProvider container={rootContainer}>
-          <IssueReferenceDataProvider>
-            <AppRouter />
-          </IssueReferenceDataProvider>
+          <AppRouter />
         </DIProvider>
       </PrimeReactProvider>
     </React.StrictMode>,

@@ -1,18 +1,21 @@
 import { type FormEvent, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useStore } from 'zustand';
 
 import { Button } from '@primereact/ui/button';
 
 import {
   ISSUE_API_TOKEN,
+  ISSUE_REFERENCE_DATA_API_TOKEN,
   ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
+  getIssueReferenceDataQueryOptions,
   type IIssueApi,
+  type IIssueReferenceDataApi,
   type Issue,
   type IssueReferenceDataItem,
   type TIssueStatusCode,
   type TIssueUserStatusCode,
-  useIssueReferenceDataStore,
 } from '@/entities/issue';
 
 import { useService } from '@/shared/lib/di';
@@ -40,6 +43,9 @@ export const EditIssueForm = ({
   onCancel,
 }: IEditIssueFormProps) => {
   const issueApi = useService<IIssueApi>(ISSUE_API_TOKEN);
+  const issueReferenceDataApi = useService<IIssueReferenceDataApi>(
+    ISSUE_REFERENCE_DATA_API_TOKEN,
+  );
 
   const [store] = useState(() => createEditIssueStore(issueApi, issue));
 
@@ -49,18 +55,17 @@ export const EditIssueForm = ({
   const updateField = useStore(store, (state) => state.updateField);
   const submit = useStore(store, (state) => state.submit);
 
-  const referenceData = useIssueReferenceDataStore((state) => state.data);
-  const referenceDataStatus = useIssueReferenceDataStore(
-    (state) => state.requestStatus,
-  );
-  const referenceDataError = useIssueReferenceDataStore(
-    (state) => state.error,
+  const {
+    data: referenceData,
+    isPending: isReferenceDataPending,
+    isError: isReferenceDataError,
+    error: referenceDataError,
+  } = useQuery(
+    getIssueReferenceDataQueryOptions(issueReferenceDataApi),
   );
 
   const isLoading = requestStatus === 'loading';
-
-  const isReferenceDataReady =
-    referenceDataStatus === 'success' && referenceData !== null;
+  const isReferenceDataReady = referenceData !== undefined;
 
   const isSubmitDisabled =
     isLoading ||
@@ -90,14 +95,13 @@ export const EditIssueForm = ({
         void handleSubmit(event);
       }}
     >
-      {(referenceDataStatus === 'idle' ||
-        referenceDataStatus === 'loading') && (
+      {isReferenceDataPending && (
         <p>Загрузка справочников...</p>
       )}
 
-      {referenceDataStatus === 'error' && (
+      {isReferenceDataError && (
         <p className="edit-issue-form__error" role="alert">
-          {referenceDataError ?? 'Не удалось загрузить справочники обращения'}
+          {referenceDataError.message}
         </p>
       )}
 
