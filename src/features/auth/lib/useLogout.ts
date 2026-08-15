@@ -9,6 +9,8 @@ import {
 import {
   APP_ROUTES,
 } from '@/shared/routes';
+import { HTTP_API_CLIENT_TOKEN, type IHttpApiClient } from '@/shared/api/httpClient';
+import { useService } from '@/shared/lib/di';
 
 import {
   logout,
@@ -27,6 +29,7 @@ interface IUseLogoutResult {
 export const useLogout =
   (): IUseLogoutResult => {
     const navigate = useNavigate();
+    const httpApiClient = useService<IHttpApiClient>(HTTP_API_CLIENT_TOKEN);
 
     const setUnauthenticated =
       useAuthStore(
@@ -56,7 +59,7 @@ export const useLogout =
         setLogoutError(null);
 
         try {
-          await logout();
+          await logout(httpApiClient);
 
           setUnauthenticated();
 

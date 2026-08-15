@@ -1,14 +1,14 @@
-export const parseResponse = async <TResponse>(
+export const parseResponse = async (
   response: Response,
-): Promise<TResponse> => {
+): Promise<unknown> => {
   if (response.status === 204) {
-    return undefined as TResponse;
+    return undefined;
   }
 
   const text = await response.text();
 
   if (!text) {
-    return undefined as TResponse;
+    return undefined;
   }
 
   const contentType =
@@ -19,8 +19,8 @@ export const parseResponse = async <TResponse>(
       'application/json',
     )
   ) {
-    return JSON.parse(text) as TResponse;
+    return JSON.parse(text);
   }
 
-  return text as TResponse;
+  return text;
 };

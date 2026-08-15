@@ -13,3 +13,7 @@ export type TPurchaseFormat =
   (typeof PURCHASE_FORMATS)[
     TPurchaseFormatCode
     ];
+
+export const isPurchaseFormatCode = (value: number): value is TPurchaseFormatCode => {
+  return value in PURCHASE_FORMATS;
+};

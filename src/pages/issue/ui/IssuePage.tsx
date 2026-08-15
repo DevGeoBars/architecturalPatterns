@@ -1,10 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMatch, useNavigate, useParams } from 'react-router-dom';
-import { useStore } from 'zustand';
 
 import { Button } from '@primereact/ui/button';
 
-import { createIssueStore, ISSUE_API_TOKEN, type IIssueApi, type Issue } from '@/entities/issue';
+import {
+  getIssueQueryKey,
+  getIssueQueryOptions,
+  getIssuesQueryKey,
+  ISSUE_API_TOKEN,
+  type IIssueApi,
+  type Issue,
+} from '@/entities/issue';
 import { EditIssueForm } from '@/features/edit-issue';
 import { useService } from '@/shared/lib/di';
 import { APP_ROUTES, getIssueDetailRoute, getIssueEditRoute } from '@/shared/routes';
@@ -14,111 +20,65 @@ import './IssuePage.scss';
 
 export const IssuePage = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { id } = useParams<{ id: string }>();
   const isEditRoute = useMatch(APP_ROUTES.ISSUE_EDIT) !== null;
   const issueApi = useService<IIssueApi>(ISSUE_API_TOKEN);
-  const [store] = useState(() => createIssueStore(issueApi));
-
-  const currentIssue = useStore(store, (state) => state.currentIssue);
-  const requestStatus = useStore(store, (state) => state.requestStatus);
-  const error = useStore(store, (state) => state.error);
-  const getCurrentIssue = useStore(store, (state) => state.getCurrentIssue);
-  const setCurrentIssue = useStore(store, (state) => state.setCurrentIssue);
-  const clearCurrentIssue = useStore(store, (state) => state.clearCurrentIssue);
-
   const issueId = Number(id);
   const isValidIssueId = Number.isInteger(issueId) && issueId > 0;
 
-  useEffect(() => {
-    if (!isValidIssueId) {
-      clearCurrentIssue();
-      return;
-    }
-
-    void getCurrentIssue(issueId);
-
-    return () => {
-      clearCurrentIssue();
-    };
-  }, [issueId, isValidIssueId, getCurrentIssue, clearCurrentIssue]);
-
-  const handleBackToIssues = (): void => {
-    navigate(APP_ROUTES.ISSUES);
-  };
-
-  const handleRetry = (): void => {
-    if (!isValidIssueId) {
-      return;
-    }
-
-    void getCurrentIssue(issueId);
-  };
+  const { data: currentIssue, error, isPending, isError, refetch } = useQuery({
+    ...getIssueQueryOptions(issueApi, isValidIssueId ? issueId : 0),
+    enabled: isValidIssueId,
+  });
 
   const handleIssueUpdated = (updatedIssue: Issue): void => {
-    setCurrentIssue(updatedIssue);
-  };
-
-  const handleEdit = (): void => {
-    if (currentIssue === null) {
-      return;
-    }
-
-    navigate(getIssueEditRoute(currentIssue.id));
-  };
-
-  const handleEditCancel = (): void => {
-    if (!isValidIssueId) {
-      return;
-    }
-
-    navigate(getIssueDetailRoute(issueId), { replace: true });
-  };
-
-  const handleEditUpdated = (updatedIssue: Issue): void => {
-    setCurrentIssue(updatedIssue);
-    navigate(getIssueDetailRoute(updatedIssue.id), { replace: true });
+    queryClient.setQueryData(getIssueQueryKey(updatedIssue.id), updatedIssue);
+    void queryClient.invalidateQueries({ queryKey: getIssuesQueryKey() });
   };
 
   return (
     <section className="issue-page">
       <header className="issue-page__header">
         <h1>{isEditRoute ? 'Редактирование обращения' : 'Просмотр обращения'}</h1>
-        <Button type="button" onClick={handleBackToIssues}>К обращениям</Button>
+        <Button type="button" onClick={() => navigate(APP_ROUTES.ISSUES)}>К обращениям</Button>
       </header>
 
       {!isValidIssueId && (
-        <div className="issue-page__state" role="alert">
-          Некорректный идентификатор обращения
-        </div>
+        <div className="issue-page__state" role="alert">Некорректный идентификатор обращения</div>
       )}
 
-      {isValidIssueId && (requestStatus === 'idle' || requestStatus === 'loading') && (
+      {isValidIssueId && isPending && (
         <div className="issue-page__state">Загрузка обращения...</div>
       )}
 
-      {isValidIssueId && requestStatus === 'error' && (
+      {isValidIssueId && isError && (
         <div className="issue-page__state" role="alert">
-          <p>{error ?? 'Не удалось загрузить обращение'}</p>
-          <Button type="button" onClick={handleRetry}>Повторить</Button>
+          <p>{error.message}</p>
+          <Button type="button" onClick={() => { void refetch(); }}>Повторить</Button>
         </div>
       )}
 
-      {requestStatus === 'success' && currentIssue !== null && !isEditRoute && (
+      {currentIssue !== undefined && !isEditRoute && (
         <div className="issue-page__content">
           <div className="issue-page__actions">
-            <Button type="button" onClick={handleEdit}>Редактировать</Button>
+            <Button type="button" onClick={() => navigate(getIssueEditRoute(currentIssue.id))}>
+              Редактировать
+            </Button>
           </div>
-
           <IssueCardWidget issue={currentIssue} onIssueUpdated={handleIssueUpdated} />
         </div>
       )}
 
-      {requestStatus === 'success' && currentIssue !== null && isEditRoute && (
+      {currentIssue !== undefined && isEditRoute && (
         <EditIssueForm
           key={currentIssue.id}
           issue={currentIssue}
-          onUpdated={handleEditUpdated}
-          onCancel={handleEditCancel}
+          onUpdated={(updatedIssue) => {
+            handleIssueUpdated(updatedIssue);
+            navigate(getIssueDetailRoute(updatedIssue.id), { replace: true });
+          }}
+          onCancel={() => navigate(getIssueDetailRoute(currentIssue.id), { replace: true })}
         />
       )}
     </section>

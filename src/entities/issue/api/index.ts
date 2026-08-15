@@ -8,6 +8,8 @@ export {
 export {
   IssueApi,
   ISSUE_API_TOKEN,
+  getIssueQueryKey,
+  getIssueQueryOptions,
   getIssuesQueryKey,
   getIssuesQueryOptions,
   type IIssueApi,

@@ -1,10 +1,6 @@
-export type {
-  UserDto,
-  UsersListDto,
-} from './api/dto';
-
 export {
   getCurrentUser,
+  parseUser,
 } from './api/userApi';
 
 export type {

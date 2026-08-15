@@ -15,7 +15,6 @@ export type {
   TIssueUserStatusCode,
   UpdateIssueData,
 } from './types';
-
 export {
   ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
@@ -24,10 +23,3 @@ export {
   isIssueStatusCode,
   isIssueUserStatusCode
 } from './types';
-
-export {
-  createIssueStore,
-  type IIssueState,
-  type TIssueRequestStatus,
-  type TIssueStore,
-} from './store';

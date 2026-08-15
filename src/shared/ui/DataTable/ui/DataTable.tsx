@@ -1,5 +1,6 @@
 import {
   DataTable as PrimeDataTable,
+  type DataTableRowMouseEvent,
 } from '@primereact/ui/datatable';
 
 import {
@@ -36,10 +37,12 @@ export function DataTable<
       }
       onRowDoubleClick={
         onRowDoubleClick
-          ? (event: any) => {
-            onRowDoubleClick(
-              event.data as TRow,
-            );
+          ? (event: DataTableRowMouseEvent) => {
+            const row = rows[event.index];
+
+            if (row !== undefined) {
+              onRowDoubleClick(row);
+            }
           }
           : undefined
       }
@@ -73,9 +76,12 @@ export function DataTable<
           </PrimeDataTable.THead>
 
           <PrimeDataTable.TBody>
-            {({ item }) => {
-              const row =
-                item as TRow;
+            {({ index }) => {
+              const row = rows[index];
+
+              if (row === undefined) {
+                return null;
+              }
 
               return (
                 <PrimeDataTable.Row

@@ -16,13 +16,13 @@ import type {
 } from '../../../model/issue/types/issueLabel';
 import {
   ISSUE_STATUSES,
+  isIssueStatusCode,
   type TIssueStatus,
-  type TIssueStatusCode,
 } from '../../../model/issue/types/issueStatus';
 import {
   ISSUE_USER_STATUSES,
+  isIssueUserStatusCode,
   type TIssueUserStatus,
-  type TIssueUserStatusCode,
 } from '../../../model/issue/types/issueUserStatus';
 import type {
   Responsible,
@@ -44,35 +44,23 @@ import type {
 const adaptIssueStatus = (
   statusCode: number,
 ): TIssueStatus => {
-  const status =
-    ISSUE_STATUSES[
-      statusCode as TIssueStatusCode
-      ];
-
-  if (status === undefined) {
+  if (!isIssueStatusCode(statusCode)) {
     throw new Error(
       `Неизвестный статус обращения: ${statusCode}`,
     );
   }
-
-  return status;
+  return ISSUE_STATUSES[statusCode];
 };
 
 const adaptIssueUserStatus = (
   statusCode: number,
 ): TIssueUserStatus => {
-  const status =
-    ISSUE_USER_STATUSES[
-      statusCode as TIssueUserStatusCode
-      ];
-
-  if (status === undefined) {
+  if (!isIssueUserStatusCode(statusCode)) {
     throw new Error(
       `Неизвестный пользовательский статус: ${statusCode}`,
     );
   }
-
-  return status;
+  return ISSUE_USER_STATUSES[statusCode];
 };
 
 const adaptAttachedFileDto = (
@@ -118,6 +106,20 @@ const adaptSuggestionDto = (
   subject: dto.Subject,
 });
 
+const adaptCommentTheme = (theme: string | undefined): TCommentTheme => {
+  const normalizedTheme = theme ?? '';
+
+  switch (normalizedTheme) {
+    case 'Новый комментарий':
+    case 'Изменение статуса':
+    case 'Закрытие обращения пользователем':
+    case '':
+      return normalizedTheme;
+    default:
+      throw new Error(`Неизвестная тема комментария: ${normalizedTheme}`);
+  }
+};
+
 const adaptCommentDto = (
   dto: CommentDto,
 ): Comment => ({
@@ -132,7 +134,7 @@ const adaptCommentDto = (
   files: dto.Files.map(
     adaptAttachedFileDto,
   ),
-  theme: (dto.Theme ?? '') as TCommentTheme,
+  theme: adaptCommentTheme(dto.Theme),
   status:
     dto.Status == null
       ? null

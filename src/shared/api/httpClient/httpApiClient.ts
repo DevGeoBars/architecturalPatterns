@@ -18,12 +18,12 @@ export class HttpApiClient implements IHttpApiClient {
     this.appConfig = appConfig;
   }
 
-  public get<TResponse>(url: string, config?: TMethodConfig): Promise<TResponse> {
-    return this.request<TResponse>({ ...config, url, method: 'GET' });
+  public get(url: string, config?: TMethodConfig): Promise<unknown> {
+    return this.request({ ...config, url, method: 'GET' });
   }
 
-  public post<TResponse>(url: string, body?: unknown, config?: TMethodConfig): Promise<TResponse> {
-    return this.request<TResponse>({
+  public post(url: string, body?: unknown, config?: TMethodConfig): Promise<unknown> {
+    return this.request({
       ...config,
       url,
       method: 'POST',
@@ -32,8 +32,8 @@ export class HttpApiClient implements IHttpApiClient {
     });
   }
 
-  public put<TResponse>(url: string, body?: unknown, config?: TMethodConfig): Promise<TResponse> {
-    return this.request<TResponse>({
+  public put(url: string, body?: unknown, config?: TMethodConfig): Promise<unknown> {
+    return this.request({
       ...config,
       url,
       method: 'PUT',
@@ -42,8 +42,8 @@ export class HttpApiClient implements IHttpApiClient {
     });
   }
 
-  public patch<TResponse>(url: string, body?: unknown, config?: TMethodConfig): Promise<TResponse> {
-    return this.request<TResponse>({
+  public patch(url: string, body?: unknown, config?: TMethodConfig): Promise<unknown> {
+    return this.request({
       ...config,
       url,
       method: 'PATCH',
@@ -52,8 +52,8 @@ export class HttpApiClient implements IHttpApiClient {
     });
   }
 
-  public delete<TResponse>(url: string, config?: TMethodConfig): Promise<TResponse> {
-    return this.request<TResponse>({
+  public delete(url: string, config?: TMethodConfig): Promise<unknown> {
+    return this.request({
       ...config,
       url,
       method: 'DELETE',
@@ -61,14 +61,14 @@ export class HttpApiClient implements IHttpApiClient {
     });
   }
 
-  public async request<TResponse>({
+  public async request({
     url,
     method,
     body,
     headers,
     credentials,
     signal,
-  }: HttpRequestConfig): Promise<TResponse> {
+  }: HttpRequestConfig): Promise<unknown> {
     const requestUrl = this.appConfig.apiUrl
       ? urlJoin(this.appConfig.apiUrl, url)
       : url;
@@ -85,9 +85,15 @@ export class HttpApiClient implements IHttpApiClient {
     });
 
     if (!response.ok) {
-      throw new HttpClientError(response);
+      const errorBody = await parseResponse(response).catch(() => undefined);
+      const errorMessage = typeof errorBody === 'object' && errorBody !== null &&
+        'message' in errorBody && typeof errorBody.message === 'string'
+        ? errorBody.message
+        : undefined;
+
+      throw new HttpClientError(response, errorMessage);
     }
 
-    return parseResponse<TResponse>(response);
+    return parseResponse(response);
   }
 }

@@ -1,6 +1,7 @@
 import {
   useNavigate,
 } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 import {
   Button,
@@ -9,6 +10,7 @@ import {
 import type {
   Issue,
 } from '@/entities/issue';
+import { getIssuesQueryKey } from '@/entities/issue';
 
 import {
   CreateIssueForm,
@@ -23,10 +25,12 @@ import './AddIssuePage.scss';
 
 export const AddIssuePage = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleCreated = (
     issue: Issue,
   ): void => {
+    void queryClient.invalidateQueries({ queryKey: getIssuesQueryKey() });
     navigate(
       getIssueDetailRoute(
         issue.id,

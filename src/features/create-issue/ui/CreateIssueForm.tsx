@@ -14,7 +14,7 @@ import {
   type IIssueApi,
   type IIssueReferenceDataApi,
   type Issue,
-  type TIssueUserStatusCode,
+  isIssueUserStatusCode,
 } from '@/entities/issue';
 
 import { useService } from '@/shared/lib/di';
@@ -194,10 +194,10 @@ export const CreateIssueForm = ({ onCreated }: ICreateIssueFormProps) => {
             value={formData.userStatusCode}
             disabled={isLoading}
             onChange={(event) => {
-              updateField(
-                'userStatusCode',
-                Number(event.target.value) as TIssueUserStatusCode,
-              );
+              const value = Number(event.target.value);
+              if (isIssueUserStatusCode(value)) {
+                updateField('userStatusCode', value);
+              }
             }}
           >
             {Object.entries(ISSUE_USER_STATUSES).map(

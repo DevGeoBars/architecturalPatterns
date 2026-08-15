@@ -1,11 +1,12 @@
-import {
-  useEffect,
-  useMemo,
-} from 'react';
+import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 import {
   Button,
 } from '@primereact/ui/button';
+
+import { CLAIM_API_TOKEN, getClaimsQueryOptions, type IClaimApi } from '@/entities/claim';
+import { useService } from '@/shared/lib/di';
 
 import {
   DataTable,
@@ -19,42 +20,13 @@ import {
   adaptClaimsToTableRows,
 } from '../lib/adaptClaimToTableRow';
 
-import {
-  useClaimsStore,
-} from '../model/context/useClaimsStore';
-
 import './ClaimsList.scss';
 
 export const ClaimsList = () => {
-  const claims =
-    useClaimsStore(
-      (state) =>
-        state.claims,
-    );
-
-  const requestStatus =
-    useClaimsStore(
-      (state) =>
-        state.requestStatus,
-    );
-
-  const error =
-    useClaimsStore(
-      (state) =>
-        state.error,
-    );
-
-  const loadClaims =
-    useClaimsStore(
-      (state) =>
-        state.loadClaims,
-    );
-
-  const reloadClaims =
-    useClaimsStore(
-      (state) =>
-        state.reloadClaims,
-    );
+  const claimApi = useService<IClaimApi>(CLAIM_API_TOKEN);
+  const { data: claims = [], error, isPending, isError, refetch } = useQuery(
+    getClaimsQueryOptions(claimApi),
+  );
 
   const tableRows = useMemo(
     () =>
@@ -64,14 +36,7 @@ export const ClaimsList = () => {
     [claims],
   );
 
-  useEffect(() => {
-    void loadClaims();
-  }, [loadClaims]);
-
-  if (
-    requestStatus === 'idle' ||
-    requestStatus === 'loading'
-  ) {
+  if (isPending) {
     return (
       <div className="claims-list__state">
         Загрузка заявок...
@@ -79,23 +44,20 @@ export const ClaimsList = () => {
     );
   }
 
-  if (
-    requestStatus === 'error'
-  ) {
+  if (isError) {
     return (
       <div
         className="claims-list__state"
         role="alert"
       >
         <p>
-          {error ??
-            'Не удалось загрузить заявки'}
+          {error.message}
         </p>
 
         <Button
           type="button"
           onClick={() => {
-            void reloadClaims();
+            void refetch();
           }}
         >
           Повторить
@@ -114,7 +76,7 @@ export const ClaimsList = () => {
         <Button
           type="button"
           onClick={() => {
-            void reloadClaims();
+            void refetch();
           }}
         >
           Обновить
@@ -129,7 +91,7 @@ export const ClaimsList = () => {
         <Button
           type="button"
           onClick={() => {
-            void reloadClaims();
+            void refetch();
           }}
         >
           Обновить

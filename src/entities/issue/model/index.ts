@@ -19,14 +19,10 @@ export type {
 export {
   ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
-  createIssueStore,
   getResponsibleFullName,
   isIssueClosed,
   isIssueStatusCode,
   isIssueUserStatusCode,
-  type IIssueState,
-  type TIssueRequestStatus,
-  type TIssueStore,
 } from './issue';
 
 export type {

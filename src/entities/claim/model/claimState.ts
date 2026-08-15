@@ -17,3 +17,7 @@ export type TClaimState =
   (typeof CLAIM_STATES)[
     TClaimStateCode
     ];
+
+export const isClaimStateCode = (value: number): value is TClaimStateCode => {
+  return value in CLAIM_STATES;
+};

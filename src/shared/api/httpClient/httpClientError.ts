@@ -3,9 +3,9 @@ export class HttpClientError extends Error {
 
   readonly response: Response;
 
-  constructor(response: Response) {
+  constructor(response: Response, message?: string) {
     super(
-      `Ошибка HTTP-запроса. Статус: ${response.status}, текст: ${response.statusText}`,
+      message ?? `Ошибка HTTP-запроса. Статус: ${response.status}, текст: ${response.statusText}`,
     );
 
     this.name = 'HttpClientError';

@@ -14,6 +14,8 @@ import {
 import {
   APP_ROUTES,
 } from '@/shared/routes';
+import { HTTP_API_CLIENT_TOKEN, type IHttpApiClient } from '@/shared/api/httpClient';
+import { useService } from '@/shared/lib/di';
 
 import {
   login,
@@ -27,6 +29,7 @@ import './LoginForm.scss';
 
 export const LoginForm = () => {
   const navigate = useNavigate();
+  const httpApiClient = useService<IHttpApiClient>(HTTP_API_CLIENT_TOKEN);
 
   const setAuthenticated =
     useAuthStore(
@@ -66,7 +69,7 @@ export const LoginForm = () => {
     setError(null);
 
     try {
-      const user = await login({
+      const user = await login(httpApiClient, {
         login: loginValue.trim(),
         password,
       });

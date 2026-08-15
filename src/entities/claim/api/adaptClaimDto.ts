@@ -6,12 +6,14 @@ import type {
 
 import {
   CLAIM_STATES,
+  isClaimStateCode,
   type TClaimState,
   type TClaimStateCode,
 } from '../model/claimState';
 
 import {
   PURCHASE_FORMATS,
+  isPurchaseFormatCode,
   type TPurchaseFormat,
   type TPurchaseFormatCode,
 } from '../model/purchaseFormat';
@@ -54,35 +56,41 @@ const adaptDate = (
 const adaptClaimState = (
   stateCode: number,
 ): TClaimState => {
-  const state =
-    CLAIM_STATES[
-      stateCode as TClaimStateCode
-      ];
-
-  if (state === undefined) {
+  if (!isClaimStateCode(stateCode)) {
     throw new Error(
       `Неизвестный статус заявки: ${stateCode}`,
     );
   }
 
-  return state;
+  return CLAIM_STATES[stateCode];
 };
 
 const adaptPurchaseFormat = (
   formatCode: number,
 ): TPurchaseFormat => {
-  const format =
-    PURCHASE_FORMATS[
-      formatCode as TPurchaseFormatCode
-      ];
-
-  if (format === undefined) {
+  if (!isPurchaseFormatCode(formatCode)) {
     throw new Error(
       `Неизвестный формат закупки: ${formatCode}`,
     );
   }
 
-  return format;
+  return PURCHASE_FORMATS[formatCode];
+};
+
+const adaptClaimStateCode = (stateCode: number): TClaimStateCode => {
+  if (!isClaimStateCode(stateCode)) {
+    throw new Error(`Неизвестный статус заявки: ${stateCode}`);
+  }
+
+  return stateCode;
+};
+
+const adaptPurchaseFormatCode = (formatCode: number): TPurchaseFormatCode => {
+  if (!isPurchaseFormatCode(formatCode)) {
+    throw new Error(`Неизвестный формат закупки: ${formatCode}`);
+  }
+
+  return formatCode;
 };
 
 const adaptStopListDto = (
@@ -184,9 +192,7 @@ export const adaptClaimDto = (
     softwareConfiguration:
     dto.Komplektnost_PO,
 
-    purchaseFormatCode:
-      dto.PO_PurchaseFormat as
-        TPurchaseFormatCode,
+    purchaseFormatCode: adaptPurchaseFormatCode(dto.PO_PurchaseFormat),
 
     purchaseFormat:
       adaptPurchaseFormat(
@@ -196,9 +202,7 @@ export const adaptClaimDto = (
     situationDescription:
     dto.SituationDescription,
 
-    stateCode:
-      dto.ClaimsState as
-        TClaimStateCode,
+    stateCode: adaptClaimStateCode(dto.ClaimsState),
 
     state:
       adaptClaimState(

@@ -4,7 +4,6 @@ import {
 
 import {
   getCurrentUser,
-  User,
   useUserStore,
 } from '@/entities/user';
 
@@ -25,7 +24,6 @@ const clearUserState = (): void => {
     useUserStore.getState();
 
   userStore.clearCurrentUser();
-  userStore.clearSubUsers();
 };
 
 export const useAuthStore =
@@ -34,7 +32,7 @@ export const useAuthStore =
       status: 'unknown',
       error: null,
 
-      checkAuth: async () => {
+      checkAuth: async (httpApiClient) => {
         const { status } = get();
 
         if (
@@ -52,7 +50,7 @@ export const useAuthStore =
 
         try {
           const userDto =
-            await getCurrentUser();
+            await getCurrentUser(httpApiClient);
 
           if (userDto === null) {
             clearUserState();
@@ -66,12 +64,9 @@ export const useAuthStore =
             return;
           }
 
-          const user =
-            new User(userDto);
-
           useUserStore
             .getState()
-            .setCurrentUser(user);
+            .setCurrentUser(userDto);
 
           set({
             status: 'authenticated',

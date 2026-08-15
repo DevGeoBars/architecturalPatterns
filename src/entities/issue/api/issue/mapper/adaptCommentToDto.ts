@@ -4,6 +4,7 @@ import type {
 
 import {
   ISSUE_STATUSES,
+  isIssueStatusCode,
 
   type TIssueStatus,
   type TIssueStatusCode,
@@ -11,6 +12,7 @@ import {
 
 import {
   ISSUE_USER_STATUSES,
+  isIssueUserStatusCode,
 
   type TIssueUserStatus,
   type TIssueUserStatusCode,
@@ -42,9 +44,13 @@ const getIssueStatusCode = (
     );
   }
 
-  return Number(
-    entry[0],
-  ) as TIssueStatusCode;
+  const statusCode = Number(entry[0]);
+
+  if (!isIssueStatusCode(statusCode)) {
+    throw new Error(`Неизвестный код статуса: ${entry[0]}`);
+  }
+
+  return statusCode;
 };
 
 const getIssueUserStatusCode = (
@@ -69,9 +75,13 @@ const getIssueUserStatusCode = (
     );
   }
 
-  return Number(
-    entry[0],
-  ) as TIssueUserStatusCode;
+  const statusCode = Number(entry[0]);
+
+  if (!isIssueUserStatusCode(statusCode)) {
+    throw new Error(`Неизвестный код пользовательского статуса: ${entry[0]}`);
+  }
+
+  return statusCode;
 };
 
 export const adaptCommentToDto = (

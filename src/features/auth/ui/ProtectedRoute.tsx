@@ -16,6 +16,8 @@ import {
 import {
   APP_ROUTES,
 } from '@/shared/routes';
+import { HTTP_API_CLIENT_TOKEN, type IHttpApiClient } from '@/shared/api/httpClient';
+import { useService } from '@/shared/lib/di';
 
 import {
   useAuthStore,
@@ -36,6 +38,7 @@ export const ProtectedRoute = ({
   fallback = null,
   loadingFallback = null,
 }: IProtectedRouteProps) => {
+  const httpApiClient = useService<IHttpApiClient>(HTTP_API_CLIENT_TOKEN);
   const currentUser =
     useUserStore(
       (state) =>
@@ -48,9 +51,9 @@ export const ProtectedRoute = ({
 
   useEffect(() => {
     if (status === 'unknown') {
-      void checkAuth();
+      void checkAuth(httpApiClient);
     }
-  }, [status, checkAuth]);
+  }, [status, checkAuth, httpApiClient]);
 
   if (
     status === 'unknown' ||
@@ -74,7 +77,7 @@ export const ProtectedRoute = ({
         <button
           type="button"
           onClick={() => {
-            void checkAuth();
+            void checkAuth(httpApiClient);
           }}
         >
           Повторить

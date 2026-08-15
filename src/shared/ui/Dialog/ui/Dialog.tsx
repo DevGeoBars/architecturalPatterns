@@ -1,5 +1,6 @@
 import {
   Dialog as PrimeReactDialog,
+  type DialogRootChangeEvent,
 } from '@primereact/ui/dialog';
 
 import {
@@ -35,7 +36,7 @@ export const Dialog = ({
       draggable={false}
       position="center"
       scrollBehavior="inside"
-      onOpenChange={(event: any) => {
+      onOpenChange={(event: DialogRootChangeEvent) => {
         if (!event.value) {
           onClose();
         }

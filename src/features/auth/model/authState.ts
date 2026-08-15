@@ -1,6 +1,7 @@
 import type {
   User,
 } from '@/entities/user';
+import type { IHttpApiClient } from '@/shared/api/httpClient';
 
 import type {
   TAuthStatus,
@@ -10,7 +11,7 @@ export interface IAuthState {
   status: TAuthStatus;
   error: string | null;
 
-  checkAuth: () => Promise<void>;
+  checkAuth: (httpApiClient: IHttpApiClient) => Promise<void>;
 
   setAuthenticated: (
     user: User,

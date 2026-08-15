@@ -1,55 +1,56 @@
-import type {
-  UserDto,
-  UsersListDto,
-} from './dto';
+import type { IHttpApiClient } from '@/shared/api/httpClient';
 
-export const getCurrentUser =
-  async (): Promise<UserDto | null> => {
-    const response = await fetch(
-      '/api/users/current',
-      {
-        credentials: 'include',
-      },
-    );
+import { HttpClientError } from '@/shared/api/httpClient';
 
-    if (response.status === 401) {
+import { User } from '../model/user';
+import type { UserDto } from './dto';
+
+const USER_ROLES = ['User', 'Customer', 'Partner', 'Administrator', 'Reader'] as const;
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
+
+const isCompanyDto = (value: unknown): boolean =>
+  isRecord(value) && typeof value.Id === 'number' &&
+  typeof value.Guid === 'string' && typeof value.Name === 'string';
+
+const isTflexUserDto = (value: unknown): boolean =>
+  isRecord(value) && typeof value.Id === 'string' &&
+  typeof value.Guid === 'string' && typeof value.Name === 'string';
+
+const isUserRoleDto = (value: unknown): boolean =>
+  typeof value === 'string' && USER_ROLES.some((role) => role === value);
+
+export const isUserDto = (value: unknown): value is UserDto => {
+  return isRecord(value) && typeof value.Id === 'string' &&
+    typeof value.Guid === 'string' && typeof value.Name === 'string' &&
+    typeof value.Email === 'string' && typeof value.IsExternal === 'boolean' &&
+    isCompanyDto(value.Company) &&
+    (value.TFLEXUser === undefined || isTflexUserDto(value.TFLEXUser)) &&
+    isUserRoleDto(value.Role) && typeof value.UsersLimit === 'number' &&
+    typeof value.Administrator === 'string' &&
+    (value.ClaimsActivity === 0 || value.ClaimsActivity === 1) &&
+    typeof value.IsForApproveAction === 'boolean';
+};
+
+export const parseUser = (value: unknown): User => {
+  if (!isUserDto(value)) {
+    throw new Error('Сервер вернул некорректные данные пользователя');
+  }
+
+  return new User(value);
+};
+
+export const getCurrentUser = async (
+  httpApiClient: IHttpApiClient,
+): Promise<User | null> => {
+  try {
+    return parseUser(await httpApiClient.get('/api/users/current'));
+  } catch (error) {
+    if (error instanceof HttpClientError && error.status === 401) {
       return null;
     }
 
-    if (!response.ok) {
-      throw new Error(
-        'Не удалось проверить авторизацию',
-      );
-    }
-
-    return response.json() as Promise<UserDto>;
-  };
-
-export const getSubUsers = async (
-  userId: string,
-): Promise<UsersListDto> => {
-  const response = await fetch(
-    `/api/users/${userId}/sub-users`,
-    {
-      credentials: 'include',
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error('Не удалось загрузить пользователей');
+    throw error;
   }
-
-  return response.json() as Promise<UsersListDto>;
-};
-
-export const getUserLabels = async (): Promise<string[]> => {
-  const response = await fetch('/api/users/labels', {
-    credentials: 'include',
-  });
-
-  if (!response.ok) {
-    throw new Error('Не удалось загрузить метки пользователей');
-  }
-
-  return response.json() as Promise<string[]>;
 };
