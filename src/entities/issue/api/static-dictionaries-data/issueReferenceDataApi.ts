@@ -1,4 +1,4 @@
-import type { IHttpApiClient } from '@/shared/api/httpClient';
+import type { IHttpApiClient } from '@/shared/api';
 
 import type { IssueReferenceData } from '../../model/static-dictionaries-data/types/issueReferenceData';
 import type { IssueReferenceDataItem } from '../../model/static-dictionaries-data/types/issueReferenceDataItem';

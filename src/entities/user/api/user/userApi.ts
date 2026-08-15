@@ -1,4 +1,4 @@
-import { HttpClientError, type IHttpApiClient } from '@/shared/api/httpClient';
+import { HttpClientError, type IHttpApiClient } from '@/shared/api';
 
 import type { User } from '../../model/user';
 import { isUserDto } from './lib/isUserDto';

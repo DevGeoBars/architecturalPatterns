@@ -1,7 +1,7 @@
 import type {
   User,
 } from '@/entities/user';
-import type { IHttpApiClient } from '@/shared/api/httpClient';
+import type { IHttpApiClient } from '@/shared/api';
 
 import type {
   TAuthStatus,

@@ -14,7 +14,7 @@ import {
 import {
   APP_ROUTES,
 } from '@/shared/routes';
-import { HTTP_API_CLIENT_TOKEN, type IHttpApiClient } from '@/shared/api/httpClient';
+import { HTTP_API_CLIENT_TOKEN, type IHttpApiClient } from '@/shared/api';
 import { useService } from '@/shared/lib/di';
 
 import {

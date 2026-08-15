@@ -1,4 +1,4 @@
-import type { IHttpApiClient } from '@/shared/api/httpClient';
+import type { IHttpApiClient } from '@/shared/api';
 
 import type { IssueDto, IssueListDto, UpdateIssueCommentsDto } from './dto';
 

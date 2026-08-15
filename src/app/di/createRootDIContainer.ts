@@ -19,7 +19,7 @@ import {
   HTTP_API_CLIENT_TOKEN,
   HttpApiClient,
   type IHttpApiClient,
-} from '@/shared/api/httpClient';
+} from '@/shared/api';
 
 import type { TAppConfig } from '@/shared/config';
 
