@@ -14,8 +14,7 @@ import {
   type IIssueReferenceDataApi,
   type Issue,
   type IssueReferenceDataItem,
-  type TIssueStatusCode,
-  type TIssueUserStatusCode,
+  type TIssueUserStatusCode, isIssueStatusCode,
 } from '@/entities/issue';
 
 import { useService } from '@/shared/lib/di';
@@ -59,11 +58,15 @@ export const EditIssueForm = ({
     data: referenceData,
     isPending: isReferenceDataPending,
     isError: isReferenceDataError,
+    isFetching: isReferenceDataFetching,
     error: referenceDataError,
+    refetch: refetchReferenceData,
   } = useQuery(
     getIssueReferenceDataQueryOptions(issueReferenceDataApi),
   );
-
+  const handleReferenceDataRetry = (): void => {
+    void refetchReferenceData();
+  };
   const isLoading = requestStatus === 'loading';
   const isReferenceDataReady = referenceData !== undefined;
 
@@ -100,9 +103,19 @@ export const EditIssueForm = ({
       )}
 
       {isReferenceDataError && (
-        <p className="edit-issue-form__error" role="alert">
-          {referenceDataError.message}
-        </p>
+        <div className="edit-issue-form__reference-data-error">
+          <p className="edit-issue-form__error" role="alert">
+            {referenceDataError.message}
+          </p>
+
+          <Button
+            type="button"
+            disabled={isReferenceDataFetching}
+            onClick={handleReferenceDataRetry}
+          >
+            {isReferenceDataFetching ? 'Повторная загрузка...' : 'Повторить'}
+          </Button>
+        </div>
       )}
 
       <div className="edit-issue-form__grid">
@@ -141,10 +154,11 @@ export const EditIssueForm = ({
             value={formData.statusCode}
             disabled={isLoading}
             onChange={(event) => {
-              updateField(
-                'statusCode',
-                Number(event.target.value) as TIssueStatusCode,
-              );
+              const value = Number(event.target.value);
+              if (!isIssueStatusCode(value)) {
+                return;
+              }
+              updateField('statusCode', value);
             }}
           >
             {Object.entries(ISSUE_STATUSES).map(([code, name]) => (

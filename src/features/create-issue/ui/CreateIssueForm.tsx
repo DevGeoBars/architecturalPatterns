@@ -10,10 +10,10 @@ import {
   ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
   getIssueReferenceDataQueryOptions,
+  isIssueStatusCode,
   type IIssueApi,
   type IIssueReferenceDataApi,
   type Issue,
-  type TIssueStatusCode,
   type TIssueUserStatusCode,
 } from '@/entities/issue';
 
@@ -22,6 +22,7 @@ import { useService } from '@/shared/lib/di';
 import { createCreateIssueStore } from '../model/createIssueStore';
 
 import './CreateIssueForm.scss';
+
 
 interface ICreateIssueFormProps {
   onCreated?: (issue: Issue) => void;
@@ -50,10 +51,16 @@ export const CreateIssueForm = ({ onCreated }: ICreateIssueFormProps) => {
     data: referenceData,
     isPending: isReferenceDataPending,
     isError: isReferenceDataError,
+    isFetching: isReferenceDataFetching,
     error: referenceDataError,
+    refetch: refetchReferenceData,
   } = useQuery(
     getIssueReferenceDataQueryOptions(issueReferenceDataApi),
   );
+
+  const handleReferenceDataRetry = (): void => {
+    void refetchReferenceData();
+  };
 
   const isLoading = requestStatus === 'loading';
   const isReferenceDataReady = referenceData !== undefined;
@@ -91,9 +98,19 @@ export const CreateIssueForm = ({ onCreated }: ICreateIssueFormProps) => {
       )}
 
       {isReferenceDataError && (
-        <p className="create-issue-form__error" role="alert">
-          {referenceDataError.message}
-        </p>
+        <div className="create-issue-form__reference-data-error">
+          <p className="create-issue-form__error" role="alert">
+            {referenceDataError.message}
+          </p>
+
+          <Button
+            type="button"
+            disabled={isReferenceDataFetching}
+            onClick={handleReferenceDataRetry}
+          >
+            {isReferenceDataFetching ? 'Повторная загрузка...' : 'Повторить'}
+          </Button>
+        </div>
       )}
 
       <div className="create-issue-form__grid">
@@ -155,10 +172,11 @@ export const CreateIssueForm = ({ onCreated }: ICreateIssueFormProps) => {
             value={formData.statusCode}
             disabled={isLoading}
             onChange={(event) => {
-              updateField(
-                'statusCode',
-                Number(event.target.value) as TIssueStatusCode,
-              );
+              const value = Number(event.target.value);
+              if (!isIssueStatusCode(value)) {
+                return;
+              }
+              updateField('statusCode', value);
             }}
           >
             {Object.entries(ISSUE_STATUSES).map(([statusCode, statusName]) => (

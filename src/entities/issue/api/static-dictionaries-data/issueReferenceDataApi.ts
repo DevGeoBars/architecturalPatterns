@@ -3,7 +3,7 @@ import type { IHttpApiClient } from '@/shared/api/httpClient';
 import type { IssueReferenceData } from '../../model/static-dictionaries-data/types/issueReferenceData';
 import type { IssueReferenceDataItem } from '../../model/static-dictionaries-data/types/issueReferenceDataItem';
 import { adaptIssueReferenceDataItemDto } from './mapper/adaptIssueReferenceDataItemDto';
-import type { IssueReferenceDataDto } from '../issue/dto';
+import type { IssueReferenceDataDto } from './dto';
 
 export interface IIssueReferenceDataApi {
   getProducts(): Promise<IssueReferenceDataItem[]>;

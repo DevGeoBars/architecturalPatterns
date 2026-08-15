@@ -22,6 +22,8 @@ export {
   createIssueStore,
   getResponsibleFullName,
   isIssueClosed,
+  isIssueStatusCode,
+  isIssueUserStatusCode,
   type IIssueState,
   type TIssueRequestStatus,
   type TIssueStore,

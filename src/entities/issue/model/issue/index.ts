@@ -21,6 +21,8 @@ export {
   ISSUE_USER_STATUSES,
   getResponsibleFullName,
   isIssueClosed,
+  isIssueStatusCode,
+  isIssueUserStatusCode
 } from './types';
 
 export {

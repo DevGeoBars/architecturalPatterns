@@ -35,6 +35,9 @@ export {
   type TIssueUserStatusCode,
 
   type UpdateIssueData,
+
+  isIssueStatusCode,
+  isIssueUserStatusCode
 } from './model';
 
 export { IssueCard } from './ui';

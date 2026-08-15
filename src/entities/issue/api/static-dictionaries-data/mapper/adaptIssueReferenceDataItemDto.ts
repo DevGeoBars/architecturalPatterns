@@ -1,5 +1,5 @@
 import type { IssueReferenceDataItem } from '../../../model/static-dictionaries-data/types/issueReferenceDataItem';
-import type { IssueReferenceDataItemDto } from '../../issue/dto';
+import type { IssueReferenceDataItemDto } from '../dto';
 
 export const adaptIssueReferenceDataItemDto = (
   dto: IssueReferenceDataItemDto,

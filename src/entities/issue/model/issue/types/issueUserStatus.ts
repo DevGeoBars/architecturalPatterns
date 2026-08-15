@@ -9,3 +9,9 @@ export type TIssueUserStatusCode =
 
 export type TIssueUserStatus =
   (typeof ISSUE_USER_STATUSES)[TIssueUserStatusCode];
+
+export const isIssueUserStatusCode = (
+  value: number,
+): value is TIssueUserStatusCode => {
+  return value in ISSUE_USER_STATUSES;
+};

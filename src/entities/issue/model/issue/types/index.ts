@@ -15,12 +15,14 @@ export {
   ISSUE_STATUSES,
   type TIssueStatus,
   type TIssueStatusCode,
+  isIssueStatusCode
 } from './issueStatus';
 
 export {
   ISSUE_USER_STATUSES,
   type TIssueUserStatus,
   type TIssueUserStatusCode,
+  isIssueUserStatusCode
 } from './issueUserStatus';
 
 export {

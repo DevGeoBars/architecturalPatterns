@@ -5,7 +5,7 @@ import {
 
 import type {
   IIssueApi,
-} from '../../../api/static-dictionaries-data';
+} from '../../../api/issue';
 
 import type {
   Issue,

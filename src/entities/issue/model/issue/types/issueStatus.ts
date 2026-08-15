@@ -17,3 +17,8 @@ export type TIssueStatusCode =
 export type TIssueStatus =
   (typeof ISSUE_STATUSES)[TIssueStatusCode];
 
+export const isIssueStatusCode = (
+  value: number,
+): value is TIssueStatusCode => {
+  return value in ISSUE_STATUSES;
+};

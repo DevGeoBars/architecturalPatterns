@@ -1,7 +1,6 @@
-
 import { isNotNullish } from '@/shared/lib/typeGuards';
 
-import type { UserDto } from "@/entities/user/api/dto";
+import type { UserDto } from "../api/dto";
 import { User } from '../model/user';
 
 
