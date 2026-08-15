@@ -10,7 +10,7 @@ import { appConfig } from '@/shared/config';
 import { DIProvider } from '@/shared/lib/di';
 
 import { createRootDIContainer } from '../di/createRootDIContainer';
-import { AppRouter } from '../providers/appRouter';
+import { AppRouter } from '../router/RouterProvider';
 
 import '../styles/index.scss';
 

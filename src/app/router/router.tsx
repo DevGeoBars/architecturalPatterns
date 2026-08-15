@@ -4,7 +4,7 @@ import { ProtectedRoute } from '@/features/auth';
 import { lazyPage } from '@/shared/lib/lazy-loading';
 import { APP_ROUTES } from '@/shared/routes';
 
-import { QueryProvider } from '../providers/queryClient';
+import { QueryProvider } from '../queryClient';
 import { MainLayout } from '../layout/MainLayout';
 import {
     CUSTOMER_ROUTE_ROLES,
