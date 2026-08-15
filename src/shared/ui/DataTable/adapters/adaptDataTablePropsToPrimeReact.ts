@@ -1,6 +1,6 @@
 import type {
   IDataTableProps,
-} from '../model/dataTable';
+} from '../types/dataTable';
 
 type TAdaptedDataTableProps<
   TRow extends object,

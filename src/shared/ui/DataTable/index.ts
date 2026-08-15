@@ -1,7 +1,7 @@
 export {
   DataTable,
-} from './ui/DataTable';
+} from './DataTable';
 
 export type {
   DataTableColumn,
-} from './model/dataTableColumn';
+} from './types/dataTableColumn';

@@ -5,11 +5,11 @@ import {
 
 import {
   adaptDataTablePropsToPrimeReact,
-} from '../lib/adaptDataTablePropsToPrimeReact';
+} from './adapters/adaptDataTablePropsToPrimeReact';
 
 import type {
   IDataTableProps,
-} from '../model/dataTable';
+} from './types/dataTable';
 
 export function DataTable<
   TRow extends object,
