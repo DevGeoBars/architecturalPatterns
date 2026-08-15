@@ -5,7 +5,7 @@ import { lazyPage } from '@/shared/lib/lazy-loading';
 import { APP_ROUTES } from '@/shared/routes';
 
 import { QueryProvider } from '../providers/queryClient';
-import { MainLayout } from '../ui/MainLayout';
+import { MainLayout } from '../layout/MainLayout';
 import {
     CUSTOMER_ROUTE_ROLES,
     NON_CUSTOMER_ROUTE_ROLES,
