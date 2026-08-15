@@ -112,9 +112,11 @@
     gap: 4px;
     min-width: 0;
     padding: 10px 12px;
+    color: var(--text);
     background-color: var(--bg-secondary);
     border: 1px solid var(--divider);
     border-radius: 8px;
+    text-align: left;
 
     span {
       overflow: hidden;
@@ -128,6 +130,28 @@
       color: var(--text);
       font-size: 16px;
       font-weight: 600;
+    }
+
+    &--interactive {
+      appearance: none;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.15s, border-color 0.15s;
+
+      &:hover {
+        background-color: var(--bg-hover);
+        border-color: var(--pr-light);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--pr-light);
+        outline-offset: 2px;
+      }
+    }
+
+    &--active {
+      background-color: var(--bg-active);
+      border-color: var(--pr-light);
     }
   }
 

@@ -1,129 +1,41 @@
-import {
-  useEffect,
-  useMemo,
-} from 'react';
+import { useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import {
-  useNavigate,
-} from 'react-router-dom';
+import { getIssueDetailRoute } from '@/shared/routes';
+import { DataTable } from '@/shared/ui/DataTable';
 
-import {
-  Button,
-} from '@primereact/ui/button';
-
-import {
-  getIssueDetailRoute,
-} from '@/shared/routes';
-
-import {
-  DataTable,
-} from '@/shared/ui/DataTable';
-
-import {
-  ISSUES_TABLE_COLUMNS,
-} from '../config/issuesTableColumns';
-
-import {
-  adaptIssuesToTableRows,
-} from '../lib/adaptIssueToTableRow';
-
-import type {
-  IssueTableRow,
-} from '../model/issueTableRow';
-
-import {
-  useIssuesStore,
-} from '../model/context/useIssuesStore';
+import { ISSUES_TABLE_COLUMNS } from '../config/issuesTableColumns';
+import { adaptIssuesToTableRows } from '../lib/adaptIssueToTableRow';
+import { useIssuesStore } from '../model/context/useIssuesStore';
+import type { IssueTableRow } from '../model/issueTableRow';
 
 import './IssuesList.scss';
 
 export const IssuesList = () => {
   const navigate = useNavigate();
+  const issues = useIssuesStore((state) => state.issues);
+  const requestStatus = useIssuesStore((state) => state.requestStatus);
+  const error = useIssuesStore((state) => state.error);
+  const loadIssues = useIssuesStore((state) => state.loadIssues);
 
-  const issues =
-    useIssuesStore(
-      (state) =>
-        state.issues,
-    );
-
-  const requestStatus =
-    useIssuesStore(
-      (state) =>
-        state.requestStatus,
-    );
-
-  const error =
-    useIssuesStore(
-      (state) =>
-        state.error,
-    );
-
-  const loadIssues =
-    useIssuesStore(
-      (state) =>
-        state.loadIssues,
-    );
-
-  const reloadIssues =
-    useIssuesStore(
-      (state) =>
-        state.reloadIssues,
-    );
-
-  const tableRows = useMemo(
-    () =>
-      adaptIssuesToTableRows(
-        issues,
-      ),
-    [issues],
-  );
+  const tableRows = useMemo(() => adaptIssuesToTableRows(issues), [issues]);
 
   useEffect(() => {
     void loadIssues();
   }, [loadIssues]);
 
-  const handleIssueDoubleClick = (
-    row: IssueTableRow,
-  ): void => {
-    navigate(
-      getIssueDetailRoute(
-        row.id,
-      ),
-    );
+  const handleIssueDoubleClick = (row: IssueTableRow): void => {
+    navigate(getIssueDetailRoute(row.id));
   };
 
-  if (
-    requestStatus === 'idle' ||
-    requestStatus === 'loading'
-  ) {
-    return (
-      <div className="issues-list__state">
-        Загрузка обращений...
-      </div>
-    );
+  if (requestStatus === 'idle' || requestStatus === 'loading') {
+    return <div className="issues-list__state">Загрузка обращений...</div>;
   }
 
-  if (
-    requestStatus === 'error'
-  ) {
+  if (requestStatus === 'error') {
     return (
-      <div
-        className="issues-list__state"
-        role="alert"
-      >
-        <p>
-          {error ??
-            'Не удалось загрузить обращения'}
-        </p>
-
-        <Button
-          type="button"
-          onClick={() => {
-            void reloadIssues();
-          }}
-        >
-          Повторить
-        </Button>
+      <div className="issues-list__state" role="alert">
+        <p>{error ?? 'Не удалось загрузить обращения'}</p>
       </div>
     );
   }
@@ -131,46 +43,20 @@ export const IssuesList = () => {
   if (issues.length === 0) {
     return (
       <div className="issues-list__state">
-        <p>
-          Обращения отсутствуют
-        </p>
-
-        <Button
-          type="button"
-          onClick={() => {
-            void reloadIssues();
-          }}
-        >
-          Обновить
-        </Button>
+        <p>Обращения отсутствуют</p>
       </div>
     );
   }
 
   return (
     <div className="issues-list">
-      <div className="issues-list__actions">
-        <Button
-          type="button"
-          onClick={() => {
-            void reloadIssues();
-          }}
-        >
-          Обновить
-        </Button>
-      </div>
-
       <DataTable
         rows={tableRows}
-        columns={
-          ISSUES_TABLE_COLUMNS
-        }
+        columns={ISSUES_TABLE_COLUMNS}
         minWidth="98rem"
         withGridlines
         withStripedRows
-        onRowDoubleClick={
-          handleIssueDoubleClick
-        }
+        onRowDoubleClick={handleIssueDoubleClick}
       />
     </div>
   );

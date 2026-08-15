@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import type { Issue } from '../../model/issue/types/issue';
 import { getResponsibleFullName } from '../../model/issue/types/responsible';
 import { Comments } from '../comments/Comments';
@@ -36,11 +38,14 @@ const getBooleanLabel = (value: boolean): string => {
 };
 
 export const IssueCard = ({ issue, currentUserId }: IIssueCardProps) => {
+  const [isCommentsVisible, setIsCommentsVisible] = useState(true);
+
   const responsibleName = issue.responsible
     ? getResponsibleFullName(issue.responsible)
     : undefined;
 
   const directionName = issue.directionName ?? issue.direction?.name;
+  const commentsId = `issue-${issue.id}-comments`;
 
   const details = [
     { label: 'Статус', value: issue.status },
@@ -69,6 +74,10 @@ export const IssueCard = ({ issue, currentUserId }: IIssueCardProps) => {
     { label: 'Продемонстрировано', value: getBooleanLabel(issue.isDemonstrated) },
   ];
 
+  const handleCommentsToggle = (): void => {
+    setIsCommentsVisible((isVisible) => !isVisible);
+  };
+
   return (
     <section className="issue-card" aria-label={`Обращение №${issue.number}`}>
       <header className="issue-card__header">
@@ -95,10 +104,16 @@ export const IssueCard = ({ issue, currentUserId }: IIssueCardProps) => {
       </section>
 
       <div className="issue-card__counters">
-        <div className="issue-card__counter">
+        <button
+          type="button"
+          className={`issue-card__counter issue-card__counter--interactive${isCommentsVisible ? ' issue-card__counter--active' : ''}`}
+          aria-expanded={isCommentsVisible}
+          aria-controls={commentsId}
+          onClick={handleCommentsToggle}
+        >
           <span>Комментарии</span>
           <strong>{issue.comments.length}</strong>
-        </div>
+        </button>
 
         <div className="issue-card__counter">
           <span>Файлы</span>
@@ -121,14 +136,16 @@ export const IssueCard = ({ issue, currentUserId }: IIssueCardProps) => {
         </div>
       </div>
 
-      <section className="issue-card__section">
-        <h3>Комментарии</h3>
+      {isCommentsVisible && (
+        <section id={commentsId} className="issue-card__section">
+          <h3>Комментарии</h3>
 
-        <Comments
-          comments={issue.comments}
-          currentUserId={currentUserId}
-        />
-      </section>
+          <Comments
+            comments={issue.comments}
+            currentUserId={currentUserId}
+          />
+        </section>
+      )}
 
       {issue.files.length > 0 && (
         <section className="issue-card__section">
