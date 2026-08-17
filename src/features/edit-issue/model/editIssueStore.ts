@@ -16,11 +16,11 @@ import {
 
 import {
   prepareEditIssueData,
-} from '../lib/prepareEditIssueData';
+} from './transformers/prepareEditIssueData';
 
 import {
   validateEditIssueData,
-} from '../lib/validateEditIssueData';
+} from './validateEditIssueData';
 
 import type {
   IEditIssueState,

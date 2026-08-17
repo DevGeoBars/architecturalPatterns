@@ -1,6 +1,4 @@
-import type {
-  CreateIssueData,
-} from '@/entities/issue';
+import type { CreateIssueData } from '@/entities/issue';
 
 export const validateCreateIssueData = (
   data: CreateIssueData,

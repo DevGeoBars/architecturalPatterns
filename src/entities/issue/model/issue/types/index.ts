@@ -4,11 +4,7 @@ export type { CreateCommentData } from './createCommentData';
 export type { CreateIssueData } from './createIssueData';
 export type { Direction } from './direction';
 
-export {
-  isIssueClosed,
-  isIssueEditable,
-  type Issue,
-} from './issue';
+export type { Issue } from './issue';
 
 export type { IssueLabel } from './issueLabel';
 
@@ -26,10 +22,7 @@ export {
   isIssueUserStatusCode
 } from './issueUserStatus';
 
-export {
-  getResponsibleFullName,
-  type Responsible,
-} from './responsible';
+export type { Responsible } from './responsible';
 
 export type { Suggestion } from './suggestion';
 export type { UpdateIssueData } from './updateIssueData';

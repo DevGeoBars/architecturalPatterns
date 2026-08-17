@@ -13,11 +13,11 @@ import {
 
 import {
   prepareCreateIssueData,
-} from '../lib/prepareCreateIssueData';
+} from './transformers/prepareCreateIssueData';
 
 import {
   validateCreateIssueData,
-} from '../lib/validateCreateIssueData';
+} from './validateCreateIssueData';
 
 import type {
   ICreateIssueState,

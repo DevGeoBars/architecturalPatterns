@@ -1,4 +1,4 @@
-import type { UserDto } from './dto';
+import type { UserDto } from '../dto';
 
 const USER_ROLES = ['User', 'Customer', 'Partner', 'Administrator', 'Reader'] as const;
 

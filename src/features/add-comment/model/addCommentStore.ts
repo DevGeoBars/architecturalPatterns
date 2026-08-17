@@ -15,11 +15,11 @@ import {
 
 import {
   prepareAddCommentData,
-} from '../lib/prepareAddCommentData';
+} from './transformers/prepareAddCommentData';
 
 import {
   validateAddCommentData,
-} from '../lib/validateAddCommentData';
+} from './validation/validateAddCommentData';
 
 import type {
   IAddCommentState,

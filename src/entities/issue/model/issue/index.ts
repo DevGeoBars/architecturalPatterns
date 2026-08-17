@@ -18,9 +18,13 @@ export type {
 export {
   ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
-  getResponsibleFullName,
-  isIssueClosed,
-  isIssueEditable,
   isIssueStatusCode,
   isIssueUserStatusCode
 } from './types';
+
+export {
+  isIssueClosed,
+  isIssueEditable,
+} from './rules/issueRules';
+
+export { getResponsibleFullName } from './formatters/getResponsibleFullName';

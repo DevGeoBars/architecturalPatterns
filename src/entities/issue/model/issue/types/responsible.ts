@@ -5,15 +5,3 @@ export interface Responsible {
   fatherName: string;
   email: string;
 }
-
-export const getResponsibleFullName = (
-  responsible: Responsible,
-): string => {
-  return [
-    responsible.lastName,
-    responsible.firstName,
-    responsible.fatherName,
-  ]
-    .filter(Boolean)
-    .join(' ');
-};

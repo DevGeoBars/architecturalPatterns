@@ -1,6 +1,4 @@
-import type {
-  AddCommentFormData,
-} from '../model/addCommentFormData';
+import type { AddCommentFormData } from '../addCommentFormData';
 
 export const isAddCommentContentEmpty = (
   content: string,
@@ -31,8 +29,7 @@ export const isAddCommentContentEmpty = (
 };
 
 export const validateAddCommentData = (
-  data:
-  AddCommentFormData,
+  data: AddCommentFormData,
 ): string | null => {
   if (
     isAddCommentContentEmpty(

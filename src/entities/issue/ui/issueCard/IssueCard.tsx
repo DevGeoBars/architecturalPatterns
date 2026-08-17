@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import type { Issue } from '../../model/issue/types/issue';
-import { getResponsibleFullName } from '../../model/issue/types/responsible';
+import { getResponsibleFullName } from '../../model/issue/formatters/getResponsibleFullName';
 import { Comments } from '../comments/Comments';
 
 import './IssueCard.scss';

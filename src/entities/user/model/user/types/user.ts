@@ -1,7 +1,9 @@
 import type { Company } from './company';
 import type { TFLEXUser } from './tflexUser';
 import type { TUserActivity } from './userActivity';
-import { type TUserRole, USER_ROLES } from './userRole';
+import type { TUserRole } from './userRole';
+
+import { isUserAdmin } from '../rules/userRules';
 
 export interface UserData {
   id: string;
@@ -48,6 +50,6 @@ export class User implements UserData {
   }
 
   isAdmin(): boolean {
-    return this.role === USER_ROLES.Administrator;
+    return isUserAdmin(this);
   }
 }

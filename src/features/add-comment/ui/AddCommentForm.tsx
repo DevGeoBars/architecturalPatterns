@@ -34,7 +34,7 @@ import {
 
 import {
   isAddCommentContentEmpty,
-} from '../lib/validateAddCommentData';
+} from '../model/validation/validateAddCommentData';
 
 import {
   createAddCommentStore,
