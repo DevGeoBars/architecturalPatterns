@@ -103,7 +103,6 @@ export const ClaimsList = () => {
         columns={
           CLAIMS_TABLE_COLUMNS
         }
-        minWidth="132rem"
         withGridlines
         withStripedRows
       />
