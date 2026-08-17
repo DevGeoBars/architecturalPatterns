@@ -16,6 +16,11 @@ export type {
   UpdateIssueData,
 } from './issue';
 
+export type {
+  IssueStaticDictionaries,
+  IssueStaticDictionaryItem,
+} from './issue-static-dictionaries';
+
 export {
   ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
@@ -24,9 +29,4 @@ export {
   isIssueStatusCode,
   isIssueUserStatusCode,
 } from './issue';
-
-export type {
-  IssueReferenceData,
-  IssueReferenceDataItem,
-} from './static-dictionaries-data';
 

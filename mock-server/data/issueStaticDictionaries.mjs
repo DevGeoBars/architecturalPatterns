@@ -53,7 +53,7 @@ export const osTypes = [
   { Id: 20, Name: 'Windows 11', Icon: '' },
 ];
 
-export const issueReferenceData = {
+export const issueStaticDictionaries = {
   products,
   categories,
   'os-types': osTypes,

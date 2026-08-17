@@ -8,11 +8,11 @@ import {
 
 import {
   IssueApi,
-  IssueReferenceDataApi,
+  IssueStaticDictionariesApi,
   ISSUE_API_TOKEN,
-  ISSUE_REFERENCE_DATA_API_TOKEN,
+  ISSUE_STATIC_DICTIONARIES_API_TOKEN,
   type IIssueApi,
-  type IIssueReferenceDataApi,
+  type IIssueStaticDictionariesApi,
 } from '@/entities/issue';
 
 import {
@@ -44,8 +44,8 @@ export const createRootDIContainer = (
     },
   });
 
-  rootContainer.register<IIssueReferenceDataApi>(
-    ISSUE_REFERENCE_DATA_API_TOKEN,
+  rootContainer.register<IIssueStaticDictionariesApi>(
+    ISSUE_STATIC_DICTIONARIES_API_TOKEN,
     {
       useFactory: (dependencyContainer) => {
         const httpApiClient =
@@ -53,7 +53,7 @@ export const createRootDIContainer = (
             HTTP_API_CLIENT_TOKEN,
           );
 
-        return new IssueReferenceDataApi(httpApiClient);
+        return new IssueStaticDictionariesApi(httpApiClient);
       },
     },
   );

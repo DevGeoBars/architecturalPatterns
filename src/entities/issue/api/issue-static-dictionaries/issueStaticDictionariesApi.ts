@@ -1,11 +1,15 @@
 import type { IHttpApiClient } from '@/shared/api';
 
-import type { IssueReferenceData } from '../../model/static-dictionaries-data/types/issueReferenceData';
-import type { IssueReferenceDataItem } from '../../model/static-dictionaries-data/types/issueReferenceDataItem';
-import { adaptIssueReferenceDataItemDto } from './mapper/adaptIssueReferenceDataItemDto';
-import type { IssueReferenceDataDto } from './dto';
+import type {
+  IssueStaticDictionaries,
+  IssueStaticDictionaryItem,
+} from '../../model/issue-static-dictionaries';
+import { adaptIssueStaticDictionaryItemDto } from './mapper/adaptIssueStaticDictionaryItemDto';
+import type { IssueStaticDictionariesDto } from './dto';
 
-const isReferenceDataDto = (value: unknown): value is IssueReferenceDataDto => {
+const isIssueStaticDictionariesDto = (
+  value: unknown,
+): value is IssueStaticDictionariesDto => {
   if (typeof value !== 'object' || value === null || !('Data' in value) || !Array.isArray(value.Data)) {
     return false;
   }
@@ -18,39 +22,39 @@ const isReferenceDataDto = (value: unknown): value is IssueReferenceDataDto => {
   });
 };
 
-export interface IIssueReferenceDataApi {
-  getProducts(): Promise<IssueReferenceDataItem[]>;
-  getCategories(): Promise<IssueReferenceDataItem[]>;
-  getOsTypes(): Promise<IssueReferenceDataItem[]>;
-  getReferenceData(): Promise<IssueReferenceData>;
+export interface IIssueStaticDictionariesApi {
+  getProducts(): Promise<IssueStaticDictionaryItem[]>;
+  getCategories(): Promise<IssueStaticDictionaryItem[]>;
+  getOsTypes(): Promise<IssueStaticDictionaryItem[]>;
+  getDictionaries(): Promise<IssueStaticDictionaries>;
 }
 
-export class IssueReferenceDataApi implements IIssueReferenceDataApi {
+export class IssueStaticDictionariesApi implements IIssueStaticDictionariesApi {
   constructor(private readonly httpApiClient: IHttpApiClient) {}
 
-  private async getItems(url: string): Promise<IssueReferenceDataItem[]> {
+  private async getItems(url: string): Promise<IssueStaticDictionaryItem[]> {
     const response = await this.httpApiClient.get(url);
 
-    if (!isReferenceDataDto(response)) {
+    if (!isIssueStaticDictionariesDto(response)) {
       throw new Error('Сервер вернул некорректные справочные данные');
     }
 
-    return response.Data.map(adaptIssueReferenceDataItemDto);
+    return response.Data.map(adaptIssueStaticDictionaryItemDto);
   }
 
-  getProducts(): Promise<IssueReferenceDataItem[]> {
+  getProducts(): Promise<IssueStaticDictionaryItem[]> {
     return this.getItems('/api/issues/reference-data/products');
   }
 
-  getCategories(): Promise<IssueReferenceDataItem[]> {
+  getCategories(): Promise<IssueStaticDictionaryItem[]> {
     return this.getItems('/api/issues/reference-data/categories');
   }
 
-  getOsTypes(): Promise<IssueReferenceDataItem[]> {
+  getOsTypes(): Promise<IssueStaticDictionaryItem[]> {
     return this.getItems('/api/issues/reference-data/os-types');
   }
 
-  async getReferenceData(): Promise<IssueReferenceData> {
+  async getDictionaries(): Promise<IssueStaticDictionaries> {
     const [products, categories, osTypes] = await Promise.all([
       this.getProducts(),
       this.getCategories(),

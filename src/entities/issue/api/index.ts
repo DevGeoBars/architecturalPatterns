@@ -1,9 +1,9 @@
 export {
-  IssueReferenceDataApi,
-  ISSUE_REFERENCE_DATA_API_TOKEN,
-  getIssueReferenceDataQueryOptions,
-  type IIssueReferenceDataApi,
-} from './static-dictionaries-data';
+  ISSUE_STATIC_DICTIONARIES_API_TOKEN,
+  IssueStaticDictionariesApi,
+  getIssueStaticDictionariesQueryOptions,
+  type IIssueStaticDictionariesApi,
+} from './issue-static-dictionaries';
 
 export {
   IssueApi,

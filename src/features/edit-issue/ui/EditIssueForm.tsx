@@ -6,14 +6,14 @@ import { Button } from '@primereact/ui/button';
 
 import {
   ISSUE_API_TOKEN,
-  ISSUE_REFERENCE_DATA_API_TOKEN,
+  ISSUE_STATIC_DICTIONARIES_API_TOKEN,
   ISSUE_STATUSES,
   ISSUE_USER_STATUSES,
-  getIssueReferenceDataQueryOptions,
+  getIssueStaticDictionariesQueryOptions,
   type IIssueApi,
-  type IIssueReferenceDataApi,
+  type IIssueStaticDictionariesApi,
   type Issue,
-  type IssueReferenceDataItem,
+  type IssueStaticDictionaryItem,
   isIssueStatusCode,
   isIssueUserStatusCode,
 } from '@/entities/issue';
@@ -30,8 +30,8 @@ interface IEditIssueFormProps {
   onCancel?: () => void;
 }
 
-const hasReferenceDataValue = (
-  items: IssueReferenceDataItem[],
+const hasStaticDictionaryValue = (
+  items: IssueStaticDictionaryItem[],
   value: string,
 ): boolean => {
   return items.some((item) => item.name === value);
@@ -43,8 +43,8 @@ export const EditIssueForm = ({
   onCancel,
 }: IEditIssueFormProps) => {
   const issueApi = useService<IIssueApi>(ISSUE_API_TOKEN);
-  const issueReferenceDataApi = useService<IIssueReferenceDataApi>(
-    ISSUE_REFERENCE_DATA_API_TOKEN,
+  const issueStaticDictionariesApi = useService<IIssueStaticDictionariesApi>(
+    ISSUE_STATIC_DICTIONARIES_API_TOKEN,
   );
 
   const [store] = useState(() => createEditIssueStore(issueApi, issue));
@@ -56,24 +56,24 @@ export const EditIssueForm = ({
   const submit = useStore(store, (state) => state.submit);
 
   const {
-    data: referenceData,
-    isPending: isReferenceDataPending,
-    isError: isReferenceDataError,
-    isFetching: isReferenceDataFetching,
-    error: referenceDataError,
-    refetch: refetchReferenceData,
+    data: issueStaticDictionaries,
+    isPending: areIssueStaticDictionariesPending,
+    isError: isIssueStaticDictionariesError,
+    isFetching: areIssueStaticDictionariesFetching,
+    error: issueStaticDictionariesError,
+    refetch: refetchIssueStaticDictionaries,
   } = useQuery(
-    getIssueReferenceDataQueryOptions(issueReferenceDataApi),
+    getIssueStaticDictionariesQueryOptions(issueStaticDictionariesApi),
   );
-  const handleReferenceDataRetry = (): void => {
-    void refetchReferenceData();
+  const handleIssueStaticDictionariesRetry = (): void => {
+    void refetchIssueStaticDictionaries();
   };
   const isLoading = requestStatus === 'loading';
-  const isReferenceDataReady = referenceData !== undefined;
+  const areIssueStaticDictionariesReady = issueStaticDictionaries !== undefined;
 
   const isSubmitDisabled =
     isLoading ||
-    !isReferenceDataReady ||
+    !areIssueStaticDictionariesReady ||
     formData.subject.trim() === '' ||
     formData.content.trim() === '' ||
     formData.category.trim() === '';
@@ -99,22 +99,22 @@ export const EditIssueForm = ({
         void handleSubmit(event);
       }}
     >
-      {isReferenceDataPending && (
+      {areIssueStaticDictionariesPending && (
         <p>Загрузка справочников...</p>
       )}
 
-      {isReferenceDataError && (
-        <div className="edit-issue-form__reference-data-error">
+      {isIssueStaticDictionariesError && (
+        <div className="edit-issue-form__static-dictionaries-error">
           <p className="edit-issue-form__error" role="alert">
-            {referenceDataError.message}
+            {issueStaticDictionariesError.message}
           </p>
 
           <Button
             type="button"
-            disabled={isReferenceDataFetching}
-            onClick={handleReferenceDataRetry}
+            disabled={areIssueStaticDictionariesFetching}
+            onClick={handleIssueStaticDictionariesRetry}
           >
-            {isReferenceDataFetching ? 'Повторная загрузка...' : 'Повторить'}
+            {areIssueStaticDictionariesFetching ? 'Повторная загрузка...' : 'Повторить'}
           </Button>
         </div>
       )}
@@ -196,7 +196,7 @@ export const EditIssueForm = ({
 
           <select
             value={formData.category}
-            disabled={isLoading || !isReferenceDataReady}
+            disabled={isLoading || !areIssueStaticDictionariesReady}
             required
             onChange={(event) => {
               updateField('category', event.target.value);
@@ -208,10 +208,10 @@ export const EditIssueForm = ({
               </option>
             )}
 
-            {referenceData &&
+            {issueStaticDictionaries &&
               formData.category &&
-              !hasReferenceDataValue(
-                referenceData.categories,
+              !hasStaticDictionaryValue(
+                issueStaticDictionaries.categories,
                 formData.category,
               ) && (
                 <option value={formData.category}>
@@ -219,7 +219,7 @@ export const EditIssueForm = ({
                 </option>
               )}
 
-            {referenceData?.categories.map((category) => (
+            {issueStaticDictionaries?.categories.map((category) => (
               <option key={category.id} value={category.name}>
                 {category.name}
               </option>
@@ -258,17 +258,17 @@ export const EditIssueForm = ({
 
           <select
             value={formData.product}
-            disabled={isLoading || !isReferenceDataReady}
+            disabled={isLoading || !areIssueStaticDictionariesReady}
             onChange={(event) => {
               updateField('product', event.target.value);
             }}
           >
             <option value="">Не выбрано</option>
 
-            {referenceData &&
+            {issueStaticDictionaries &&
               formData.product &&
-              !hasReferenceDataValue(
-                referenceData.products,
+              !hasStaticDictionaryValue(
+                issueStaticDictionaries.products,
                 formData.product,
               ) && (
                 <option value={formData.product}>
@@ -276,7 +276,7 @@ export const EditIssueForm = ({
                 </option>
               )}
 
-            {referenceData?.products.map((product) => (
+            {issueStaticDictionaries?.products.map((product) => (
               <option key={product.id} value={product.name}>
                 {product.name}
               </option>
@@ -302,22 +302,22 @@ export const EditIssueForm = ({
 
           <select
             value={formData.os}
-            disabled={isLoading || !isReferenceDataReady}
+            disabled={isLoading || !areIssueStaticDictionariesReady}
             onChange={(event) => {
               updateField('os', event.target.value);
             }}
           >
             <option value="">Не выбрано</option>
 
-            {referenceData &&
+            {issueStaticDictionaries &&
               formData.os &&
-              !hasReferenceDataValue(referenceData.osTypes, formData.os) && (
+              !hasStaticDictionaryValue(issueStaticDictionaries.osTypes, formData.os) && (
                 <option value={formData.os}>
                   {formData.os}
                 </option>
               )}
 
-            {referenceData?.osTypes.map((osType) => (
+            {issueStaticDictionaries?.osTypes.map((osType) => (
               <option key={osType.id} value={osType.name}>
                 {osType.name}
               </option>

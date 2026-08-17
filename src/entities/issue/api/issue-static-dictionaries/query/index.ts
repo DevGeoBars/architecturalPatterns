@@ -1,0 +1,3 @@
+export {
+  getIssueStaticDictionariesQueryOptions,
+} from './issueStaticDictionariesQuery';

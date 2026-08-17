@@ -1,6 +1,6 @@
 import http from 'node:http';
 
-import { issueReferenceData } from './data/issueReferenceData.mjs';
+import { issueStaticDictionaries } from './data/issueStaticDictionaries.mjs';
 import {
     credentials,
     subUserIdsByUserId,
@@ -293,10 +293,10 @@ const handleClaimCollection = async (request, response) => {
     );
 };
 
-const handleIssueReferenceData = async (
+const handleIssueStaticDictionaries = async (
   request,
   response,
-  referenceDataName,
+  dictionaryName,
 ) => {
     const currentUser = requireCurrentUser(request, response);
 
@@ -309,20 +309,20 @@ const handleIssueReferenceData = async (
           request,
           response,
           405,
-          `Метод ${request.method} не поддерживается для справочника ${referenceDataName}`,
+          `Метод ${request.method} не поддерживается для справочника ${dictionaryName}`,
         );
 
         return;
     }
 
-    const data = issueReferenceData[referenceDataName];
+    const data = issueStaticDictionaries[dictionaryName];
 
     if (!data) {
         sendError(
           request,
           response,
           404,
-          `Справочник ${referenceDataName} не найден`,
+          `Справочник ${dictionaryName} не найден`,
         );
 
         return;
@@ -654,15 +654,15 @@ const requestHandler = async (request, response) => {
             return;
         }
 
-        const issueReferenceDataMatch = url.pathname.match(
+        const issueStaticDictionariesMatch = url.pathname.match(
           /^\/api\/issues\/reference-data\/(products|categories|os-types)$/,
         );
 
-        if (issueReferenceDataMatch) {
-            await handleIssueReferenceData(
+        if (issueStaticDictionariesMatch) {
+            await handleIssueStaticDictionaries(
               request,
               response,
-              issueReferenceDataMatch[1],
+              issueStaticDictionariesMatch[1],
             );
 
             return;

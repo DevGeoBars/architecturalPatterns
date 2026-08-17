@@ -1,15 +1,15 @@
 export {
   IssueApi,
-  IssueReferenceDataApi,
+  IssueStaticDictionariesApi,
   ISSUE_API_TOKEN,
-  ISSUE_REFERENCE_DATA_API_TOKEN,
+  ISSUE_STATIC_DICTIONARIES_API_TOKEN,
   getIssueQueryKey,
   getIssueQueryOptions,
   getIssuesQueryKey,
   getIssuesQueryOptions,
-  getIssueReferenceDataQueryOptions,
+  getIssueStaticDictionariesQueryOptions,
   type IIssueApi,
-  type IIssueReferenceDataApi,
+  type IIssueStaticDictionariesApi,
 } from './api';
 
 export {
@@ -18,7 +18,7 @@ export {
   type CreateCommentData,
   type CreateIssueData,
   type Issue,
-  type IssueReferenceDataItem,
+  type IssueStaticDictionaryItem,
   type TIssueStatusCode,
   type TIssueUserStatusCode,
 
