@@ -15,8 +15,7 @@ export interface UpdateIssueData {
 
   statusCode: TIssueStatusCode;
 
-  userStatusCode:
-    TIssueUserStatusCode;
+  userStatusCode: TIssueUserStatusCode;
 
   owner: string;
 
