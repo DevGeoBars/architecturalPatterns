@@ -35,10 +35,19 @@ export const router = createBrowserRouter([
                 ),
                 children: [
                     {
+                        path: APP_ROUTES.HOME,
+                        element: <HomePage />,
+                    },
+                    {
                         element: (
                           <ProtectedRoute
                             allowedRoles={CUSTOMER_ROUTE_ROLES}
-                            fallback={<Navigate to={APP_ROUTES.HOME} replace />}
+                            fallback={
+                                <Navigate
+                                  to={APP_ROUTES.HOME}
+                                  replace
+                                />
+                            }
                           />
                         ),
                         children: [
@@ -52,18 +61,15 @@ export const router = createBrowserRouter([
                         element: (
                           <ProtectedRoute
                             allowedRoles={NON_CUSTOMER_ROUTE_ROLES}
-                            fallback={<Navigate to={APP_ROUTES.HOME} replace />}
+                            fallback={
+                                <Navigate
+                                  to={APP_ROUTES.HOME}
+                                  replace
+                                />
+                            }
                           />
                         ),
                         children: [
-                            {
-                                index: true,
-                                element: <Navigate to={APP_ROUTES.HOME} replace />,
-                            },
-                            {
-                                path: APP_ROUTES.HOME,
-                                element: <HomePage />,
-                            },
                             {
                                 path: APP_ROUTES.ISSUES,
                                 element: <IssuesPage />,
@@ -88,9 +94,14 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: '*',
-                        element: <Navigate to={APP_ROUTES.HOME} replace />,
+                        element: (
+                          <Navigate
+                            to={APP_ROUTES.HOME}
+                            replace
+                          />
+                        ),
                     },
-                ],
+                ]
             },
         ],
     },
