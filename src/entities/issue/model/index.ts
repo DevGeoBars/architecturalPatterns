@@ -26,6 +26,7 @@ export {
   ISSUE_USER_STATUSES,
   getResponsibleFullName,
   isIssueClosed,
+  isIssueEditable,
   isIssueStatusCode,
   isIssueUserStatusCode,
 } from './issue';

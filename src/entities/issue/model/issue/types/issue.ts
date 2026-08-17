@@ -2,8 +2,9 @@ import type { AttachedFile } from './attachedFile';
 import type { Comment } from './comment';
 import type { Direction } from './direction';
 import type { IssueLabel } from './issueLabel';
-import type {
-  TIssueStatus,
+import {
+  ISSUE_STATUSES,
+  type TIssueStatus,
 } from './issueStatus';
 import type {
   TIssueUserStatus,
@@ -66,4 +67,12 @@ export const isIssueClosed = (
   issue: Issue,
 ): boolean => {
   return issue.status === 'Закрыто';
+};
+
+export const isIssueEditable = (
+  issue: Issue,
+): boolean => {
+  return issue.status !== ISSUE_STATUSES[3]
+    && issue.status !== ISSUE_STATUSES[4]
+    && issue.status !== ISSUE_STATUSES[9];
 };

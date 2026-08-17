@@ -8,6 +8,7 @@ import {
   getIssueQueryOptions,
   getIssuesQueryKey,
   ISSUE_API_TOKEN,
+  isIssueEditable,
   type IIssueApi,
   type Issue,
 } from '@/entities/issue';
@@ -61,11 +62,13 @@ export const IssuePage = () => {
 
       {currentIssue !== undefined && !isEditRoute && (
         <div className="issue-page__content">
-          <div className="issue-page__actions">
-            <Button type="button" onClick={() => navigate(getIssueEditRoute(currentIssue.id))}>
-              Редактировать
-            </Button>
-          </div>
+          {isIssueEditable(currentIssue) && (
+            <div className="issue-page__actions">
+              <Button type="button" onClick={() => navigate(getIssueEditRoute(currentIssue.id))}>
+                Редактировать
+              </Button>
+            </div>
+          )}
           <IssueCardWidget issue={currentIssue} onIssueUpdated={handleIssueUpdated} />
         </div>
       )}

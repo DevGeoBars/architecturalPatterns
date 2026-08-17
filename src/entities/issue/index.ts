@@ -24,6 +24,7 @@ export {
 
   type UpdateIssueData,
 
+  isIssueEditable,
   isIssueStatusCode,
   isIssueUserStatusCode
 } from './model';

@@ -6,6 +6,7 @@ export type { Direction } from './direction';
 
 export {
   isIssueClosed,
+  isIssueEditable,
   type Issue,
 } from './issue';
 
