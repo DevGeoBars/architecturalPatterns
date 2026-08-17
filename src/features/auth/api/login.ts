@@ -1,5 +1,5 @@
 import {
-  parseUser,
+  adaptUserDto,
   type User,
   type UserDto,
 } from '@/entities/user';
@@ -22,5 +22,5 @@ export const login = async (
     throw new Error('Сервер не вернул данные пользователя');
   }
 
-  return parseUser(response);
+  return adaptUserDto(response);
 };

@@ -1,6 +1,6 @@
 export {
   getCurrentUser,
-  parseUser,
+  adaptUserDto,
   type UserDto,
 } from './api';
 

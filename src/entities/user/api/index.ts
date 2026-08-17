@@ -1,1 +1,1 @@
-export { getCurrentUser, parseUser, type UserDto } from './user';
+export { getCurrentUser, adaptUserDto, type UserDto } from './user';
