@@ -1,22 +1,20 @@
 import { HttpClientError, type IHttpApiClient } from '@/shared/api';
 
 import type { User } from '../../model/user';
-import { isUserDto } from './validation/isUserDto';
+import type { UserDto } from './dto';
 import { adaptUserDto } from './mapper/adaptUserDto';
 
-export const parseUser = (value: unknown): User => {
-  if (!isUserDto(value)) {
-    throw new Error('Сервер вернул некорректные данные пользователя');
-  }
-
-  return adaptUserDto(value);
+export const parseUser = (dto: UserDto): User => {
+  return adaptUserDto(dto);
 };
 
 export const getCurrentUser = async (
   httpApiClient: IHttpApiClient,
 ): Promise<User | null> => {
   try {
-    return parseUser(await httpApiClient.get('/api/users/current'));
+    const dto = await httpApiClient.get<UserDto>('/api/users/current');
+
+    return dto === null ? null : parseUser(dto);
   } catch (error) {
     if (error instanceof HttpClientError && error.status === 401) {
       return null;

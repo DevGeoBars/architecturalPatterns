@@ -1,7 +1,7 @@
 import type { IHttpApiClient } from '@/shared/api';
 
 import type { Claim } from '../../model/claim';
-import { isClaimsCollectionDto } from './validation/isClaimsCollectionDto';
+import type { ClaimsCollectionDto } from './dto';
 import { adaptClaimDto } from './mapper/adaptClaimDto';
 
 export interface IClaimApi {
@@ -12,10 +12,10 @@ export class ClaimApi implements IClaimApi {
   constructor(readonly httpApiClient: IHttpApiClient) {}
 
   async getClaims(): Promise<Claim[]> {
-    const response = await this.httpApiClient.get('/api/claims');
+    const response = await this.httpApiClient.get<ClaimsCollectionDto>('/api/claims');
 
-    if (!isClaimsCollectionDto(response)) {
-      throw new Error('Сервер вернул некорректный список заявок');
+    if (response === null) {
+      throw new Error('Сервер не вернул список заявок');
     }
 
     return response.Data.map(adaptClaimDto);

@@ -5,7 +5,7 @@ import type {
   IssueStaticDictionaryItem,
 } from '../../model/issue-static-dictionaries';
 import { adaptIssueStaticDictionaryItemDto } from './mapper/adaptIssueStaticDictionaryItemDto';
-import { isIssueStaticDictionariesDto } from './dto/isIssueStaticDictionariesDto';
+import type { IssueStaticDictionariesDto } from './dto';
 
 export interface IIssueStaticDictionariesApi {
   getProducts(): Promise<IssueStaticDictionaryItem[]>;
@@ -18,10 +18,10 @@ export class IssueStaticDictionariesApi implements IIssueStaticDictionariesApi {
   constructor(private readonly httpApiClient: IHttpApiClient) {}
 
   private async getItems(url: string): Promise<IssueStaticDictionaryItem[]> {
-    const response = await this.httpApiClient.get(url);
+    const response = await this.httpApiClient.get<IssueStaticDictionariesDto>(url);
 
-    if (!isIssueStaticDictionariesDto(response)) {
-      throw new Error('Сервер вернул некорректные справочные данные');
+    if (response === null) {
+      throw new Error('Сервер не вернул справочные данные');
     }
 
     return response.Data.map(adaptIssueStaticDictionaryItemDto);

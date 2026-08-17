@@ -22,35 +22,35 @@ export type TMethodConfig = Omit<
 };
 
 export interface IHttpApiClient {
-  request(
+  request<TResponse = unknown>(
     config: HttpRequestConfig,
-  ): Promise<unknown>;
+  ): Promise<TResponse | null>;
 
-  get(
+  get<TResponse = unknown>(
     url: string,
     config?: TMethodConfig,
-  ): Promise<unknown>;
+  ): Promise<TResponse | null>;
 
-  post(
-    url: string,
-    body?: unknown,
-    config?: TMethodConfig,
-  ): Promise<unknown>;
-
-  put(
+  post<TResponse = unknown>(
     url: string,
     body?: unknown,
     config?: TMethodConfig,
-  ): Promise<unknown>;
+  ): Promise<TResponse | null>;
 
-  patch(
+  put<TResponse = unknown>(
     url: string,
     body?: unknown,
     config?: TMethodConfig,
-  ): Promise<unknown>;
+  ): Promise<TResponse | null>;
 
-  delete(
+  patch<TResponse = unknown>(
+    url: string,
+    body?: unknown,
+    config?: TMethodConfig,
+  ): Promise<TResponse | null>;
+
+  delete<TResponse = unknown>(
     url: string,
     config?: TMethodConfig,
-  ): Promise<unknown>;
+  ): Promise<TResponse | null>;
 }
