@@ -8,7 +8,7 @@ import {
   ISSUE_API_TOKEN,
   type IIssueApi,
 } from '@/entities/issue';
-import { useService } from '@/shared/lib/di';
+import { useService } from '@/shared/di';
 import { getIssueDetailRoute } from '@/shared/routes';
 import { DataTable } from '@/shared/ui/DataTable';
 

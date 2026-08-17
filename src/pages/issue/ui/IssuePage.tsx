@@ -12,7 +12,7 @@ import {
   type Issue,
 } from '@/entities/issue';
 import { EditIssueForm } from '@/features/edit-issue';
-import { useService } from '@/shared/lib/di';
+import { useService } from '@/shared/di';
 import { APP_ROUTES, getIssueDetailRoute, getIssueEditRoute } from '@/shared/routes';
 import { IssueCardWidget } from '@/widgets/issue-card';
 

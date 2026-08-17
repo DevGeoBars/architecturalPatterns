@@ -7,7 +7,7 @@ import Aura from '@primeuix/themes/aura';
 import 'primeicons/primeicons.css';
 
 import { appConfig } from '@/shared/config';
-import { DIProvider } from '@/shared/lib/di';
+import { DIProvider } from '@/shared/di';
 
 import { createRootDIContainer } from '../di/createRootDIContainer';
 import { AppRouter } from '../router/RouterProvider';

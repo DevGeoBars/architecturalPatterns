@@ -17,7 +17,7 @@ import {
   isIssueUserStatusCode,
 } from '@/entities/issue';
 
-import { useService } from '@/shared/lib/di';
+import { useService } from '@/shared/di';
 
 import { createCreateIssueStore } from '../model/createIssueStore';
 

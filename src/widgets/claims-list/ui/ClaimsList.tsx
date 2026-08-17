@@ -6,7 +6,7 @@ import {
 } from '@primereact/ui/button';
 
 import { CLAIM_API_TOKEN, getClaimsQueryOptions, type IClaimApi } from '@/entities/claim';
-import { useService } from '@/shared/lib/di';
+import { useService } from '@/shared/di';
 
 import {
   DataTable,

@@ -1,6 +1,4 @@
-import type {
-  InjectionToken,
-} from 'tsyringe';
+import type { InjectionToken } from 'tsyringe';
 
 import { useDIContainer } from './useDIContainer';
 

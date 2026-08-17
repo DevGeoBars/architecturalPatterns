@@ -26,7 +26,7 @@ import {
 
 import {
   useService,
-} from '@/shared/lib/di';
+} from '@/shared/di';
 
 import {
   HtmlEditor,

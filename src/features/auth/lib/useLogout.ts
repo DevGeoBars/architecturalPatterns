@@ -10,7 +10,7 @@ import {
   APP_ROUTES,
 } from '@/shared/routes';
 import { HTTP_API_CLIENT_TOKEN, type IHttpApiClient } from '@/shared/api';
-import { useService } from '@/shared/lib/di';
+import { useService } from '@/shared/di';
 
 import {
   logout,

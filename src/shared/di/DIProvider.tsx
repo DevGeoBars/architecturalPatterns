@@ -1,8 +1,7 @@
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren } from 'react';
 import type { DependencyContainer } from 'tsyringe';
 
 import { DIContext } from './DIContext';
-
 
 interface IDIProviderProps extends PropsWithChildren {
   container: DependencyContainer;
